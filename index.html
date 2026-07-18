@@ -1,0 +1,799 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Builders | Servidor Premium</title>
+    
+    <!-- 🌟 FAVICON (Icono de la pestaña) 🌟 -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <!-- Fuentes Web -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- 🟢 SCRIPT OFICIAL DE PAYPAL CON TU NUEVO CÓDIGO -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AWK9HsRWpouytjAJ0naA9uj61FNrw5rb4yxaJPNdG1XlVz-OrhHE2KAU9ZVE3T6qXUDxlpz61-a2TcHh&currency=USD"></script>
+
+    <style>
+        /* === VARIABLES DE COLOR === */
+        :root {
+            --c-urban: #00e5ff;
+            --c-archt: #ffaa00;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        /* === CONFIGURACIÓN GENERAL === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            color: #fff; 
+            overflow-x: hidden; 
+            background-color: #050505; 
+        }
+        .mc-font { font-family: 'Press Start 2P', cursive; line-height: 1.4; }
+
+        /* === VIDEO SOLO EN EL INICIO === */
+        .video-container {
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -5; overflow: hidden; pointer-events: none;
+        }
+        .video-container video {
+            position: absolute; top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover; 
+            opacity: 0.4;
+        }
+        .video-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            background: linear-gradient(to bottom, rgba(5,5,10,0.4) 0%, #050505 100%);
+            z-index: -4; 
+        }
+
+        /* Partículas ligeras */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp infinite ease-in; opacity: 0; will-change: transform, opacity; }
+        @keyframes floatUp {
+            0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
+            20% { opacity: 0.6; transform: translate3d(0, 80vh, 0) scale(1.2); }
+            80% { opacity: 0.3; }
+            100% { transform: translate3d(0, -10vh, 0) scale(0); opacity: 0; }
+        }
+
+        /* === BARRA DE NAVEGACIÓN === */
+        header {
+            position: fixed; top: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; background: rgba(5,5,5,0.95);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000; transition: all 0.3s ease;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; perspective: 500px; }
+        .nav-logo img {
+            height: 45px; filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .nav-logo:hover img { transform: rotateY(360deg) scale(1.1); }
+        .nav-logo h1 { font-size: 1.1rem; color: #fff; text-shadow: 2px 2px 0 #000; letter-spacing: -1px; }
+        .nav-logo h1 span { color: var(--c-urban); }
+
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; transition: 0.3s; font-size: 0.9rem;}
+        nav a:hover { color: var(--c-urban); text-shadow: 0 0 15px var(--c-urban); transform: translateY(-3px); display: inline-block;}
+        
+        /* 🌟 BOTÓN 3D MECÁNICO PARA COPIAR IP 🌟 */
+        .btn-ip {
+            background: var(--c-urban); color: #000; padding: 12px 25px; border-radius: 8px;
+            font-weight: 900; text-decoration: none; text-transform: uppercase;
+            box-shadow: 0 6px 0 #00a4b5, 0 15px 25px rgba(0, 229, 255, 0.4); 
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s, background 0.3s;
+            display: inline-block; cursor: pointer; border: none; position: relative; will-change: transform;
+        }
+        .btn-ip:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 0 #00a4b5, 0 20px 30px rgba(0, 229, 255, 0.5); 
+        }
+        .btn-ip:active, .btn-ip.copied { 
+            transform: translateY(6px); 
+            box-shadow: 0 0 0 #00a4b5, 0 5px 10px rgba(0, 229, 255, 0.4) !important; 
+        }
+        
+        /* Globo de texto flotante */
+        .ip-tooltip {
+            position: absolute; top: 130%; left: 50%; transform: translateX(-50%) translateY(15px) scale(0);
+            background: #fff; color: #000; padding: 10px 15px; border-radius: 8px; 
+            font-size: 0.75rem; font-family: 'Press Start 2P', cursive; line-height: 1.5;
+            opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); white-space: nowrap; z-index: 10;
+        }
+        .ip-tooltip::before {
+            content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%) rotate(45deg);
+            width: 12px; height: 12px; background: #fff;
+        }
+        .btn-ip.copied .ip-tooltip { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+
+        .btn-play-hero {
+            background: var(--c-urban); color: #000; padding: 12px 25px; border-radius: 5px;
+            font-weight: 900; text-decoration: none; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block; cursor: pointer; border: none; will-change: transform;
+        }
+        .btn-play-hero:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 30px var(--c-urban); }
+
+        /* NUEVO BOTÓN ACADEMIA */
+        .btn-academy-hero {
+            background: transparent; color: #fff; padding: 12px 25px; border-radius: 5px;
+            font-weight: 900; text-decoration: none; text-transform: uppercase; border: 2px solid var(--c-archt);
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.3); transition: all 0.3s; display: inline-block; cursor: pointer; will-change: transform;
+        }
+        .btn-academy-hero:hover { background: var(--c-archt); color: #000; box-shadow: 0 0 30px var(--c-archt); transform: scale(1.05) translateY(-2px); }
+        .btn-academy-hero i { color: var(--c-archt); transition: color 0.3s; margin-right: 5px;}
+        .btn-academy-hero:hover i { color: #000; }
+
+        /* === SISTEMA DE ANIMACIÓN AL SCROLL === */
+        .reveal { 
+            opacity: 0; transform: translate3d(0, 60px, 0); 
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            will-change: transform, opacity;
+        }
+        .reveal.active { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        /* === 1. HERO SECTION === */
+        .hero { 
+            height: 100vh; display: flex; align-items: center; justify-content: space-between;
+            padding: 80px 8% 0 8%; gap: 50px; position: relative;
+        }
+        .hero-content { flex: 1.2; max-width: 700px; }
+        
+        .hero h2 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 25px; text-shadow: 5px 5px 15px rgba(0,0,0,0.9); }
+        .hero h2 span { 
+            background: linear-gradient(90deg, var(--c-urban), #fff, var(--c-urban));
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shineText 3s linear infinite;
+        }
+        @keyframes shineText { to { background-position: 200% center; } }
+        
+        .hero p { font-size: 1.1rem; color: #ccc; margin-bottom: 40px; line-height: 1.7; font-weight: 300;}
+        
+        .hero-image { flex: 1; display: flex; justify-content: center; transform-style: preserve-3d; perspective: 1000px; }
+        .hero-image img {
+            width: 100%; max-width: 400px; transform: translateZ(50px);
+            filter: drop-shadow(0 20px 40px rgba(0, 229, 255, 0.2)); 
+            animation: floatHero 5s ease-in-out infinite; will-change: transform;
+        }
+        @keyframes floatHero {
+            0%, 100% { transform: translate3d(0, 0, 50px); }
+            50% { transform: translate3d(0, -20px, 80px); }
+        }
+
+        /* === ESTRUCTURA DE SECCIONES INTERNAS === */
+        section:not(.hero) { padding: 100px 8% 50px 8%; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 10;}
+        .sec-title { font-size: 2.2rem; text-align: center; margin-bottom: 60px; }
+        .sec-title span { color: var(--c-archt); }
+
+        /* === EFECTOS DE FONDO REACTIVO (TIENDA Y NOTICIAS) === */
+        .interactive-bg {
+            position: relative; overflow: hidden; background-color: #050505;
+        }
+        .interactive-bg::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: -3; opacity: 0.5;
+        }
+        .interactive-bg::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 229, 255, 0.08), transparent 40%);
+            z-index: -2; pointer-events: none; transition: background 0.1s ease;
+        }
+        #actualizaciones.interactive-bg::after {
+            background: radial-gradient(circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 170, 0, 0.08), transparent 40%);
+        }
+
+        .floating-shape {
+            position: absolute; border: 2px solid; border-radius: 12px;
+            z-index: -1; pointer-events: none; opacity: 0.3;
+            animation: floatShape 25s infinite linear; will-change: transform;
+        }
+        .shape-urban { border-color: var(--c-urban); width: 150px; height: 150px; top: 15%; left: 5%; }
+        .shape-urban-2 { border-color: var(--c-urban); width: 80px; height: 80px; bottom: 20%; right: 10%; animation-direction: reverse; animation-duration: 20s;}
+        .shape-archt { border-color: var(--c-archt); width: 200px; height: 200px; top: 20%; right: 5%; animation-direction: reverse;}
+        .shape-archt-2 { border-color: var(--c-archt); width: 100px; height: 100px; bottom: 10%; left: 8%; animation-duration: 15s;}
+        
+        @keyframes floatShape {
+            0% { transform: rotate3d(1, 1, 1, 0deg) translateY(0); }
+            50% { transform: rotate3d(1, 1, 1, 180deg) translateY(-50px); }
+            100% { transform: rotate3d(1, 1, 1, 360deg) translateY(0); }
+        }
+
+        /* === 2. SOBRE NOSOTROS === */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .about-text h3 { font-size: 2rem; margin-bottom: 25px; color: var(--c-urban); }
+        .about-text p { font-size: 1.05rem; line-height: 1.8; color: #bbb; margin-bottom: 15px; font-weight: 300;}
+        
+        .server-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; perspective: 1000px;}
+        .stat-card {
+            background: #0d0d12; border: 1px solid var(--glass-border);
+            padding: 30px; border-radius: 15px; text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: all 0.4s ease;
+            color: #fff; transform-style: preserve-3d; will-change: transform;
+        }
+        .stat-card:hover { border-color: var(--c-urban); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,229,255,0.1); }
+        .stat-card i { font-size: 2.5rem; color: var(--c-archt); margin-bottom: 15px; transform: translateZ(20px); display: block;}
+        .stat-card h4 { font-size: 2.2rem; font-weight: 900; transform: translateZ(15px);}
+        .stat-card p { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 1px; transform: translateZ(10px);}
+
+        /* === 3. TIENDA === */
+        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 1200px; margin: 0 auto; perspective: 1500px; }
+        
+        .rank-card {
+            background: linear-gradient(145deg, #101015 0%, #08080a 100%);
+            border: 1px solid var(--glass-border); border-radius: 15px; padding: 40px 30px;
+            transform-style: preserve-3d; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            will-change: transform; transition: all 0.4s ease-out; z-index: 5;
+        }
+        .rank-urban { border-top: 4px solid var(--c-urban); }
+        .rank-archt { border-top: 4px solid var(--c-archt); transform: scale(1.05); z-index: 6;}
+        .rank-upgrade { background: linear-gradient(180deg, #101015 0%, #151515 100%); border-top: 4px solid #fff; }
+
+        .rank-card:hover { transform: translateY(-15px) rotateX(5deg); box-shadow: 0 30px 60px rgba(0,0,0,1); }
+        .rank-archt:hover { transform: scale(1.05) translateY(-15px) rotateX(5deg); box-shadow: 0 30px 60px rgba(255,170,0,0.15); }
+        .rank-urban:hover { box-shadow: 0 30px 60px rgba(0,229,255,0.15); }
+
+        .rank-image { 
+            width: 100%; height: 180px; object-fit: contain; margin-bottom: 25px; 
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.8)); 
+            transform: translateZ(70px); 
+            animation: floatCard 4s ease-in-out infinite; will-change: transform;
+        }
+        @keyframes floatCard { 0%, 100% { transform: translate3d(0, 0, 70px); } 50% { transform: translate3d(0, -15px, 90px); } }
+
+        .rank-title { font-size: 1.4rem; margin-bottom: 20px; transform: translateZ(40px); }
+        .features-list { list-style: none; text-align: left; width: 100%; margin-bottom: 30px; transform: translateZ(30px); }
+        .features-list li { padding: 10px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; color: #aaa;}
+        .features-list li i { margin-right: 10px; color: var(--c-urban); width: 15px;}
+        .rank-archt .features-list li i { color: var(--c-archt); }
+        .price { font-size: 2.2rem; font-weight: 900; margin-bottom: 20px; transform: translateZ(50px); }
+        
+        .btn-buy {
+            width: 100%; padding: 15px; border: none; border-radius: 8px;
+            font-family: 'Press Start 2P', cursive; font-size: 0.75rem;
+            color: #000; cursor: pointer; transform: translateZ(60px);
+            transition: transform 0.3s, filter 0.3s; 
+            text-transform: uppercase; line-height: 1.4; font-weight: bold; will-change: transform;
+        }
+        .rank-urban .btn-buy { background: var(--c-urban); box-shadow: 0 10px 20px rgba(0,229,255,0.2); }
+        .rank-archt .btn-buy { background: var(--c-archt); box-shadow: 0 10px 20px rgba(255,170,0,0.2); }
+        .rank-upgrade .btn-buy { background: #fff; box-shadow: 0 10px 20px rgba(255,255,255,0.1);}
+        .btn-buy:hover { filter: brightness(1.2); transform: translateZ(80px) scale(1.05); }
+        .btn-buy:active { transform: translateZ(40px) scale(0.95); }
+
+        /* === 4. ACTUALIZACIONES === */
+        .updates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; perspective: 1000px; z-index: 5;}
+        .update-card { 
+            background: #0d0d12; border-left: 4px solid var(--c-urban); 
+            padding: 30px; border-radius: 0 15px 15px 0; 
+            transition: all 0.4s ease; transform-style: preserve-3d; will-change: transform;
+        }
+        .update-card:hover { transform: translate3d(15px, -5px, 40px) rotateY(-5deg); background: #12121a; box-shadow: -15px 15px 30px rgba(0,0,0,0.8); }
+        .update-date { font-size: 0.8rem; color: var(--c-urban); font-weight: 700; margin-bottom: 15px; display: block; letter-spacing: 1px; text-transform: uppercase; transform: translateZ(20px);}
+        .update-card h4 { font-size: 1.2rem; margin-bottom: 10px; transform: translateZ(25px);}
+        .update-card p { font-size: 0.95rem; color: #888; line-height: 1.6; font-weight: 300; transform: translateZ(10px);}
+
+        /* === FOOTER 🌟 REDES SOCIALES === */
+        footer { 
+            text-align: center; padding: 60px 20px 40px 20px; 
+            background: #030303; border-top: 1px solid #111; position: relative; z-index: 10;
+        }
+        .social-container {
+            display: flex; justify-content: center; gap: 25px; margin: 25px 0; perspective: 1000px;
+        }
+        .social-icon {
+            display: flex; align-items: center; justify-content: center;
+            width: 55px; height: 55px; background: #0d0d12; border: 1px solid var(--glass-border);
+            border-radius: 50%; color: #fff; font-size: 1.5rem; text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-style: preserve-3d;
+        }
+        /* Efectos 3D Hover por cada red social */
+        .social-icon:nth-child(1):hover { /* X (Twitter) */
+            transform: translateY(-10px) rotateY(15deg); border-color: #fff;
+            color: #000; background: #fff; box-shadow: 0 10px 25px rgba(255,255,255,0.3);
+        }
+        .social-icon:nth-child(2):hover { /* TikTok */
+            transform: translateY(-10px) rotateY(15deg); border-color: #ff0050;
+            color: #fff; background: #000; box-shadow: -5px 10px 20px rgba(0,255,255,0.4), 5px 10px 20px rgba(255,0,80,0.4);
+        }
+        .social-icon:nth-child(3):hover { /* YouTube */
+            transform: translateY(-10px) rotateY(15deg); border-color: #ff0000;
+            color: #fff; background: #ff0000; box-shadow: 0 10px 25px rgba(255,0,0,0.4);
+        }
+        footer p { color: #555; font-size: 0.9rem; margin-top: 15px;}
+
+        /* 🟢 === ESTILOS DEL MODAL DE PAGO === 🟢 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            z-index: 9999; /* Sobre todo el diseño */
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-content {
+            background: #111; padding: 40px 30px; border-radius: 15px;
+            width: 90%; max-width: 420px; text-align: center; position: relative;
+            border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            max-height: 85vh; /* EVITA QUE CORTE LA PANTALLA */
+            overflow-y: auto; /* AGREGA BARRA DE SCROLL */
+            overflow-x: hidden;
+        }
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: #0f0f13; border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb:hover { background: var(--c-urban); }
+
+        .modal-close {
+            position: absolute; top: 15px; right: 20px; font-size: 1.5rem; 
+            color: #666; cursor: pointer; transition: color 0.2s;
+        }
+        .modal-close:hover { color: #fff; }
+
+        .modal-state { display: none; animation: fadeIn 0.4s ease; }
+        .modal-state.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .mc-input {
+            width: 100%; padding: 15px; background: #1a1a1a;
+            border: 2px solid #333; border-radius: 8px; color: #fff;
+            font-size: 1.1rem; text-align: center; margin: 15px 0 20px 0; outline: none;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .mc-input:focus { border-color: var(--c-urban); }
+
+        .player-preview-container {
+            width: 80px; height: 80px; margin: 0 auto 15px auto;
+            border-radius: 10px; overflow: hidden; border: 2px solid #333;
+        }
+        .player-preview-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Botón exclusivo para la ventana */
+        .btn-modal {
+            width: 100%; padding: 15px; border: none; border-radius: 8px;
+            font-family: 'Press Start 2P', cursive; font-size: 0.75rem;
+            color: #000; cursor: pointer; text-transform: uppercase; font-weight: bold;
+            transition: transform 0.3s, filter 0.3s; line-height: 1.4;
+        }
+        .btn-modal:hover { filter: brightness(1.2); transform: scale(1.05); }
+
+        /* 📱 === RESPONSIVO PARA CELULARES Y TABLETS === 📱 */
+        @media (max-width: 950px) {
+            /* Navbar */
+            nav ul { display: none; }
+            .nav-logo h1 { display: none; }
+            header { padding: 15px 5%; }
+
+            /* Hero - Quitar la altura estricta para evitar que se monte encima */
+            .hero { 
+                flex-direction: column; text-align: center; justify-content: center; 
+                padding-top: 130px; height: auto; min-height: 100vh; gap: 40px; padding-bottom: 50px;
+            }
+            .hero-content { display: flex; flex-direction: column; align-items: center; margin-top: 0; }
+            .hero h2 { font-size: 2rem; } /* Fuente más pequeña para que quepa */
+            .hero-image img { max-width: 250px; animation: floatHero 5s ease-in-out infinite; }
+            
+            /* Grillas (Forzar a 1 columna para que no se aprieten a los lados) */
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .ranks-grid, .updates-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            
+            .rank-archt { transform: scale(1); } /* Quitar el efecto saltado del rango máximo */
+            .floating-shape { display: none; } /* Ocultar formas flotantes en cel para evitar lag */
+            section:not(.hero) { padding: 80px 5% 40px 5%; }
+        }
+
+        /* 📱 Ajustes exclusivos para celulares muy pequeños (iPhone, Androids) */
+        @media (max-width: 600px) {
+            .hero h2 { font-size: 1.5rem; }
+            .hero p { font-size: 0.95rem; margin-bottom: 30px; }
+            
+            /* Botones del Hero centrados */
+            .hero-buttons { justify-content: center !important; gap: 15px !important; }
+            .btn-play-hero, .btn-academy-hero { font-size: 0.9rem !important; padding: 12px 20px !important; }
+
+            /* Achicar un poco el botón superior y el logo */
+            .nav-logo img { height: 35px; }
+            .btn-ip { padding: 10px 15px; font-size: 0.8rem; }
+            
+            /* Estadísticas a una columna */
+            .server-stats { grid-template-columns: 1fr; gap: 15px;}
+            .stat-card[style] { grid-column: auto !important; } /* Arregla el botón de discord */
+            
+            /* Ajustar paddings de tarjetas para ganar espacio a los lados */
+            .rank-card { padding: 30px 20px; }
+            .modal-content { padding: 30px 20px; width: 95%; }
+            .sec-title { font-size: 1.6rem; margin-bottom: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🌟 VIDEO SOLO ARRIBA 🌟 -->
+    <div class="video-container">
+        <video autoplay loop muted playsinline id="bg-video">
+            <source src="background.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+    <div id="particles-js"></div>
+
+    <!-- NAVEGACIÓN -->
+    <header id="navbar">
+        <a href="#inicio" class="nav-logo">
+            <img src="logo.png" alt="Logo Urban Builders" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
+            <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#tienda" style="color: var(--c-archt);">Tienda</a></li>
+                <li><a href="#actualizaciones">Noticias</a></li>
+            </ul>
+        </nav>
+        <!-- BOTÓN COPIAR IP -->
+        <button id="ip-btn" class="btn-ip" onclick="copyServerIP()">
+            <span id="ip-text">Jugar Ahora</span>
+            <div class="ip-tooltip">mc.urbanbuilder.net</div>
+        </button>
+    </header>
+
+    <!-- 1. HERO -->
+    <section id="inicio" class="hero reveal active">
+        <div class="hero-content">
+            <h2 class="mc-font">FORJA TU<br><span>LEGADO AQUÍ</span></h2>
+            <p>Bienvenido al servidor más inmersivo. Construye, sobrevive y domina con nuestra comunidad. Sin lag, con eventos constantes y una economía dinámica lista para ser conquistada.</p>
+            
+            <!-- EL BOTÓN AGREGADO JUNTO AL DE VER RANGOS -->
+            <!-- CLASE "hero-buttons" AÑADIDA AQUI PARA CONTROLARLOS EN CELULAR -->
+            <div class="hero-buttons" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <a href="#tienda" class="btn-play-hero" style="font-size: 1.1rem; padding: 15px 35px;"><i class="fa-solid fa-cart-shopping"></i> Ver Rangos</a>
+                <a href="academia.html" class="btn-academy-hero" style="font-size: 1.1rem; padding: 15px 35px;"><i class="fa-solid fa-graduation-cap"></i> Academia</a>
+            </div>
+
+        </div>
+        
+        <div class="hero-image" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000">
+            <img src="logo.png" alt="Logo de Urban Builders" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
+        </div>
+    </section>
+
+    <!-- 2. SOBRE NOSOTROS -->
+    <section id="nosotros">
+        <div class="about-grid reveal">
+            <div class="about-text">
+                <h3 class="mc-font">SOBRE <span>NOSOTROS</span></h3>
+                <p>Urban Builders fue fundado con la visión de ofrecer una experiencia pura, equilibrada y centrada en la creatividad y supervivencia extrema de nuestros usuarios.</p>
+                <p>Contamos con servidores dedicados de última generación, sistemas antitrampas y un staff activo 24/7 para garantizar que tu única preocupación sea sobrevivir y prosperar.</p>
+            </div>
+            <div class="server-stats">
+                <div class="stat-card" data-tilt data-tilt-max="15">
+                    <i class="fa-solid fa-users"></i>
+                    <h4 id="server-players">...</h4>
+                    <p>Jugadores Online</p>
+                </div>
+                <div class="stat-card" data-tilt data-tilt-max="15">
+                    <i class="fa-solid fa-server"></i>
+                    <h4>99%</h4>
+                    <p>Uptime sin Lag</p>
+                </div>
+                <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="stat-card" style="grid-column: span 2; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; text-decoration: none; cursor: pointer;" data-tilt data-tilt-max="10">
+                    <i class="fa-brands fa-discord" style="color:#5865F2; font-size:2.5rem; margin:0; transform: translateZ(30px);"></i>
+                    <h4 id="discord-members" style="font-size:1.5rem; margin:0; transform: translateZ(20px);">Cargando...</h4>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. TIENDA -->
+    <section id="tienda" class="interactive-bg">
+        <div class="floating-shape shape-urban"></div>
+        <div class="floating-shape shape-urban-2"></div>
+        
+        <h3 class="sec-title mc-font reveal">NUESTRA <span>TIENDA</span></h3>
+        
+        <div class="ranks-grid">
+            <div class="rank-card rank-urban reveal" data-tilt data-tilt-max="15" data-tilt-speed="400">
+                <h4 class="rank-title mc-font" style="color: var(--c-urban);">URBAN</h4>
+                <img src="urban.png" alt="Logo Rango URBAN" class="rank-image" onerror="this.src='https://mc-heads.net/body/Steve/right';">
+                <ul class="features-list">
+                    <li><i class="fa-solid fa-check"></i> Rol exclusivo [URBAN]</li>
+                    <li><i class="fa-solid fa-check"></i> Acceso a Kit Base poderoso</li>
+                    <li><i class="fa-solid fa-check"></i> Hasta 3 Homes simultáneas</li>
+                    <li><i class="fa-solid fa-check"></i> Prioridad en la cola</li>
+                </ul>
+                <div class="price">$9.99</div>
+                <button class="btn-buy" onclick="abrirCarrito('RANGO URBAN', 9.99)">Adquirir Rango</button>
+            </div>
+
+            <div class="rank-card rank-upgrade reveal" style="transition-delay: 0.1s;" data-tilt data-tilt-max="15" data-tilt-speed="400">
+                <h4 class="rank-title mc-font" style="font-size: 0.85rem; letter-spacing: -1px;">MEJORAR RANGO</h4>
+                <img src="upgrade.png" alt="Logo Mejorar Rango" class="rank-image" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
+                <ul class="features-list">
+                    <li><i class="fa-solid fa-arrow-up"></i> De URBAN a ARCHT+</li>
+                    <li><i class="fa-solid fa-coins"></i> Paga solo la diferencia</li>
+                    <li><i class="fa-solid fa-bolt"></i> Beneficios instantáneos</li>
+                    <li><i class="fa-solid fa-shield"></i> Conserva tu progreso</li>
+                </ul>
+                <div class="price">$15.00</div>
+                <button class="btn-buy" onclick="alert('¡El sistema de Upgrade estará disponible muy pronto!')">Hacer Upgrade</button>
+            </div>
+
+            <div class="rank-card rank-archt reveal" style="transition-delay: 0.2s;" data-tilt data-tilt-max="20" data-tilt-speed="400">
+                <div style="position:absolute; top:-12px; background:var(--c-archt); color:#000; padding:4px 15px; font-family:'Press Start 2P', cursive; font-size:0.5rem; text-transform:uppercase; transform: translateZ(50px);">Rango Máximo</div>
+                <h4 class="rank-title mc-font" style="color: var(--c-archt);">ARCHT+</h4>
+                <img src="architect.png" alt="Logo Rango ARCHT+" class="rank-image" onerror="this.src='https://mc-heads.net/body/Alex/right';">
+                <ul class="features-list">
+                    <li><i class="fa-solid fa-crown"></i> Todo lo de URBAN incluido</li>
+                    <li><i class="fa-solid fa-crown"></i> Vuelo ilimitado (/fly)</li>
+                    <li><i class="fa-solid fa-crown"></i> Kit Constructor Definitivo</li>
+                    <li><i class="fa-solid fa-crown"></i> Extraer Spawners</li>
+                </ul>
+                <div class="price" style="color: var(--c-archt);">$20.00</div>
+                <button class="btn-buy" onclick="abrirCarrito('RANGO ARCHT+', 20.00)">Comprar Máximo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. ACTUALIZACIONES -->
+    <section id="actualizaciones" class="interactive-bg">
+        <div class="floating-shape shape-archt"></div>
+        <div class="floating-shape shape-archt-2"></div>
+        
+        <h3 class="sec-title mc-font reveal">ÚLTIMAS <span>NOTICIAS</span></h3>
+        <div class="updates-grid">
+            <div class="update-card reveal">
+                <span class="update-date"><i class="fa-solid fa-clock"></i> Reciente</span>
+                <h4>Wipe de Temporada</h4>
+                <p>Nuevos biomas, nueva economía y un mundo virgen para conquistar. ¡Reclama tu zona antes que los demás lo hagan!</p>
+            </div>
+            <div class="update-card reveal" style="border-color: var(--c-archt); transition-delay: 0.1s;">
+                <span class="update-date" style="color: var(--c-archt);"><i class="fa-solid fa-clock"></i> Ayer</span>
+                <h4>Actualización de Tienda</h4>
+                <p>Implementamos el nuevo sistema de "Upgrade". Ahora puedes mejorar tu rango actual pagando únicamente la diferencia.</p>
+            </div>
+            <div class="update-card reveal" style="transition-delay: 0.2s;">
+                <span class="update-date"><i class="fa-solid fa-clock"></i> Hace 1 semana</span>
+                <h4>Torneo PvP</h4>
+                <p>Felicidades al ganador del evento del fin de semana. ¡Afilen sus espadas, prepárense para el evento de facciones!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <h2 class="mc-font" style="font-size: 1.2rem;">URBAN BUILDERS</h2>
+        
+        <!-- REDES SOCIALES -->
+        <div class="social-container">
+            <a href="https://x.com/UrbanBuildersMC" target="_blank" class="social-icon" title="Síguenos en X">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+            <a href="https://www.tiktok.com/@urbanbuildersmc" target="_blank" class="social-icon" title="Síguenos en TikTok">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a href="https://www.youtube.com/@UrbanBuildersMC" target="_blank" class="social-icon" title="Suscríbete en YouTube">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+        </div>
+
+        <p>© 2026. Todos los derechos reservados. No estamos afiliados con Mojang AB.</p>
+    </footer>
+
+    <!-- 🟢 === HTML DEL MODAL DE PAGO === 🟢 -->
+    <div id="tebex-modal" class="modal-overlay">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark modal-close" onclick="cerrarCarrito()"></i>
+
+            <!-- PASO 1: Ingresar Usuario de Minecraft -->
+            <div id="estado-nick" class="modal-state active">
+                <h3 class="mc-font" style="font-size: 1.2rem; margin-bottom: 20px;">TU USUARIO</h3>
+                <div class="player-preview-container" id="skin-preview-box">
+                    <img id="live-skin-preview" src="https://mc-heads.net/avatar/Steve/100" alt="Skin">
+                </div>
+                <p style="color: #bbb; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">Ingresa tu nick exacto de Minecraft</p>
+                <input type="text" id="mc-username" class="mc-input" placeholder="Ej: Notch" autocomplete="off">
+                <button class="btn-modal" style="background: var(--c-urban);" onclick="procesarCarrito()">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <!-- PASO 2: Elegir método (PayPal o Tarjeta) -->
+            <div id="estado-pago" class="modal-state">
+                <h3 class="mc-font" style="font-size: 1.2rem; color: #fff; margin-bottom: 10px;">PAGO SEGURO</h3>
+                
+                <div style="margin-bottom: 15px; text-align: left; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; font-family: 'Montserrat', sans-serif;">
+                    <div style="font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        <span id="cart-paquete" class="mc-font" style="color:var(--c-urban); font-size: 0.9rem;">...</span>
+                        <span id="cart-precio" style="color: #55ff55; font-weight: bold;">...</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: #888;">
+                        Para el jugador: <strong id="cart-name" style="color: #fff;">...</strong>
+                    </div>
+                </div>
+
+                <!-- CONTENEDOR DE PAYPAL: Aquí aparecen los botones y la tarjeta -->
+                <div id="paypal-button-container" style="margin-top: 15px; min-height: 150px;"></div>
+            </div>
+
+            <!-- PASO 3: Mensaje de Éxito -->
+            <div id="estado-exito" class="modal-state">
+                <i class="fa-solid fa-circle-check" style="color: #55ff55; font-size: 4rem; margin-bottom: 15px;"></i>
+                <h3 class="mc-font" style="font-size: 1.2rem; color: #55ff55;">¡PAGO RECIBIDO!</h3>
+                <p style="color: #bbb; font-size: 0.95rem; margin-top: 15px; line-height: 1.5; font-family: 'Montserrat', sans-serif;">
+                    Pago procesado con éxito y de forma segura.<br>Tu rango será entregado en breve.
+                </p>
+                <button class="btn-modal" style="background: #fff; margin-top: 25px;" onclick="cerrarCarrito()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE LIBRERÍAS Y ANIMACIONES JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script>
+        function copyServerIP() {
+            const ip = "mc.urbanbuilder.net";
+            navigator.clipboard.writeText(ip).then(() => {
+                const btn = document.getElementById("ip-btn");
+                const txt = document.getElementById("ip-text");
+                btn.classList.add("copied");
+                txt.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiada!';
+                btn.style.background = "#55ff55";
+                btn.style.color = "#000";
+                setTimeout(() => {
+                    btn.classList.remove("copied");
+                    txt.innerText = "Jugar Ahora";
+                    btn.style.background = "var(--c-urban)";
+                }, 2500);
+            }).catch(err => {
+                alert("No se pudo copiar la IP. Manulamente es: mc.urbanbuilder.net");
+            });
+        }
+
+        const interactiveSections = document.querySelectorAll('.interactive-bg');
+        interactiveSections.forEach(section => {
+            section.addEventListener('mousemove', (e) => {
+                const rect = section.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                section.style.setProperty('--mouse-x', `${x}px`);
+                section.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        const particleContainer = document.getElementById('particles-js');
+        const colors = ['#00e5ff', '#ffaa00', '#ffffff']; 
+        for (let i = 0; i < 20; i++) { 
+            let p = document.createElement('div');
+            p.className = 'particle';
+            let size = Math.random() * 4 + 1;
+            p.style.width = size + 'px'; p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particleContainer.appendChild(p);
+        }
+
+        fetch('https://discord.com/api/v9/invites/kWhUjZK3an?with_counts=true')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.approximate_member_count) {
+                    document.getElementById('discord-members').innerText = `+${data.approximate_member_count.toLocaleString()} Miembros`;
+                } else { document.getElementById('discord-members').innerText = "Únete al Discord"; }
+            }).catch(() => document.getElementById('discord-members').innerText = "Únete al Discord");
+
+        fetch('https://api.mcsrvstat.us/2/mc.urbanbuilder.net')
+            .then(response => response.json())
+            .then(data => {
+                const playerCard = document.getElementById('server-players');
+                if (data.online) {
+                    playerCard.innerText = data.players.online;
+                    playerCard.style.color = "#55ff55"; 
+                } else {
+                    playerCard.innerText = "0"; 
+                    playerCard.style.color = "#ff5555"; 
+                }
+            })
+            .catch(() => document.getElementById('server-players').innerText = "Offline");
+
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
+        
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        const header = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(5,5,5,0.95)'; header.style.padding = '10px 5%';
+            } else {
+                header.style.background = 'transparent'; header.style.padding = '20px 5%';
+            }
+        }, { passive: true });
+
+        let paqueteActual = null;
+        let paypalRendered = false; 
+        let timerSkin;
+
+        document.getElementById('mc-username').addEventListener('input', (e) => {
+            clearTimeout(timerSkin);
+            const user = e.target.value.trim();
+            if (user.length >= 3) {
+                timerSkin = setTimeout(() => {
+                    document.getElementById('live-skin-preview').src = `https://mc-heads.net/avatar/${user}/100`;
+                }, 600); 
+            }
+        });
+
+        function abrirCarrito(nombre, precio) {
+            paqueteActual = { nombre: nombre, precio: precio };
+            document.getElementById('tebex-modal').classList.add('active');
+            document.querySelectorAll('.modal-state').forEach(el => el.classList.remove('active'));
+            document.getElementById('estado-nick').classList.add('active');
+            document.getElementById('mc-username').value = ""; 
+            document.getElementById('live-skin-preview').src = `https://mc-heads.net/avatar/Steve/100`; 
+        }
+
+        function cerrarCarrito() { 
+            document.getElementById('tebex-modal').classList.remove('active'); 
+            setTimeout(() => {
+                document.getElementById('paypal-button-container').innerHTML = '';
+                paypalRendered = false;
+            }, 300);
+        }
+
+        function procesarCarrito() {
+            const username = document.getElementById('mc-username').value.trim();
+            if (!username) return alert("Por favor, ingresa tu nombre de Minecraft.");
+            const tituloPaquete = document.getElementById('cart-paquete');
+            tituloPaquete.innerText = paqueteActual.nombre;
+            if(paqueteActual.nombre.includes('URBAN')) tituloPaquete.style.color = "var(--c-urban)";
+            if(paqueteActual.nombre.includes('ARCHT+')) tituloPaquete.style.color = "var(--c-archt)";
+            document.getElementById('cart-precio').innerText = "$" + paqueteActual.precio;
+            document.getElementById('cart-name').innerText = username;
+            document.querySelectorAll('.modal-state').forEach(el => el.classList.remove('active'));
+            document.getElementById('estado-pago').classList.add('active');
+
+            if (!paypalRendered) {
+                paypal.Buttons({
+                    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                description: `Rango: ${paqueteActual.nombre} | Usuario MC: ${username}`,
+                                amount: { currency_code: "USD", value: parseFloat(paqueteActual.precio).toFixed(2) }
+                            }],
+                            application_context: {
+                                shipping_preference: 'NO_SHIPPING'
+                            }
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            document.querySelectorAll('.modal-state').forEach(el => el.classList.remove('active'));
+                            document.getElementById('estado-exito').classList.add('active');
+                        });
+                    },
+                    onError: function(err) { console.error("Error en pago:", err); }
+                }).render('#paypal-button-container');
+                paypalRendered = true;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,843 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia | Urban Builders</title>
+    
+    <!-- 🌟 FAVICON (Icono de la pestaña) 🌟 -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --c-urban: #00e5ff; 
+            --c-archt: #ffaa00; 
+            --c-axiom: #b829ff; 
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --c-author: #00ffa6; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; color: #fff; overflow-x: hidden; background-color: #050505; }
+        
+        /* FUENTE MINECRAFT */
+        .mc-font { font-family: 'Press Start 2P', cursive; line-height: 1.4; }
+
+        /* FONDO PRINCIPAL */
+        .bg-image {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('fondoacademia.jpg') center/cover no-repeat;
+            z-index: -6; transform: scale(1.05); 
+        }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(to bottom, rgba(5,5,10,0.7) 0%, rgba(2,2,4,0.95) 100%); z-index: -5; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.5s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        #particles-js { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp infinite ease-in; opacity: 0; will-change: transform; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 20% { opacity: 0.6; transform: translateY(80vh) scale(1); } 80% { opacity: 0.2; } 100% { transform: translateY(-10vh) scale(0); opacity: 0; } }
+
+        /* HEADER */
+        header { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5,5,5,0.98); border-bottom: 1px solid var(--glass-border); z-index: 1000; }
+        .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.2s; }
+        .nav-logo:hover { transform: scale(1.05); }
+        .nav-logo img { height: 45px; filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4)); }
+        .nav-logo h1 { font-size: 1.1rem; color: #fff; text-shadow: 2px 2px 0 #000; letter-spacing: -1px; }
+        .nav-logo h1 span { color: var(--c-urban); }
+        .btn-back { background: transparent; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; font-size: 0.85rem; }
+        .btn-back:hover { background: #fff; color: #000; box-shadow: 0 0 15px rgba(255,255,255,0.6); }
+
+        /* HERO */
+        .hero-academia { padding: 180px 8% 100px 8%; text-align: left; max-width: 1100px; margin: 0 auto; position: relative; z-index: 10;}
+        .hero-academia h2 { font-size: 3rem; margin-bottom: 25px; text-shadow: 5px 5px 20px rgba(0,0,0,0.9); line-height: 1.3;}
+        .hero-academia h2 span { color: var(--c-urban); text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+        .hero-academia p { font-size: 1.2rem; color: #ddd; max-width: 700px; line-height: 1.6; margin-bottom: 40px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+        .hero-academia p span.terrenos { color: var(--c-archt); font-weight: bold;}
+        .hero-academia p span.estructuras { color: var(--c-urban); font-weight: bold;}
+        .hero-academia p span.tips { color: #55ff55; font-weight: bold;}
+        .btn-discord { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); color: #fff; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
+        .btn-discord:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); transform: translateY(-3px); }
+
+        /* BARRA FLOTANTE */
+        .info-bar-container { padding: 0 5%; position: relative; z-index: 15; margin-top: -50px; }
+        .info-bar { background: #0c0c11; border: 1px solid var(--glass-border); border-radius: 15px; display: grid; grid-template-columns: repeat(3, 1fr); padding: 30px; max-width: 1200px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .info-item { display: flex; gap: 20px; padding: 0 20px; transition: transform 0.2s; }
+        .info-item:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.05); }
+        .info-item:hover { transform: translateY(-3px); }
+        .info-item i { font-size: 2.2rem; color: #888; transition: color 0.3s ease; }
+        .info-item:hover i { color: var(--c-urban); }
+        .info-item h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; transition: color 0.2s; }
+        .info-item:hover h4 { color: var(--c-urban); }
+        .info-item p { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
+
+        /* CURSOS */
+        .cursos-section { padding: 80px 5% 40px 5%; text-align: center; position: relative; z-index: 10; }
+        .cursos-header h3 { font-size: 1.8rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .cursos-header h3 i { color: var(--c-urban); }
+        .cursos-header p { color: #aaa; font-size: 1.1rem; margin-bottom: 60px; }
+        .cursos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 1100px; margin: 0 auto 60px auto; perspective: 1000px; }
+        .curso-card { background: #0a0a0e; border: 1px solid var(--glass-border); border-radius: 15px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; transform-style: preserve-3d; position: relative; aspect-ratio: 16/10; }
+        .curso-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: opacity 0.3s, transform 0.4s; }
+        .curso-card:hover { border-color: var(--c-urban); transform: translateY(-10px) scale(1.02); }
+        .curso-card:hover img { opacity: 1; transform: scale(1.1); }
+        .curso-title { position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px 20px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); text-align: left; transform: translateZ(40px); }
+        .curso-title h4 { font-size: 1.4rem; font-weight: 900; color: #fff; text-shadow: 2px 2px 5px #000; }
+
+        .extra-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;}
+        .btn-extra { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff; padding: 15px 35px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
+        .btn-extra.axiom:hover { background: rgba(184, 41, 255, 0.15); border-color: var(--c-axiom); transform: translateY(-3px); }
+        .btn-extra.tips:hover { background: rgba(41, 128, 185, 0.15); border-color: #2980b9; transform: translateY(-3px); }
+
+        /* 🟢 === SECCIÓN PREGUNTAS FRECUENTES === 🟢 */
+        .faq-section { padding: 80px 5% 100px 5%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+        .faq-header { text-align: center; margin-bottom: 50px; }
+        .faq-header h3 { font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; color: #fff; text-shadow: 2px 2px 10px rgba(0, 255, 166, 0.3); }
+        .faq-header h3 i { color: var(--c-author); }
+        
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; align-items: start; }
+        
+        details.faq-card { background: rgba(10, 10, 14, 0.7); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        details.faq-card:hover { border-color: rgba(0, 255, 166, 0.4); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        details.faq-card[open] { border-color: var(--c-author); background: rgba(15, 15, 20, 0.95); }
+        
+        summary.faq-question { font-size: 1.05rem; font-weight: 700; color: #fff; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        summary.faq-question::-webkit-details-marker { display: none; }
+        summary.faq-question::after { content: '\f0d7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--c-author); transition: transform 0.3s; font-size: 1.2rem; }
+        details[open] summary.faq-question::after { transform: rotate(180deg); }
+        
+        .faq-answer { margin-top: 18px; color: #bbb; font-size: 0.95rem; line-height: 1.7; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .faq-answer a { display: inline-block; color: var(--c-author); text-decoration: none; word-break: break-all; transition: 0.2s; font-weight: 600; margin-top: 5px; }
+        .faq-answer a:hover { color: #fff; text-shadow: 0 0 10px var(--c-author); transform: translateX(5px); }
+        
+        .faq-video { width: 100%; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); outline: none; background: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        
+        .ip-box { display: inline-block; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); padding: 8px 15px; border-radius: 8px; color: #fff; font-family: monospace; font-size: 1.1rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);}
+
+        /* FOOTER PRINCIPAL */
+        .main-footer { text-align: center; padding: 30px; color: #666; border-top: 1px solid var(--glass-border); background: rgba(5,5,8,0.95); font-size: 0.9rem; position: relative; z-index: 10; }
+        .main-footer strong { color: var(--c-urban); }
+
+        /* 🟢 === MODAL FLUIDO (VIDEOS DE YOUTUBE) === 🟢 */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(5, 5, 8, 0.98); 
+            display: flex; justify-content: center; align-items: center; 
+            opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 9999; 
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-content { 
+            background: #111; border: 2px solid var(--c-urban); padding: 40px 30px; 
+            border-radius: 12px; width: 95%; max-width: 900px; position: relative; 
+            transform: scale(0.98) translateY(10px); transition: transform 0.2s ease;
+            max-height: 90vh; overflow-y: auto; overflow-x: hidden;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: #020202; border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--c-urban); border-radius: 10px; }
+        
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #666; cursor: pointer; transition: color 0.2s; z-index: 10;}
+        .modal-close:hover { color: #ff5555; }
+        
+        .modal-header { margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;}
+        .modal-header h3 { font-size: 1.6rem; margin-bottom: 5px; color: #fff; }
+        .modal-header p { color: var(--c-urban); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; }
+        
+        .glow-box { position: relative; margin: 15px 0 15px 0; border-radius: 10px; }
+        .glow-box::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--c-urban), var(--c-author), var(--c-axiom), var(--c-urban));
+            background-size: 200% 200%; z-index: -1; border-radius: 12px;
+            animation: bg-glow 3s linear infinite; opacity: 0.8;
+        }
+        @keyframes bg-glow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
+        .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden; cursor: pointer; }
+        .video-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .video-wrapper:hover img { transform: scale(1.03); filter: brightness(0.8); }
+        .yt-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 65px; height: 45px; background: rgba(255,0,0,0.9); border-radius: 10px; display: flex; justify-content: center; align-items: center; pointer-events: none; transition: background 0.2s; }
+        .yt-play-btn i { color: #fff; font-size: 20px; }
+        .video-wrapper:hover .yt-play-btn { background: #ff0000; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        .guide-block { margin-bottom: 40px; text-align: left; }
+        .guide-title { font-size: 1rem; color: #fff; margin-bottom: 12px; line-height: 1.5; }
+        .guide-author { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; font-weight: bold; font-family: 'Montserrat', sans-serif;}
+        .guide-author span { color: var(--c-author); }
+        .guide-desc { color: #bbb; line-height: 1.6; font-size: 0.95rem; margin-top: 15px; font-family: 'Montserrat', sans-serif;}
+        
+        .btn-exit-modal { display: block; width: 100%; padding: 15px; background: rgba(255, 85, 85, 0.1); border: 1px solid #ff5555; color: #ff5555; font-family: 'Press Start 2P', cursive; font-size: 0.8rem; text-align: center; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-top: 30px; text-transform: uppercase; }
+        .btn-exit-modal:hover { background: #ff5555; color: #000; }
+
+        @media (max-width: 950px) {
+            .hero-academia h2 { font-size: 2rem; }
+            .info-bar { grid-template-columns: 1fr; gap: 30px; }
+            .info-item:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; }
+        }
+
+        /* =========================================
+           🟠 ESTILOS AISLADOS: GUÍA DE COMANDOS 🟠
+           ========================================= */
+        #comandos-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #080c18; z-index: 10000; overflow-y: auto; overflow-x: hidden;
+            display: none; opacity: 0; transition: opacity 0.3s ease;
+            --bg:#080c18; --sidebar-bg:#0a1020; --border:#1b2a44; --card-bg:rgba(13,21,37,0.9);
+            --accent:#2980b9; --title:#5dade2; --code-color:#7ecb8e; --text:#c8d4e8; --muted:#8a9bb8;
+            color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6;
+        }
+        #comandos-overlay.active { display: block; opacity: 1; }
+        #comandos-overlay * { margin: 0; padding: 0; box-sizing: border-box; }
+        #comandos-overlay #urban-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        
+        #comandos-overlay .topbar { position: relative; z-index: 10; background: linear-gradient(135deg,#0a1020,#0d1830); border-bottom: 1px solid var(--border); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        #comandos-overlay .topbar h1 { color: var(--title); font-size: 1.4rem; font-weight: 700; font-family: 'Segoe UI', system-ui, sans-serif;}
+        #comandos-overlay .topbar .subtitle { color: var(--muted); font-size: 0.85rem; letter-spacing: 1px; }
+        
+        #comandos-overlay .btn-cerrar-cmd { background: rgba(255,85,85,0.1); color: #ff5555; border: 1px solid #ff5555; padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; font-size: 0.7rem; }
+        #comandos-overlay .btn-cerrar-cmd:hover { background: #ff5555; color: #000; }
+
+        #comandos-overlay .layout { position: relative; z-index: 5; display: flex; min-height: calc(100vh - 70px); align-items: flex-start;}
+        #comandos-overlay .sidebar { width: 240px; flex-shrink: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 20px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+        #comandos-overlay .sidebar::-webkit-scrollbar { width: 6px; }
+        #comandos-overlay .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        #comandos-overlay .sidebar a { display: block; color: var(--muted); text-decoration: none; padding: 10px 24px; font-size: 0.88rem; border-left: 3px solid transparent; transition: all 0.2s; }
+        #comandos-overlay .sidebar a:hover, #comandos-overlay .sidebar a.active { color: var(--title); border-left-color: var(--accent); background: rgba(41,128,185,0.08); }
+        #comandos-overlay .sidebar .side-title { color: var(--title); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 8px 24px; margin-top: 10px; opacity: 0.6; }
+        
+        #comandos-overlay .content { flex: 1; padding: 30px 40px; max-width: 1100px; }
+        #comandos-overlay .section { margin-bottom: 50px; scroll-margin-top: 20px; }
+        #comandos-overlay .section h2 { color: var(--title); font-size: 1.5rem; padding-bottom: 10px; margin-bottom: 24px; border-bottom: 2px solid var(--border); font-family: 'Segoe UI', system-ui, sans-serif;}
+        
+        #comandos-overlay .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 18px; transition: box-shadow 0.3s, border-color 0.3s; }
+        #comandos-overlay .card:hover { border-color: var(--accent); box-shadow: 0 0 18px rgba(41,128,185,0.25); }
+        #comandos-overlay .card h3 { color: var(--title); font-size: 1.1rem; margin-bottom: 12px; font-family: 'Segoe UI', system-ui, sans-serif;}
+        #comandos-overlay .card p { margin-bottom: 10px; color: var(--text); }
+        #comandos-overlay .card ul { margin: 8px 0 12px 20px; }
+        #comandos-overlay .card li { margin-bottom: 5px; }
+        
+        #comandos-overlay .cmd-block { background: #0a0f1a; border-left: 3px solid var(--accent); color: var(--code-color); padding: 12px 16px; border-radius: 6px; font-family: 'Consolas', monospace; white-space: pre-wrap; word-break: break-word; margin: 10px 0; font-size: 0.88rem; }
+        #comandos-overlay .cmd-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; font-style: italic; }
+        #comandos-overlay .link-list a { color: var(--accent); text-decoration: none; display: block; padding: 6px 0; border-bottom: 1px solid rgba(27,42,68,0.5); transition: color 0.2s; }
+        #comandos-overlay .link-list a:hover { color: var(--title); }
+        
+        #comandos-overlay .footer { position: relative; z-index: 5; text-align: center; padding: 30px; color: var(--muted); border-top: 1px solid var(--border); background: var(--sidebar-bg); font-size: 0.95rem; }
+        #comandos-overlay .footer strong { color: var(--title); }
+        #comandos-overlay .note { background: rgba(41,128,185,0.08); border: 1px solid rgba(41,128,185,0.2); border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.88rem; color: var(--muted); }
+        #comandos-overlay .note strong { color: var(--title); }
+
+        @media(max-width: 768px){
+            #comandos-overlay .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+            #comandos-overlay .layout { flex-direction: column; }
+            #comandos-overlay .content { padding: 20px; }
+            #comandos-overlay .topbar { padding: 14px 18px; }
+            #comandos-overlay .topbar h1 { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FONDO ACADEMIA PRINCIPAL -->
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
+    <div id="particles-js"></div>
+
+    <!-- EL HEADER YA FUE ACTUALIZADO AQUÍ ABAJO A index.html -->
+    <header>
+        <a href="index.html" class="nav-logo">
+            <img src="logo.png" alt="Logo" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
+            <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
+        </a>
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+    </header>
+
+    <section class="hero-academia reveal">
+        <h2 class="mc-font">APRENDE<br><span>CON NOSOTROS</span></h2>
+        <p>Descubre cómo crear <span class="terrenos">terrenos</span>, construir <span class="estructuras">estructuras</span> y aprende valiosos <span class="tips">tips</span> para llevar tus proyectos al siguiente nivel.</p>
+        <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="btn-discord">Obtén más ayuda en nuestro Discord <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+    </section>
+
+    <div class="info-bar-container reveal">
+        <div class="info-bar">
+            <div class="info-item"><i class="fa-solid fa-cube"></i><div><h4>Creación de terrenos</h4><p>Técnicas para diseñar y modelar terrenos realistas o creativos.</p></div></div>
+            <div class="info-item"><i class="fa-solid fa-building-columns"></i><div><h4>Construcción de estructuras</h4><p>Desde bases simples hasta edificaciones complejas.</p></div></div>
+            <div class="info-item"><i class="fa-solid fa-screwdriver-wrench"></i><div><h4>Herramientas y recursos</h4><p>Optimización de materiales, texturas y detalles.</p></div></div>
+        </div>
+    </div>
+
+    <section class="cursos-section">
+        <div class="cursos-header reveal">
+            <h3 class="mc-font"><i class="fa-solid fa-graduation-cap"></i> CURSOS</h3>
+            <p>Selecciona un módulo para visualizar su contenido</p>
+        </div>
+
+        <div class="cursos-grid">
+            <div class="curso-card reveal" data-tilt data-tilt-max="10" onclick="abrirVideo('terrenos')"><img src="terrenos.png" alt="Terrenos"><div class="curso-title"><h4>TERRENOS</h4></div></div>
+            <div class="curso-card reveal" data-tilt data-tilt-max="10" onclick="abrirVideo('estructuras')"><img src="estructuras.png" alt="Estructuras"><div class="curso-title"><h4>ESTRUCTURAS</h4></div></div>
+            <div class="curso-card reveal" data-tilt data-tilt-max="10" onclick="abrirVideo('texturas')"><img src="texturizacion.png" alt="Texturas"><div class="curso-title"><h4>TEXTURIZACIÓN</h4></div></div>
+        </div>
+
+        <div class="extra-buttons reveal">
+            <button class="btn-extra axiom" onclick="abrirVideo('axiom')"><i class="fa-solid fa-cube"></i> ¡Guía de Axiom!</button>
+            <button class="btn-extra tips" onclick="abrirComandos()"><i class="fa-solid fa-terminal"></i> ¡Conoce comandos y mucho mas!</button>
+        </div>
+    </section>
+
+    <!-- 🟢 === SECCIÓN PREGUNTAS FRECUENTES === 🟢 -->
+    <section class="faq-section reveal">
+        <div class="faq-header">
+            <h3 class="mc-font"><i class="fa-regular fa-circle-question"></i> MÁS PREGUNTAS</h3>
+        </div>
+
+        <div class="faq-grid">
+            <!-- P1: Rango Member -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Como me postulo para el rango Member?</summary>
+                <div class="faq-answer">
+                    Para postularte para el rango member necesitas tener un nivel medio/alto de construccion, ademas de contar con un portafolio donde muestres tus mejores construcciones.<br><br>
+                    Si cuentas con todo esto, entra al link de abajo que te llevara al canal de tickets en discord, dentro tendras que crear un ticket y especificar que te quieres postular para el rango member y seguido subir el link de tu portafolio.<br>
+                    <a href="https://discord.gg/UhtWrZN8eP" target="_blank"><i class="fa-brands fa-discord"></i> https://discord.gg/UhtWrZN8eP</a>
+                </div>
+            </details>
+
+            <!-- P2: Descargar Construcción -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Puedo descargar mi Construccion?</summary>
+                <div class="faq-answer">
+                    ¡Claro! Puedes descargar tu construccion en formato .schem. Mira el siguiente video donde te explicamos como hacerlo.<br>
+                    <video controls class="faq-video">
+                        <source src="schematicayuda.mp4" type="video/mp4">
+                        Tu navegador no soporta el formato de video.
+                    </video>
+                </div>
+            </details>
+
+            <!-- P3: Premium / No premium -->
+            <details class="faq-card">
+                <summary class="faq-question">¿El servidor es premium o no premium?</summary>
+                <div class="faq-answer">
+                    En el servidor puedes entrar siendo premium o no premium, cualquiera de los dos puede entrar. Asi que ven y entra, la ip es:<br>
+                    <div class="ip-box">mc.urbanbuilder.net</div>
+                </div>
+            </details>
+
+            <!-- P4: Unirse a la comunidad -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Como puedo Unirme a la Comunidad?</summary>
+                <div class="faq-answer">
+                    Nuestra comunidad esta principalmente situada en Discord, asi que si te quieres unir a nuestra comunidad entra al siguiente enlace y unete a nuestro servidor de discord.<br>
+                    <a href="https://discord.gg/YTTAsk9Xb3" target="_blank"><i class="fa-brands fa-discord"></i> https://discord.gg/YTTAsk9Xb3</a>
+                </div>
+            </details>
+
+            <!-- P5: Dónde entrar al servidor -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Dónde puedo entrar al servidor?</summary>
+                <div class="faq-answer">
+                    En el siguiente video podras ver como agregar el servidor de Minecraft:<br>
+                    <video controls class="faq-video">
+                        <source src="entrarservidor.mp4" type="video/mp4">
+                        Tu navegador no soporta el formato de video.
+                    </video>
+                </div>
+            </details>
+
+            <!-- P6: Requisitos -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Hay algún requisito para entrar?</summary>
+                <div class="faq-answer">
+                    ¡No! no pedimos ningun requisito para que seas parte de nuestra comunidad, solo esperamos que tengas ganas de construir 😉
+                </div>
+            </details>
+
+            <!-- P7: Versiones -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Qué versiones de Minecraft son compatibles?</summary>
+                <div class="faq-answer">
+                    En Urban Builders puedes entrar apartir de la 1.16 hasta la 1.21.5.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- 🟢 === FOOTER ACTUALIZADO A 2026 === 🟢 -->
+    <footer class="main-footer">
+        <p><strong>Urban Builders</strong> © 2026. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- MODAL VIDEOS YOUTUBE -->
+    <div id="video-modal" class="modal-overlay" onclick="verificarCierre(event)">
+        <div class="modal-content" id="modal-box">
+            <i class="fa-solid fa-xmark modal-close" onclick="cerrarVideo()"></i>
+            <div class="modal-header">
+                <h3 id="modal-titulo" class="mc-font">TÍTULO DEL CURSO</h3>
+                <p id="modal-subtitulo">Subtítulo</p>
+            </div>
+            <div id="modal-desc"></div>
+            <button class="btn-exit-modal" onclick="cerrarVideo()">Cerrar Módulo</button>
+        </div>
+    </div>
+
+    <!-- 🟢 === PANTALLA COMPLETA: GUÍA DE COMANDOS === 🟢 -->
+    <div id="comandos-overlay">
+        <canvas id="urban-particles"></canvas>
+        <div class="topbar">
+            <div>
+                <h1>UrbanBuilders — Academia de construccion con comandos</h1>
+                <div class="subtitle">WorldEdit · VoxelSniper · Arceon</div>
+            </div>
+            <button class="btn-cerrar-cmd mc-font" onclick="cerrarComandos()">
+                <i class="fa-solid fa-xmark"></i> Volver a la Academia
+            </button>
+        </div>
+
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="side-title">Contenido</div>
+                <a href="#sec1" class="active">1. Pintado de Terreno</a>
+                <a href="#sec2">2. Geometria y Formas</a>
+                <a href="#sec3">3. Brushes</a>
+                <a href="#sec4">4. Efectos Especiales</a>
+                <a href="#sec5">5. Terraformacion</a>
+                <a href="#sec6">6. Manipulacion de Bloques</a>
+                <a href="#sec7">7. Expresiones Avanzadas</a>
+                <a href="#sec8">8. World Edit with a Twist</a>
+                <a href="#sec9">9. Transformacion de Estructuras</a>
+                <a href="#sec10">10. Referencias</a>
+            </nav>
+
+            <main class="content">
+                <!-- SECCION 1 -->
+                <section class="section" id="sec1">
+                <h2>Seccion 1 — Pintado de Terreno</h2>
+                <div class="card">
+                    <h3>Reemplazos por profundidad</h3>
+                    <p>El comando <strong>//replace</strong> permite reemplazar bloques segun su profundidad relativa a la superficie.</p>
+                    <div class="cmd-label">Reemplazar bloques a 0 y 60 bloques de profundidad por piedra (42):</div>
+                    <div class="cmd-block">//replace /[0d][60d] 42</div>
+                    <div class="cmd-label">Reemplazar los primeros 5 bloques de profundidad por tierra:</div>
+                    <div class="cmd-block">//replace /[0d][5d] 3</div>
+                </div>
+                <div class="card">
+                    <h3>Reemplazos con angulos</h3>
+                    <div class="cmd-block">//replace /[0d][2d] 2<br>//gmask [0d][90d]<br>//replace 1 2</div>
+                </div>
+                <div class="card">
+                    <h3>Paletas de colores</h3>
+                    <div class="cmd-block">159:5,35:7,159:9,1,82</div>
+                    <p>Esto mezcla terracota blanca al 5%, concreto al 7%, etc.</p>
+                    <div class="cmd-block">//replace 1 159:5,35:7,159:9,1,82</div>
+                </div>
+                <div class="card">
+                    <h3>Simplex y electrico</h3>
+                    <div class="cmd-block">//replace 1 =simplex[scale=10,seed=42]2,3,1<br>//replace 1 =electric[pattern=1:0,scale=0.2]0</div>
+                </div>
+                <div class="card">
+                    <h3>Bosques y rocas con simplex</h3>
+                    <div class="cmd-block">//br sphere =simplex[scale=8]17,17:1,162 5<br>//gmask >1<br>//gmask [0d][3d]</div>
+                </div>
+                <div class="card">
+                    <h3>Capas: cesped, orillas y piedra</h3>
+                    <div class="cmd-block">//replace /[0d][1d] 2<br>//replace /[1d][3d] 12<br>//replace /[3d][60d] 1<br>//replace /[0d][0d][90a] 13</div>
+                </div>
+                <div class="card">
+                    <h3>Mesa Biome con comandos #mask</h3>
+                    <div class="cmd-block">//gmask #mask[0d][3d]<br>//replace 1 159:1,159:14,159:4,159:11,159:8<br>//replace /[3d][6d] 159:1,159:14<br>//replace /[6d][60d] 159:4,159:11</div>
+                </div>
+                <div class="card">
+                    <h3>Mascaras y secretos (gmask)</h3>
+                    <div class="cmd-block">//gmask >1<br>//gmask [0d][5d]<br>//gmask #existing<br>//gmask (clear)</div>
+                </div>
+                <div class="card">
+                    <h3>Picos y spikes</h3>
+                    <div class="cmd-block">/cs build spike s4 b87 l10</div>
+                </div>
+                <div class="card">
+                    <h3>Gradiente de colores</h3>
+                    <div class="cmd-block">//replace 1 =imgur[NeOUGcV][0,255]</div>
+                </div>
+                </section>
+
+                <!-- SECCION 2 -->
+                <section class="section" id="sec2">
+                <h2>Seccion 2 — Geometria y Formas</h2>
+                <div class="card">
+                    <h3>Esferas</h3>
+                    <div class="cmd-block">//sphere 1 10<br>//hsphere 1 10<br>//sphere 159:14,159:1,159:4 15</div>
+                </div>
+                <div class="card">
+                    <h3>Toroides y deformaciones</h3>
+                    <div class="cmd-block">//generate 1 (x^2+y^2+z^2+R^2-r^2)^2-4*R^2*(x^2+y^2) <= 0<br>//generate 159:11 (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0</div>
+                </div>
+                <div class="card">
+                    <h3>Anillos anidados</h3>
+                    <div class="cmd-block">//generate 95:0 (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0<br>//generate 95:14 (x^2+y^2+z^2+8^2-2.5^2)^2-4*8^2*(x^2+y^2) <= 0</div>
+                </div>
+                <div class="card">
+                    <h3>Variables: data=15, data=y+7</h3>
+                    <div class="cmd-block">//generate 95:data (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0<br>data=15<br>data=y+7</div>
+                </div>
+                <div class="card">
+                    <h3>Anillo torre</h3>
+                    <div class="cmd-block">//generate 95:data (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0<br>data=(y+7)%16<br>//stack 20</div>
+                </div>
+                <div class="card">
+                    <h3>Globo y huevo</h3>
+                    <div class="cmd-block">//generate 95:data (x^2+(y*1.3)^2+z^2-10^2) <= 0<br>data=(y+7)%16</div>
+                </div>
+                <div class="card">
+                    <h3>Conos y poligonos</h3>
+                    <div class="cmd-block">//generate 1 (sqrt(x^2+z^2)+y-10) <= 0<br>//generate 1 =polygon[n=6,r=10]0</div>
+                </div>
+                <div class="card">
+                    <h3>Cubo redondeado</h3>
+                    <div class="cmd-block">//generate 1 (max(abs(x),abs(y),abs(z))-8+0.3*min(abs(x),abs(y),abs(z))) <= 0</div>
+                </div>
+                <div class="card">
+                    <h3>Cebollas y hongos</h3>
+                    <div class="cmd-block">//generate 95:data (floor(sqrt(x^2+y^2+z^2))%2==0) && (sqrt(x^2+y^2+z^2) <= 10)<br>data=(y+7)%16</div>
+                </div>
+                </section>
+
+                <!-- SECCION 3 -->
+                <section class="section" id="sec3">
+                <h2>Seccion 3 — Brushes</h2>
+                <div class="card">
+                    <h3>Brocha de esfera</h3>
+                    <div class="cmd-block">//brush sphere 1 5<br>//brush sphere 159:14,159:1 3</div>
+                </div>
+                <div class="card">
+                    <h3>Brocha cilindrica y suavizado</h3>
+                    <div class="cmd-block">//brush cylinder 1 5 10<br>//brush smooth 5 3</div>
+                </div>
+                <div class="card">
+                    <h3>Brochas VoxelSniper</h3>
+                    <div class="cmd-block">/b bb 5<br>/b eb 159:14<br>/b blendball 5<br>/b splatter 159:1 5 3</div>
+                </div>
+                </section>
+
+                <!-- SECCION 4 -->
+                <section class="section" id="sec4">
+                <h2>Seccion 4 — Efectos Especiales</h2>
+                <div class="card">
+                    <h3>Arcoiris en X e Y</h3>
+                    <div class="cmd-block">//generate 95:data (sqrt(y^2+z^2) <= 5) && (abs(x) <= 50)<br>data=(x+8)%16</div>
+                </div>
+                <div class="card">
+                    <h3>Deformacion</h3>
+                    <div class="cmd-block">//deform =simplex[scale=0.05,seed=1]0,2<br>//deform x=x+simplex(x,z)*2</div>
+                </div>
+                <div class="card">
+                    <h3>Nieve y Trigo</h3>
+                    <div class="cmd-block">//gmask [0d][45d]<br>//replace 1,2,3 78<br>//brush scatter 59:7 50 3</div>
+                </div>
+                </section>
+
+                <!-- SECCION 5 -->
+                <section class="section" id="sec5">
+                <h2>Seccion 5 — Terraformacion</h2>
+                <div class="card">
+                    <h3>Elevar, hundir y suavizar</h3>
+                    <div class="cmd-block">//raise 5<br>//lower 3<br>//smooth 5 1,2,3</div>
+                </div>
+                <div class="card">
+                    <h3>Crear montañas</h3>
+                    <div class="cmd-block">//brush raise =simplex[scale=0.03,seed=42]0,8 15<br>//smooth 2<br>//replace /[0d][3d] 2</div>
+                </div>
+                <div class="card">
+                    <h3>Crear cuevas</h3>
+                    <div class="cmd-block">//gmask 1<br>//replace 1 =simplex[scale=0.08,seed=99]0,1<br>//replace 0 0</div>
+                </div>
+                </section>
+
+                <!-- SECCION 6 -->
+                <section class="section" id="sec6">
+                <h2>Seccion 6 — Manipulacion de Bloques</h2>
+                <div class="card">
+                    <h3>Operaciones Basicas</h3>
+                    <div class="cmd-block">//replace 1 2<br>//replace !air 0<br>//set 1<br>//copy<br>//paste -a</div>
+                </div>
+                <div class="card">
+                    <h3>Rotar, voltear y expandir</h3>
+                    <div class="cmd-block">//rotate 90<br>//flip up<br>//expand 10 up<br>//shift 10 up</div>
+                </div>
+                </section>
+
+                <!-- SECCION 7 -->
+                <section class="section" id="sec7">
+                <h2>Seccion 7 — Expresiones Avanzadas</h2>
+                <div class="card">
+                    <h3>Vidrio en aire (Estructuras huecas)</h3>
+                    <div class="cmd-block">//generate 20 query(x,y,z) == 0 && (query(x+1,y,z) != 0 || query(x-1,y,z) != 0 || query(x,y+1,z) != 0 || query(x,y-1,z) != 0 || query(x,y,z+1) != 0 || query(x,y,z-1) != 0)</div>
+                </div>
+                <div class="card">
+                    <h3>Pacas de heno y Pilares</h3>
+                    <div class="cmd-block">//generate 170:data (sqrt(x^2+y^2+z^2) <= 8)<br>data=type==0?0:(type==1?8:4)</div>
+                </div>
+                <div class="card">
+                    <h3>Variables utiles</h3>
+                    <div class="cmd-block">x, y, z        - coordenadas del bloque<br>data           - subtipo del bloque<br>query(x,y,z)   - consulta bloque relativo<br>rand(min,max)  - aleatorio</div>
+                </div>
+                </section>
+
+                <!-- SECCION 8 -->
+                <section class="section" id="sec8">
+                <h2>Seccion 8 — World Edit with a Twist</h2>
+                <div class="card">
+                    <h3>Toroide retorcido e inclinado</h3>
+                    <div class="cmd-block">//generate 95:data
+let(
+  twist, y*0.15,
+  nx, x*cos(twist)-z*sin(twist),
+  nz, x*sin(twist)+z*cos(twist),
+  tilt, 0.5,
+  ry, nx*sin(tilt)+y*cos(tilt)
+)
+(nx^2+ry^2+nz^2+8^2-3^2)^2-4*8^2*(nx^2+ry^2) <= 0
+data=(floor(y)+8)%16</div>
+                </div>
+                </section>
+
+                <!-- SECCION 9 -->
+                <section class="section" id="sec9">
+                <h2>Seccion 9 — Transformacion de Estructuras</h2>
+                <div class="card">
+                    <h3>Paisaje Nether</h3>
+                    <div class="cmd-block">//replace 2 88<br>//replace 3 87<br>//replace 12 13<br>//replace 8 10<br>//replace 87 =simplex[scale=0.1]87,0</div>
+                </div>
+                <div class="card">
+                    <h3>Castillo Version End</h3>
+                    <div class="cmd-block">//replace 98 121<br>//replace 4 49<br>//replace 5 49<br>//replace 89 120<br>//replace 121 =simplex[scale=0.08]121,0</div>
+                </div>
+                </section>
+
+                <!-- SECCION 10 -->
+                <section class="section" id="sec10">
+                <h2>Seccion 10 — Referencias</h2>
+                <div class="card">
+                    <h3>Enlaces útiles</h3>
+                    <div class="link-list">
+                        <a href="https://worldedit.enginehub.org/en/latest/" target="_blank">WorldEdit — Documentación</a>
+                        <a href="https://www.desmos.com/" target="_blank">Desmos — Gráficas 3D</a>
+                        <a href="https://blockpalette.net/" target="_blank">BlockPalette — Mezclador de colores</a>
+                    </div>
+                </div>
+                </section>
+            </main>
+        </div>
+        <footer class="footer">
+            <strong>UrbanBuilders</strong> — Construye sin limites
+        </footer>
+    </div>
+
+    <!-- LIBRERÍAS Y SCRIPTS DE LA ACADEMIA -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script>
+        // ANIMACIONES GENERALES
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
+
+        // PARTICULAS DEL FONDO PRINCIPAL
+        const particleContainer = document.getElementById('particles-js');
+        const colors = ['#00e5ff', '#ffaa00', '#ffffff', '#b829ff']; 
+        for (let i = 0; i < 20; i++) { 
+            let p = document.createElement('div'); p.className = 'particle';
+            let size = Math.random() * 4 + 2; p.style.width = size + 'px'; p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw'; p.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            p.style.animationDelay = Math.random() * 3 + 's';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particleContainer.appendChild(p);
+        }
+
+        function crearVideoGlow(videoID) {
+            return `
+                <div class="glow-box">
+                    <div class="video-wrapper" onclick="reproducirYoutube(this, '${videoID}')">
+                        <img src="https://i.ytimg.com/vi/${videoID}/maxresdefault.jpg" alt="Miniatura YouTube">
+                        <div class="yt-play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 🌟 CURSOS DE YOUTUBE 🌟
+        const cursos = {
+            'terrenos': {
+                titulo: "GUÍAS DE TERRENOS", sub: "Aprende con nuestros constructores", color: "var(--c-urban)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Primer Guia: Arceon</h3>
+                        <p class="guide-author">Por: <span>zKMilo_A</span></p>
+                        ${crearVideoGlow('KsJdJ9UaqQw')}
+                        <p class="guide-desc">En este video podras aprender a crear formas con el pincel boulder del plugin arceon, con las que podras crear terrenos increibles</p>
+                    </div>
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Segunda Guia: estructura del terreno</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('btkHhv9DP6I')}
+                        <p class="guide-desc">¿Quieres aprender a crear terrenos realistas y bien detallados en Minecraft? Esta guía te muestra paso a paso cómo planear, formar, pintar y detallar tu terreno para que se vea natural y único. Ideal para mejorar tus construcciones desde la base. ¡Empecemos desde el suelo!</p>
+                    </div>
+                `
+            },
+            'estructuras': {
+                titulo: "ESTRUCTURAS", sub: "Diseño, Volumetría y Profundidad", color: "var(--c-urban)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Primer Guia: Casas</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('v4R2D1VEpFs')}
+                        <p class="guide-desc">En este video podras ver cada uno de los pasos mas importantes a la hora de elaborar una casa, desde el planeo, forma, entornos y el pintado</p>
+                    </div>
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Segunda Guia: Arboles</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('9UcVM80CoX4')}
+                        <p class="guide-desc">¿Quieres llevar tus construcciones en Minecraft al siguiente nivel? En esta guía aprenderás paso a paso cómo crear árboles personalizados que harán que tu mundo se vea increíble. Desde elegir la referencia, hasta dar forma a las ramas, colocar hojas y añadir pequeños detalles decorativos. ¡Vamos a construir juntos!</p>
+                    </div>
+                `
+            },
+            'texturas': {
+                titulo: "TEXTURIZACIÓN", sub: "Block Blending y Teoría del Color", color: "var(--c-urban)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Primer Guia: Pintado</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('5mQx-P3WyTk')}
+                        <p class="guide-desc">¿Tu construcción se ve bien pero sientes que le falta vida? Este video te enseña cómo pintar y texturizar en Minecraft para que tus creaciones se vean mucho más detalladas y realistas. Desde las bases del color hasta técnicas avanzadas y un ejemplo práctico. ¡Vamos a darle color a tus ideas!</p>
+                    </div>
+                `
+            },
+            'axiom': {
+                titulo: "GUÍA DE AXIOM", sub: "Herramientas de Construcción Avanzada", color: "var(--c-axiom)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Guia Basica: Axiom</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('0ylkLvh4bsI')}
+                        <p class="guide-desc">Aprende a dominar el mod Axiom paso a paso. Descubre cómo utilizar sus increíbles herramientas de construcción, pinceles y menús para crear estructuras y terrenos a una velocidad inimaginable en Minecraft.</p>
+                    </div>
+                `
+            }
+        };
+
+        // LÓGICA DE MODALES DE VIDEO
+        const modal = document.getElementById('video-modal');
+        const modalContent = document.getElementById('modal-box');
+        
+        function abrirVideo(cursoId) {
+            const data = cursos[cursoId];
+            if(!data) return;
+            modalContent.scrollTop = 0;
+            document.getElementById('modal-titulo').innerText = data.titulo;
+            document.getElementById('modal-subtitulo').innerText = data.sub;
+            document.getElementById('modal-desc').innerHTML = data.html;
+            document.getElementById('modal-subtitulo').style.color = data.color;
+            modalContent.style.borderColor = data.color;
+            modal.classList.add('active');
+        }
+
+        function reproducirYoutube(elemento, videoID) {
+            elemento.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoID}?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+            elemento.onclick = null;
+        }
+
+        function cerrarVideo() {
+            modal.classList.remove('active');
+            setTimeout(() => { document.getElementById('modal-desc').innerHTML = ""; }, 200); 
+        }
+        function verificarCierre(e) { if(e.target === modal) cerrarVideo(); }
+
+
+        // 🟢 === LÓGICA DEL MODAL DE COMANDOS === 🟢
+        const comandosOverlay = document.getElementById('comandos-overlay');
+        
+        function abrirComandos() {
+            comandosOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function cerrarComandos() {
+            comandosOverlay.classList.remove('active');
+            document.body.style.overflow = ''; 
+        }
+
+        var links = document.querySelectorAll('#comandos-overlay .sidebar a');
+        links.forEach(function(link){
+            link.addEventListener('click', function(e){
+                links.forEach(function(l){ l.classList.remove('active'); });
+                link.classList.add('active');
+            });
+        });
+
+        // 🟢 === EFECTO PARTICULAS DEL MODAL COMANDOS === 🟢
+        (function(){
+            var canvas = document.getElementById('urban-particles');
+            var ctx = canvas.getContext('2d');
+            var particles = [];
+            var particleCount = 60;
+
+            function resize(){
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function createParticle(){
+                return {
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+                    size: Math.random() * 2 + 0.5, opacity: Math.random() * 0.4 + 0.1
+                };
+            }
+
+            for(var i = 0; i < particleCount; i++){ particles.push(createParticle()); }
+
+            function animate(){
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if(comandosOverlay.classList.contains('active')) {
+                    for(var i = 0; i < particles.length; i++){
+                        var p = particles[i];
+                        p.x += p.vx; p.y += p.vy;
+                        if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
+                        if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(41, 128, 185, ' + p.opacity + ')';
+                        ctx.fill();
+
+                        for(var j = i + 1; j < particles.length; j++){
+                            var p2 = particles[j];
+                            var dx = p.x - p2.x; var dy = p.y - p2.y;
+                            var dist = Math.sqrt(dx * dx + dy * dy);
+                            if(dist < 120){
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.strokeStyle = 'rgba(41, 128, 185, ' + (0.08 * (1 - dist / 120)) + ')';
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+    </script>
+</body>
+</html>
