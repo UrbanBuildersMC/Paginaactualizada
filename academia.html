@@ -52,19 +52,85 @@
         .btn-back { background: transparent; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; font-size: 0.85rem; }
         .btn-back:hover { background: #fff; color: #000; box-shadow: 0 0 15px rgba(255,255,255,0.6); }
 
-        /* HERO */
-        .hero-academia { padding: 180px 8% 100px 8%; text-align: left; max-width: 1100px; margin: 0 auto; position: relative; z-index: 10;}
-        .hero-academia h2 { font-size: 3rem; margin-bottom: 25px; text-shadow: 5px 5px 20px rgba(0,0,0,0.9); line-height: 1.3;}
-        .hero-academia h2 span { color: var(--c-urban); text-shadow: 0 0 20px rgba(0,229,255,0.4); }
-        .hero-academia p { font-size: 1.2rem; color: #ddd; max-width: 700px; line-height: 1.6; margin-bottom: 40px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
-        .hero-academia p span.terrenos { color: var(--c-archt); font-weight: bold;}
-        .hero-academia p span.estructuras { color: var(--c-urban); font-weight: bold;}
-        .hero-academia p span.tips { color: #55ff55; font-weight: bold;}
+        /* HERO ZONE */
+        .hero-academia { 
+            padding: 180px 5% 100px 5%; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            position: relative; 
+            z-index: 10;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 40px;
+        }
+        .hero-content-left {
+            text-align: left;
+            flex: 1;
+        }
+        .hero-content-left h2 { font-size: 3rem; margin-bottom: 25px; text-shadow: 5px 5px 20px rgba(0,0,0,0.9); line-height: 1.3;}
+        .hero-content-left h2 span { color: var(--c-urban); text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+        .hero-content-left p { font-size: 1.2rem; color: #ddd; max-width: 650px; line-height: 1.6; margin-bottom: 40px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+        .hero-content-left p span.terrenos { color: var(--c-archt); font-weight: bold;}
+        .hero-content-left p span.estructuras { color: var(--c-urban); font-weight: bold;}
+        .hero-content-left p span.tips { color: #55ff55; font-weight: bold;}
         .btn-discord { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); color: #fff; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
         .btn-discord:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); transform: translateY(-3px); }
 
+        /* 💎 FORMULARIO DE POSTULACIÓN AÚN MÁS COMPACTO 💎 */
+        .form-postulacion {
+            flex: 0 1 310px; /* Reducido de 380px a 310px */
+            background: rgba(10, 10, 15, 0.7);
+            border: 2px solid var(--c-urban);
+            border-radius: 12px;
+            padding: 15px 20px; /* Padding interno reducido */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: all 0.4s ease;
+        }
+        .form-postulacion:hover {
+            transform: perspective(1000px) rotateY(0deg) translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 229, 255, 0.2);
+            border-color: var(--c-author);
+        }
+        .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); } /* Título más pequeño */
+        .form-postulacion h3 i { color: var(--c-archt); }
+        .form-subtitle { text-align: center; color: var(--c-urban); font-size: 0.7rem; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
+        
+        .input-group { margin-bottom: 10px; position: relative;} /* Menos espacio entre inputs */
+        .input-group label { display: block; font-size: 0.7rem; color: #ddd; margin-bottom: 4px; font-weight: 600; } /* Textos descriptivos más pequeños */
+        .input-group input, .input-group textarea {
+            width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 8px; border-radius: 6px; color: #fff; font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s; font-size: 0.75rem; /* Cajas de texto más compactas */
+        }
+        .input-group textarea { height: 50px; resize: none; } /* Altura fija reducida */
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--c-urban); box-shadow: 0 0 15px rgba(0,229,255,0.3); background: rgba(0, 0, 0, 0.8); }
+        
+        /* Tooltip del portafolio */
+        .tooltip-icon { color: var(--c-archt); margin-left: 5px; cursor: help; position: relative; font-size: 0.85rem;}
+        .tooltip-text {
+            visibility: hidden; width: 220px; background: rgba(5, 5, 8, 0.95); color: #fff; text-align: center;
+            border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 140%; left: 50%;
+            margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem; font-weight: 500; border: 1px solid var(--c-archt); line-height: 1.5; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--c-archt) transparent transparent transparent; }
+        .tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+        /* Caja de reglas */
+        .rules-box { background: rgba(255, 170, 0, 0.05); border-left: 3px solid var(--c-archt); padding: 10px; margin-bottom: 12px; border-radius: 4px; }
+        .rules-box h4 { color: var(--c-archt); font-size: 0.7rem; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;}
+        .rules-box ul { padding-left: 15px; color: #bbb; margin-bottom: 6px; font-size: 0.65rem; line-height: 1.4; } /* Letra más pequeña */
+        .checkbox-container { display: flex; align-items: center; cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 600; user-select: none; }
+        .checkbox-container input { margin-right: 6px; accent-color: var(--c-author); width: 12px; height: 12px; cursor: pointer; }
+
+        .btn-submit { width: 100%; background: rgba(0, 229, 255, 0.15); border: 1px solid var(--c-urban); padding: 10px; color: #fff; font-size: 0.65rem; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; font-family: 'Press Start 2P', cursive; }
+        .btn-submit:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); }
+
         /* BARRA FLOTANTE */
-        .info-bar-container { padding: 0 5%; position: relative; z-index: 15; margin-top: -50px; }
+        .info-bar-container { padding: 0 5%; position: relative; z-index: 15; margin-top: -30px; }
         .info-bar { background: #0c0c11; border: 1px solid var(--glass-border); border-radius: 15px; display: grid; grid-template-columns: repeat(3, 1fr); padding: 30px; max-width: 1200px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
         .info-item { display: flex; gap: 20px; padding: 0 20px; transition: transform 0.2s; }
         .info-item:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.05); }
@@ -178,7 +244,13 @@
         .btn-exit-modal:hover { background: #ff5555; color: #000; }
 
         @media (max-width: 950px) {
-            .hero-academia h2 { font-size: 2rem; }
+            .hero-academia { flex-direction: column; text-align: center; }
+            .hero-content-left { text-align: center; }
+            .hero-content-left p { margin: 0 auto 30px auto; }
+            .hero-content-left h2 { font-size: 2rem; }
+            .form-postulacion { width: 100%; max-width: 400px; transform: none; } /* En móviles también se limita el ancho a 400px */
+            .form-postulacion:hover { transform: translateY(-5px); }
+            
             .info-bar { grid-template-columns: 1fr; gap: 30px; }
             .info-item:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; }
         }
@@ -250,7 +322,6 @@
     <div class="bg-overlay"></div>
     <div id="particles-js"></div>
 
-    <!-- EL HEADER YA FUE ACTUALIZADO AQUÍ ABAJO A index.html -->
     <header>
         <a href="index.html" class="nav-logo">
             <img src="logo.png" alt="Logo" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
@@ -260,9 +331,60 @@
     </header>
 
     <section class="hero-academia reveal">
-        <h2 class="mc-font">APRENDE<br><span>CON NOSOTROS</span></h2>
-        <p>Descubre cómo crear <span class="terrenos">terrenos</span>, construir <span class="estructuras">estructuras</span> y aprende valiosos <span class="tips">tips</span> para llevar tus proyectos al siguiente nivel.</p>
-        <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="btn-discord">Obtén más ayuda en nuestro Discord <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        <!-- TEXTO ORIGINAL A LA IZQUIERDA -->
+        <div class="hero-content-left">
+            <h2 class="mc-font">APRENDE<br><span>CON NOSOTROS</span></h2>
+            <p>Descubre cómo crear <span class="terrenos">terrenos</span>, construir <span class="estructuras">estructuras</span> y aprende valiosos <span class="tips">tips</span> para llevar tus proyectos al siguiente nivel.</p>
+            <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="btn-discord">Obtén más ayuda en nuestro Discord <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+
+        <!-- NUEVO FORMULARIO FUNCIONAL A LA DERECHA -->
+        <div class="form-postulacion">
+            <h3 class="mc-font"><i class="fa-solid fa-gem"></i> RANGO MEMBER</h3>
+            <p class="form-subtitle">¡Postúlate Ahora!</p>
+            
+            <!-- Integración FormSubmit -->
+            <form action="https://formsubmit.co/andresler12345@gmail.com" method="POST">
+                <!-- Configuraciones ocultas del envío -->
+                <input type="hidden" name="_subject" value="¡Nueva Postulación para Rango Member!">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="box">
+
+                <div class="input-group">
+                    <label>Nombre en el juego (IGN)</label>
+                    <input type="text" name="IGN" required placeholder="Ej: Notch_Builder">
+                </div>
+
+                <div class="input-group">
+                    <label>¿Por qué quieres el rango?</label>
+                    <textarea name="Motivo" required placeholder="Cuéntanos tus razones..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Link de tu Portafolio 
+                        <i class="fa-solid fa-circle-info tooltip-icon">
+                            <span class="tooltip-text">Un portafolio es un álbum web (Imgur, Drive, Behance) donde muestras fotos de tus mejores construcciones para evaluar tu nivel y talento.</span>
+                        </i>
+                    </label>
+                    <input type="url" name="Portafolio" required placeholder="https://imgur.com/tu-album">
+                </div>
+
+                <div class="rules-box">
+                    <h4>Reglas obligatorias:</h4>
+                    <ul>
+                        <li>No abusar de comandos como WorldEdit o VoxelSniper.</li>
+                        <li>Respetar estrictamente las parcelas y construcciones ajenas.</li>
+                        <li>Mantener actividad y ayudar a la comunidad.</li>
+                    </ul>
+                    <label class="checkbox-container">
+                        <input type="checkbox" required name="Acepta_Reglas" value="Sí">
+                        Acepto las reglas del rango
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit mc-font">Enviar Postulación <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
     </section>
 
     <div class="info-bar-container reveal">
