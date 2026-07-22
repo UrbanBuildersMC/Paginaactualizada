@@ -248,7 +248,7 @@
             .hero-content-left { text-align: center; }
             .hero-content-left p { margin: 0 auto 30px auto; }
             .hero-content-left h2 { font-size: 2rem; }
-            .form-postulacion { width: 100%; max-width: 400px; transform: none; } /* En móviles también se limita el ancho a 400px */
+            .form-postulacion { width: 100%; max-width: 400px; transform: none; }
             .form-postulacion:hover { transform: translateY(-5px); }
             
             .info-bar { grid-template-columns: 1fr; gap: 30px; }
@@ -338,29 +338,21 @@
             <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="btn-discord">Obtén más ayuda en nuestro Discord <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         </div>
 
-        <!-- NUEVO FORMULARIO FUNCIONAL A LA DERECHA -->
+        <!-- ⬇️ NUEVO FORMULARIO CONECTADO A DISCORD ⬇️ -->
         <div class="form-postulacion">
             <h3 class="mc-font"><i class="fa-solid fa-gem"></i> RANGO MEMBER</h3>
             <p class="form-subtitle">¡Postúlate Ahora!</p>
             
-            <!-- Integración FormSubmit -->
-            <form action="https://formsubmit.co/andresler12345@gmail.com" method="POST">
-                <!-- Configuraciones ocultas del envío -->
-                <input type="hidden" name="_subject" value="¡Nueva Postulación para Rango Member!">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="box">
-
+            <form id="formulario-member">
                 <div class="input-group">
                     <label>Nombre en el juego (IGN)</label>
                     <input type="text" name="IGN" required placeholder="Ej: Notch_Builder">
                 </div>
 
-                <!-- ⬇️ NUEVO CAMPO DE CORREO ELECTRÓNICO ⬇️ -->
                 <div class="input-group">
                     <label>Correo Electrónico</label>
                     <input type="email" name="Correo" required placeholder="ejemplo@correo.com">
                 </div>
-                <!-- ⬆️ FIN NUEVO CAMPO ⬆️ -->
 
                 <div class="input-group">
                     <label>¿Por qué quieres el rango?</label>
@@ -392,6 +384,7 @@
                 <button type="submit" class="btn-submit mc-font">Enviar Postulación <i class="fa-solid fa-paper-plane"></i></button>
             </form>
         </div>
+        <!-- ⬆️ FIN DEL NUEVO FORMULARIO ⬆️ -->
     </section>
 
     <div class="info-bar-container reveal">
@@ -967,6 +960,65 @@ data=(floor(y)+8)%16</div>
             }
             animate();
         })();
+
+        // 🟢 === NUEVO: ENVÍO AL WEBHOOK DE DISCORD === 🟢
+        document.getElementById('formulario-member').addEventListener('submit', function(e) {
+            e.preventDefault(); // Evita que la página se recargue
+
+            const webhookUrl = 'https://discord.com/api/webhooks/1529543317635727503/ks9iL--8BgbHEl-o4qv2hoyzAnnVY_IK8xYqz6rLRN8mExj9VC41gTNtydfqqRvhA8zl';
+
+            // Capturar datos del formulario
+            const ign = document.querySelector('input[name="IGN"]').value;
+            const correo = document.querySelector('input[name="Correo"]').value;
+            const motivo = document.querySelector('textarea[name="Motivo"]').value;
+            const portafolio = document.querySelector('input[name="Portafolio"]').value;
+
+            // Formato de "Embed" para que se vea bonito en Discord
+            const mensaje = {
+                username: "Sistema de Postulaciones", 
+                avatar_url: "https://i.ibb.co/Dfg78xpb/logo.png", 
+                embeds: [
+                    {
+                        title: "📝 ¡Nueva Postulación para Member!",
+                        color: 58879, // Color Cyan
+                        fields: [
+                            { name: "🎮 IGN", value: ign, inline: true },
+                            { name: "📧 Correo", value: correo, inline: true },
+                            { name: "💡 Motivo", value: motivo },
+                            { name: "📁 Portafolio", value: portafolio }
+                        ],
+                        footer: { text: "Urban Builders Academy" },
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            };
+
+            const btnSubmit = document.querySelector('.btn-submit');
+            const textoOriginal = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = "Enviando... <i class='fa-solid fa-spinner fa-spin'></i>";
+
+            // Petición de envío a Discord
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(mensaje)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('¡Postulación enviada con éxito a nuestro Discord!');
+                    document.getElementById('formulario-member').reset(); // Limpia el formulario
+                } else {
+                    alert('Hubo un error al enviar. Inténtalo más tarde.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error de conexión.');
+            })
+            .finally(() => {
+                btnSubmit.innerHTML = textoOriginal; // Regresa el botón a la normalidad
+            });
+        });
     </script>
 </body>
 </html>
