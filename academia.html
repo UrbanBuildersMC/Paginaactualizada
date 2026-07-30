@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script>
-    // Cambia la URL visualmente a /academia sin recargar la página
-    if (window.location.pathname.endsWith('academia.html')) {
-        window.history.replaceState({}, document.title, "/academia");
-    }
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia | Urban Builders</title>
@@ -85,11 +79,11 @@
 
         /* 💎 FORMULARIO DE POSTULACIÓN AÚN MÁS COMPACTO 💎 */
         .form-postulacion {
-            flex: 0 1 310px; /* Reducido de 380px a 310px */
+            flex: 0 1 310px;
             background: rgba(10, 10, 15, 0.7);
             border: 2px solid var(--c-urban);
             border-radius: 12px;
-            padding: 15px 20px; /* Padding interno reducido */
+            padding: 15px 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.05);
             backdrop-filter: blur(10px);
             transform: perspective(1000px) rotateY(-5deg);
@@ -100,18 +94,18 @@
             box-shadow: 0 15px 50px rgba(0, 229, 255, 0.2);
             border-color: var(--c-author);
         }
-        .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); } /* Título más pequeño */
+        .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
         .form-postulacion h3 i { color: var(--c-archt); }
         .form-subtitle { text-align: center; color: var(--c-urban); font-size: 0.7rem; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
         
-        .input-group { margin-bottom: 10px; position: relative;} /* Menos espacio entre inputs */
-        .input-group label { display: block; font-size: 0.7rem; color: #ddd; margin-bottom: 4px; font-weight: 600; } /* Textos descriptivos más pequeños */
+        .input-group { margin-bottom: 10px; position: relative;}
+        .input-group label { display: block; font-size: 0.7rem; color: #ddd; margin-bottom: 4px; font-weight: 600; }
         .input-group input, .input-group textarea {
             width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.2);
             padding: 6px 8px; border-radius: 6px; color: #fff; font-family: 'Montserrat', sans-serif;
-            transition: all 0.3s; font-size: 0.75rem; /* Cajas de texto más compactas */
+            transition: all 0.3s; font-size: 0.75rem;
         }
-        .input-group textarea { height: 50px; resize: none; } /* Altura fija reducida */
+        .input-group textarea { height: 50px; resize: none; }
         .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--c-urban); box-shadow: 0 0 15px rgba(0,229,255,0.3); background: rgba(0, 0, 0, 0.8); }
         
         /* Tooltip del portafolio */
@@ -128,7 +122,7 @@
         /* Caja de reglas */
         .rules-box { background: rgba(255, 170, 0, 0.05); border-left: 3px solid var(--c-archt); padding: 10px; margin-bottom: 12px; border-radius: 4px; }
         .rules-box h4 { color: var(--c-archt); font-size: 0.7rem; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;}
-        .rules-box ul { padding-left: 15px; color: #bbb; margin-bottom: 6px; font-size: 0.65rem; line-height: 1.4; } /* Letra más pequeña */
+        .rules-box ul { padding-left: 15px; color: #bbb; margin-bottom: 6px; font-size: 0.65rem; line-height: 1.4; }
         .checkbox-container { display: flex; align-items: center; cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 600; user-select: none; }
         .checkbox-container input { margin-right: 6px; accent-color: var(--c-author); width: 12px; height: 12px; cursor: pointer; }
 
@@ -329,11 +323,11 @@
     <div id="particles-js"></div>
 
     <header>
-        <a href="index.html" class="nav-logo">
+        <a href="/" class="nav-logo">
             <img src="logo.png" alt="Logo" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
             <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
         </a>
-        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+        <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
     </header>
 
     <section class="hero-academia reveal">
@@ -378,7 +372,7 @@
                     <h4>Reglas obligatorias:</h4>
                     <ul>
                         <li>No abusar de comandos como WorldEdit o VoxelSniper.</li>
-                        <li>Respetar strictly las parcelas y construcciones ajenas.</li>
+                        <li>Respetar estrictamente las parcelas y construcciones ajenas.</li>
                         <li>Mantener actividad y ayudar a la comunidad.</li>
                     </ul>
                     <label class="checkbox-container">
@@ -843,7 +837,7 @@ data=(floor(y)+8)%16</div>
                         <h3 class="guide-title mc-font">Primer Guia: Pintado</h3>
                         <p class="guide-author">Por: <span>Pepi</span></p>
                         ${crearVideoGlow('5mQx-P3WyTk')}
-                        <p class="guide-desc">¿Tu construcción se ve bien pero sientes que le falta vida? Este video te enseña cómo pintar y texturizar en Minecraft para que tus creaciones se vean mucho más detalladas y realistas. Desde las bases del color hasta técnicas avanzadas y un ejemplo práctico. ¡Vamos a darle color a tus ideas!</p>
+                        <p class="guide-desc">¿Tu construcción se ve bien pero sientes que le falta vida? Este video te enseña cómo pintar y texturizar en Minecraft para que tus creaciones se vean mucho más detailed y realistas. Desde las bases del color hasta técnicas avanzadas y un ejemplo práctico. ¡Vamos a darle color a tus ideas!</p>
                     </div>
                 `
             },
@@ -969,24 +963,22 @@ data=(floor(y)+8)%16</div>
 
         // 🟢 === NUEVO: ENVÍO AL WEBHOOK DE DISCORD === 🟢
         document.getElementById('formulario-member').addEventListener('submit', function(e) {
-            e.preventDefault(); // Evita que la página se recargue
+            e.preventDefault();
 
             const webhookUrl = 'https://discord.com/api/webhooks/1529543317635727503/ks9iL--8BgbHEl-o4qv2hoyzAnnVY_IK8xYqz6rLRN8mExj9VC41gTNtydfqqRvhA8zl';
 
-            // Capturar datos del formulario
             const ign = document.querySelector('input[name="IGN"]').value;
             const correo = document.querySelector('input[name="Correo"]').value;
             const motivo = document.querySelector('textarea[name="Motivo"]').value;
             const portafolio = document.querySelector('input[name="Portafolio"]').value;
 
-            // Formato de "Embed" para que se vea bonito en Discord
             const mensaje = {
                 username: "Sistema de Postulaciones", 
                 avatar_url: "https://i.ibb.co/Dfg78xpb/logo.png", 
                 embeds: [
                     {
                         title: "📝 ¡Nueva Postulación para Member!",
-                        color: 58879, // Color Cyan
+                        color: 58879,
                         fields: [
                             { name: "🎮 IGN", value: ign, inline: true },
                             { name: "📧 Correo", value: correo, inline: true },
@@ -1003,7 +995,6 @@ data=(floor(y)+8)%16</div>
             const textoOriginal = btnSubmit.innerHTML;
             btnSubmit.innerHTML = "Enviando... <i class='fa-solid fa-spinner fa-spin'></i>";
 
-            // Petición de envío a Discord
             fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1012,7 +1003,7 @@ data=(floor(y)+8)%16</div>
             .then(response => {
                 if (response.ok) {
                     alert('¡Postulación enviada con éxito a nuestro Discord!');
-                    document.getElementById('formulario-member').reset(); // Limpia el formulario
+                    document.getElementById('formulario-member').reset();
                 } else {
                     alert('Hubo un error al enviar. Inténtalo más tarde.');
                 }
@@ -1022,7 +1013,7 @@ data=(floor(y)+8)%16</div>
                 alert('Error de conexión.');
             })
             .finally(() => {
-                btnSubmit.innerHTML = textoOriginal; // Regresa el botón a la normalidad
+                btnSubmit.innerHTML = textoOriginal;
             });
         });
     </script>
