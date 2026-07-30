@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+    // Cambia la URL visualmente a /academia sin recargar la página
+    if (window.location.pathname.endsWith('academia.html')) {
+        window.history.replaceState({}, document.title, "/academia");
+    }
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia | Urban Builders</title>
@@ -323,11 +329,11 @@
     <div id="particles-js"></div>
 
     <header>
-        <a href="/" class="nav-logo">
+        <a href="index.html" class="nav-logo">
             <img src="logo.png" alt="Logo" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
             <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
         </a>
-        <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
     </header>
 
     <section class="hero-academia reveal">
@@ -372,7 +378,7 @@
                     <h4>Reglas obligatorias:</h4>
                     <ul>
                         <li>No abusar de comandos como WorldEdit o VoxelSniper.</li>
-                        <li>Respetar estrictamente las parcelas y construcciones ajenas.</li>
+                        <li>Respetar strictly las parcelas y construcciones ajenas.</li>
                         <li>Mantener actividad y ayudar a la comunidad.</li>
                     </ul>
                     <label class="checkbox-container">
