@@ -1,799 +1,1021 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urban Builders | Servidor Premium</title>
+    <title>Academia | Urban Builders</title>
     
     <!-- 🌟 FAVICON (Icono de la pestaña) 🌟 -->
     <link rel="icon" type="image/png" href="logo.png">
     
-    <!-- Fuentes Web -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
-    <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- 🟢 SCRIPT OFICIAL DE PAYPAL CON TU NUEVO CÓDIGO -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AWK9HsRWpouytjAJ0naA9uj61FNrw5rb4yxaJPNdG1XlVz-OrhHE2KAU9ZVE3T6qXUDxlpz61-a2TcHh&currency=USD"></script>
 
     <style>
-        /* === VARIABLES DE COLOR === */
         :root {
-            --c-urban: #00e5ff;
-            --c-archt: #ffaa00;
+            --c-urban: #00e5ff; 
+            --c-archt: #ffaa00; 
+            --c-axiom: #b829ff; 
             --glass-border: rgba(255, 255, 255, 0.08);
+            --c-author: #00ffa6; 
         }
 
-        /* === CONFIGURACIÓN GENERAL === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            color: #fff; 
-            overflow-x: hidden; 
-            background-color: #050505; 
-        }
+        body { font-family: 'Montserrat', sans-serif; color: #fff; overflow-x: hidden; background-color: #050505; }
+        
+        /* FUENTE MINECRAFT */
         .mc-font { font-family: 'Press Start 2P', cursive; line-height: 1.4; }
 
-        /* === VIDEO SOLO EN EL INICIO === */
-        .video-container {
-            position: absolute; 
-            top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -5; overflow: hidden; pointer-events: none;
+        /* FONDO PRINCIPAL */
+        .bg-image {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('fondoacademia.jpg') center/cover no-repeat;
+            z-index: -6; transform: scale(1.05); 
         }
-        .video-container video {
-            position: absolute; top: 50%; left: 50%;
-            min-width: 100%; min-height: 100%;
-            width: auto; height: auto;
-            transform: translate(-50%, -50%);
-            object-fit: cover; 
-            opacity: 0.4;
-        }
-        .video-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
-            background: linear-gradient(to bottom, rgba(5,5,10,0.4) 0%, #050505 100%);
-            z-index: -4; 
-        }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(to bottom, rgba(5,5,10,0.7) 0%, rgba(2,2,4,0.95) 100%); z-index: -5; }
 
-        /* Partículas ligeras */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.5s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
         #particles-js { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-        .particle { position: absolute; border-radius: 50%; animation: floatUp infinite ease-in; opacity: 0; will-change: transform, opacity; }
-        @keyframes floatUp {
-            0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
-            20% { opacity: 0.6; transform: translate3d(0, 80vh, 0) scale(1.2); }
-            80% { opacity: 0.3; }
-            100% { transform: translate3d(0, -10vh, 0) scale(0); opacity: 0; }
-        }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp infinite ease-in; opacity: 0; will-change: transform; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 20% { opacity: 0.6; transform: translateY(80vh) scale(1); } 80% { opacity: 0.2; } 100% { transform: translateY(-10vh) scale(0); opacity: 0; } }
 
-        /* === BARRA DE NAVEGACIÓN === */
-        header {
-            position: fixed; top: 0; width: 100%;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; background: rgba(5,5,5,0.95);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000; transition: all 0.3s ease;
-        }
-        .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; perspective: 500px; }
-        .nav-logo img {
-            height: 45px; filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .nav-logo:hover img { transform: rotateY(360deg) scale(1.1); }
+        /* HEADER */
+        header { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5,5,5,0.98); border-bottom: 1px solid var(--glass-border); z-index: 1000; }
+        .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.2s; }
+        .nav-logo:hover { transform: scale(1.05); }
+        .nav-logo img { height: 45px; filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4)); }
         .nav-logo h1 { font-size: 1.1rem; color: #fff; text-shadow: 2px 2px 0 #000; letter-spacing: -1px; }
         .nav-logo h1 span { color: var(--c-urban); }
+        .btn-back { background: transparent; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; font-size: 0.85rem; }
+        .btn-back:hover { background: #fff; color: #000; box-shadow: 0 0 15px rgba(255,255,255,0.6); }
 
-        nav ul { display: flex; gap: 40px; list-style: none; }
-        nav a { color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; transition: 0.3s; font-size: 0.9rem;}
-        nav a:hover { color: var(--c-urban); text-shadow: 0 0 15px var(--c-urban); transform: translateY(-3px); display: inline-block;}
+        /* HERO ZONE */
+        .hero-academia { 
+            padding: 180px 5% 100px 5%; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            position: relative; 
+            z-index: 10;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 40px;
+        }
+        .hero-content-left {
+            text-align: left;
+            flex: 1;
+        }
+        .hero-content-left h2 { font-size: 3rem; margin-bottom: 25px; text-shadow: 5px 5px 20px rgba(0,0,0,0.9); line-height: 1.3;}
+        .hero-content-left h2 span { color: var(--c-urban); text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+        .hero-content-left p { font-size: 1.2rem; color: #ddd; max-width: 650px; line-height: 1.6; margin-bottom: 40px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+        .hero-content-left p span.terrenos { color: var(--c-archt); font-weight: bold;}
+        .hero-content-left p span.estructuras { color: var(--c-urban); font-weight: bold;}
+        .hero-content-left p span.tips { color: #55ff55; font-weight: bold;}
+        .btn-discord { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); color: #fff; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
+        .btn-discord:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); transform: translateY(-3px); }
+
+        /* 💎 FORMULARIO DE POSTULACIÓN AÚN MÁS COMPACTO 💎 */
+        .form-postulacion {
+            flex: 0 1 310px;
+            background: rgba(10, 10, 15, 0.7);
+            border: 2px solid var(--c-urban);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: all 0.4s ease;
+        }
+        .form-postulacion:hover {
+            transform: perspective(1000px) rotateY(0deg) translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 229, 255, 0.2);
+            border-color: var(--c-author);
+        }
+        .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
+        .form-postulacion h3 i { color: var(--c-archt); }
+        .form-subtitle { text-align: center; color: var(--c-urban); font-size: 0.7rem; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
         
-        /* 🌟 BOTÓN 3D MECÁNICO PARA COPIAR IP 🌟 */
-        .btn-ip {
-            background: var(--c-urban); color: #000; padding: 12px 25px; border-radius: 8px;
-            font-weight: 900; text-decoration: none; text-transform: uppercase;
-            box-shadow: 0 6px 0 #00a4b5, 0 15px 25px rgba(0, 229, 255, 0.4); 
-            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s, background 0.3s;
-            display: inline-block; cursor: pointer; border: none; position: relative; will-change: transform;
+        .input-group { margin-bottom: 10px; position: relative;}
+        .input-group label { display: block; font-size: 0.7rem; color: #ddd; margin-bottom: 4px; font-weight: 600; }
+        .input-group input, .input-group textarea {
+            width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 8px; border-radius: 6px; color: #fff; font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s; font-size: 0.75rem;
         }
-        .btn-ip:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 0 #00a4b5, 0 20px 30px rgba(0, 229, 255, 0.5); 
-        }
-        .btn-ip:active, .btn-ip.copied { 
-            transform: translateY(6px); 
-            box-shadow: 0 0 0 #00a4b5, 0 5px 10px rgba(0, 229, 255, 0.4) !important; 
-        }
+        .input-group textarea { height: 50px; resize: none; }
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--c-urban); box-shadow: 0 0 15px rgba(0,229,255,0.3); background: rgba(0, 0, 0, 0.8); }
         
-        /* Globo de texto flotante */
-        .ip-tooltip {
-            position: absolute; top: 130%; left: 50%; transform: translateX(-50%) translateY(15px) scale(0);
-            background: #fff; color: #000; padding: 10px 15px; border-radius: 8px; 
-            font-size: 0.75rem; font-family: 'Press Start 2P', cursive; line-height: 1.5;
-            opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); white-space: nowrap; z-index: 10;
+        /* Tooltip del portafolio */
+        .tooltip-icon { color: var(--c-archt); margin-left: 5px; cursor: help; position: relative; font-size: 0.85rem;}
+        .tooltip-text {
+            visibility: hidden; width: 220px; background: rgba(5, 5, 8, 0.95); color: #fff; text-align: center;
+            border-radius: 8px; padding: 12px; position: absolute; z-index: 100; bottom: 140%; left: 50%;
+            margin-left: -110px; opacity: 0; transition: opacity 0.3s; font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem; font-weight: 500; border: 1px solid var(--c-archt); line-height: 1.5; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        .ip-tooltip::before {
-            content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%) rotate(45deg);
-            width: 12px; height: 12px; background: #fff;
-        }
-        .btn-ip.copied .ip-tooltip { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--c-archt) transparent transparent transparent; }
+        .tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
 
-        .btn-play-hero {
-            background: var(--c-urban); color: #000; padding: 12px 25px; border-radius: 5px;
-            font-weight: 900; text-decoration: none; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); transition: transform 0.3s, box-shadow 0.3s;
-            display: inline-block; cursor: pointer; border: none; will-change: transform;
-        }
-        .btn-play-hero:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 30px var(--c-urban); }
+        /* Caja de reglas */
+        .rules-box { background: rgba(255, 170, 0, 0.05); border-left: 3px solid var(--c-archt); padding: 10px; margin-bottom: 12px; border-radius: 4px; }
+        .rules-box h4 { color: var(--c-archt); font-size: 0.7rem; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;}
+        .rules-box ul { padding-left: 15px; color: #bbb; margin-bottom: 6px; font-size: 0.65rem; line-height: 1.4; }
+        .checkbox-container { display: flex; align-items: center; cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 600; user-select: none; }
+        .checkbox-container input { margin-right: 6px; accent-color: var(--c-author); width: 12px; height: 12px; cursor: pointer; }
 
-        /* NUEVO BOTÓN ACADEMIA */
-        .btn-academy-hero {
-            background: transparent; color: #fff; padding: 12px 25px; border-radius: 5px;
-            font-weight: 900; text-decoration: none; text-transform: uppercase; border: 2px solid var(--c-archt);
-            box-shadow: 0 0 15px rgba(255, 170, 0, 0.3); transition: all 0.3s; display: inline-block; cursor: pointer; will-change: transform;
-        }
-        .btn-academy-hero:hover { background: var(--c-archt); color: #000; box-shadow: 0 0 30px var(--c-archt); transform: scale(1.05) translateY(-2px); }
-        .btn-academy-hero i { color: var(--c-archt); transition: color 0.3s; margin-right: 5px;}
-        .btn-academy-hero:hover i { color: #000; }
+        .btn-submit { width: 100%; background: rgba(0, 229, 255, 0.15); border: 1px solid var(--c-urban); padding: 10px; color: #fff; font-size: 0.65rem; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; font-family: 'Press Start 2P', cursive; }
+        .btn-submit:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); }
 
-        /* === SISTEMA DE ANIMACIÓN AL SCROLL === */
-        .reveal { 
-            opacity: 0; transform: translate3d(0, 60px, 0); 
-            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
-            will-change: transform, opacity;
-        }
-        .reveal.active { opacity: 1; transform: translate3d(0, 0, 0); }
+        /* BARRA FLOTANTE */
+        .info-bar-container { padding: 0 5%; position: relative; z-index: 15; margin-top: -30px; }
+        .info-bar { background: #0c0c11; border: 1px solid var(--glass-border); border-radius: 15px; display: grid; grid-template-columns: repeat(3, 1fr); padding: 30px; max-width: 1200px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .info-item { display: flex; gap: 20px; padding: 0 20px; transition: transform 0.2s; }
+        .info-item:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.05); }
+        .info-item:hover { transform: translateY(-3px); }
+        .info-item i { font-size: 2.2rem; color: #888; transition: color 0.3s ease; }
+        .info-item:hover i { color: var(--c-urban); }
+        .info-item h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; transition: color 0.2s; }
+        .info-item:hover h4 { color: var(--c-urban); }
+        .info-item p { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
 
-        /* === 1. HERO SECTION === */
-        .hero { 
-            height: 100vh; display: flex; align-items: center; justify-content: space-between;
-            padding: 80px 8% 0 8%; gap: 50px; position: relative;
-        }
-        .hero-content { flex: 1.2; max-width: 700px; }
+        /* CURSOS */
+        .cursos-section { padding: 80px 5% 40px 5%; text-align: center; position: relative; z-index: 10; }
+        .cursos-header h3 { font-size: 1.8rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .cursos-header h3 i { color: var(--c-urban); }
+        .cursos-header p { color: #aaa; font-size: 1.1rem; margin-bottom: 60px; }
+        .cursos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 1100px; margin: 0 auto 60px auto; perspective: 1000px; }
+        .curso-card { background: #0a0a0e; border: 1px solid var(--glass-border); border-radius: 15px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; transform-style: preserve-3d; position: relative; aspect-ratio: 16/10; }
+        .curso-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: opacity 0.3s, transform 0.4s; }
+        .curso-card:hover { border-color: var(--c-urban); transform: translateY(-10px) scale(1.02); }
+        .curso-card:hover img { opacity: 1; transform: scale(1.1); }
+        .curso-title { position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px 20px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); text-align: left; transform: translateZ(40px); }
+        .curso-title h4 { font-size: 1.4rem; font-weight: 900; color: #fff; text-shadow: 2px 2px 5px #000; }
+
+        .extra-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;}
+        .btn-extra { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff; padding: 15px 35px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
+        .btn-extra.axiom:hover { background: rgba(184, 41, 255, 0.15); border-color: var(--c-axiom); transform: translateY(-3px); }
+        .btn-extra.tips:hover { background: rgba(41, 128, 185, 0.15); border-color: #2980b9; transform: translateY(-3px); }
+
+        /* 🟢 === SECCIÓN PREGUNTAS FRECUENTES === 🟢 */
+        .faq-section { padding: 80px 5% 100px 5%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+        .faq-header { text-align: center; margin-bottom: 50px; }
+        .faq-header h3 { font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; color: #fff; text-shadow: 2px 2px 10px rgba(0, 255, 166, 0.3); }
+        .faq-header h3 i { color: var(--c-author); }
         
-        .hero h2 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 25px; text-shadow: 5px 5px 15px rgba(0,0,0,0.9); }
-        .hero h2 span { 
-            background: linear-gradient(90deg, var(--c-urban), #fff, var(--c-urban));
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shineText 3s linear infinite;
-        }
-        @keyframes shineText { to { background-position: 200% center; } }
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; align-items: start; }
         
-        .hero p { font-size: 1.1rem; color: #ccc; margin-bottom: 40px; line-height: 1.7; font-weight: 300;}
+        details.faq-card { background: rgba(10, 10, 14, 0.7); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        details.faq-card:hover { border-color: rgba(0, 255, 166, 0.4); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        details.faq-card[open] { border-color: var(--c-author); background: rgba(15, 15, 20, 0.95); }
         
-        .hero-image { flex: 1; display: flex; justify-content: center; transform-style: preserve-3d; perspective: 1000px; }
-        .hero-image img {
-            width: 100%; max-width: 400px; transform: translateZ(50px);
-            filter: drop-shadow(0 20px 40px rgba(0, 229, 255, 0.2)); 
-            animation: floatHero 5s ease-in-out infinite; will-change: transform;
-        }
-        @keyframes floatHero {
-            0%, 100% { transform: translate3d(0, 0, 50px); }
-            50% { transform: translate3d(0, -20px, 80px); }
-        }
-
-        /* === ESTRUCTURA DE SECCIONES INTERNAS === */
-        section:not(.hero) { padding: 100px 8% 50px 8%; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 10;}
-        .sec-title { font-size: 2.2rem; text-align: center; margin-bottom: 60px; }
-        .sec-title span { color: var(--c-archt); }
-
-        /* === EFECTOS DE FONDO REACTIVO (TIENDA Y NOTICIAS) === */
-        .interactive-bg {
-            position: relative; overflow: hidden; background-color: #050505;
-        }
-        .interactive-bg::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 40px 40px; z-index: -3; opacity: 0.5;
-        }
-        .interactive-bg::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 229, 255, 0.08), transparent 40%);
-            z-index: -2; pointer-events: none; transition: background 0.1s ease;
-        }
-        #actualizaciones.interactive-bg::after {
-            background: radial-gradient(circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 170, 0, 0.08), transparent 40%);
-        }
-
-        .floating-shape {
-            position: absolute; border: 2px solid; border-radius: 12px;
-            z-index: -1; pointer-events: none; opacity: 0.3;
-            animation: floatShape 25s infinite linear; will-change: transform;
-        }
-        .shape-urban { border-color: var(--c-urban); width: 150px; height: 150px; top: 15%; left: 5%; }
-        .shape-urban-2 { border-color: var(--c-urban); width: 80px; height: 80px; bottom: 20%; right: 10%; animation-direction: reverse; animation-duration: 20s;}
-        .shape-archt { border-color: var(--c-archt); width: 200px; height: 200px; top: 20%; right: 5%; animation-direction: reverse;}
-        .shape-archt-2 { border-color: var(--c-archt); width: 100px; height: 100px; bottom: 10%; left: 8%; animation-duration: 15s;}
+        summary.faq-question { font-size: 1.05rem; font-weight: 700; color: #fff; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        summary.faq-question::-webkit-details-marker { display: none; }
+        summary.faq-question::after { content: '\f0d7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--c-author); transition: transform 0.3s; font-size: 1.2rem; }
+        details[open] summary.faq-question::after { transform: rotate(180deg); }
         
-        @keyframes floatShape {
-            0% { transform: rotate3d(1, 1, 1, 0deg) translateY(0); }
-            50% { transform: rotate3d(1, 1, 1, 180deg) translateY(-50px); }
-            100% { transform: rotate3d(1, 1, 1, 360deg) translateY(0); }
-        }
-
-        /* === 2. SOBRE NOSOTROS === */
-        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; }
-        .about-text h3 { font-size: 2rem; margin-bottom: 25px; color: var(--c-urban); }
-        .about-text p { font-size: 1.05rem; line-height: 1.8; color: #bbb; margin-bottom: 15px; font-weight: 300;}
+        .faq-answer { margin-top: 18px; color: #bbb; font-size: 0.95rem; line-height: 1.7; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .server-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; perspective: 1000px;}
-        .stat-card {
-            background: #0d0d12; border: 1px solid var(--glass-border);
-            padding: 30px; border-radius: 15px; text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: all 0.4s ease;
-            color: #fff; transform-style: preserve-3d; will-change: transform;
-        }
-        .stat-card:hover { border-color: var(--c-urban); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,229,255,0.1); }
-        .stat-card i { font-size: 2.5rem; color: var(--c-archt); margin-bottom: 15px; transform: translateZ(20px); display: block;}
-        .stat-card h4 { font-size: 2.2rem; font-weight: 900; transform: translateZ(15px);}
-        .stat-card p { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 1px; transform: translateZ(10px);}
-
-        /* === 3. TIENDA === */
-        .ranks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 1200px; margin: 0 auto; perspective: 1500px; }
+        .faq-answer a { display: inline-block; color: var(--c-author); text-decoration: none; word-break: break-all; transition: 0.2s; font-weight: 600; margin-top: 5px; }
+        .faq-answer a:hover { color: #fff; text-shadow: 0 0 10px var(--c-author); transform: translateX(5px); }
         
-        .rank-card {
-            background: linear-gradient(145deg, #101015 0%, #08080a 100%);
-            border: 1px solid var(--glass-border); border-radius: 15px; padding: 40px 30px;
-            transform-style: preserve-3d; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            will-change: transform; transition: all 0.4s ease-out; z-index: 5;
-        }
-        .rank-urban { border-top: 4px solid var(--c-urban); }
-        .rank-archt { border-top: 4px solid var(--c-archt); transform: scale(1.05); z-index: 6;}
-        .rank-upgrade { background: linear-gradient(180deg, #101015 0%, #151515 100%); border-top: 4px solid #fff; }
-
-        .rank-card:hover { transform: translateY(-15px) rotateX(5deg); box-shadow: 0 30px 60px rgba(0,0,0,1); }
-        .rank-archt:hover { transform: scale(1.05) translateY(-15px) rotateX(5deg); box-shadow: 0 30px 60px rgba(255,170,0,0.15); }
-        .rank-urban:hover { box-shadow: 0 30px 60px rgba(0,229,255,0.15); }
-
-        .rank-image { 
-            width: 100%; height: 180px; object-fit: contain; margin-bottom: 25px; 
-            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.8)); 
-            transform: translateZ(70px); 
-            animation: floatCard 4s ease-in-out infinite; will-change: transform;
-        }
-        @keyframes floatCard { 0%, 100% { transform: translate3d(0, 0, 70px); } 50% { transform: translate3d(0, -15px, 90px); } }
-
-        .rank-title { font-size: 1.4rem; margin-bottom: 20px; transform: translateZ(40px); }
-        .features-list { list-style: none; text-align: left; width: 100%; margin-bottom: 30px; transform: translateZ(30px); }
-        .features-list li { padding: 10px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; color: #aaa;}
-        .features-list li i { margin-right: 10px; color: var(--c-urban); width: 15px;}
-        .rank-archt .features-list li i { color: var(--c-archt); }
-        .price { font-size: 2.2rem; font-weight: 900; margin-bottom: 20px; transform: translateZ(50px); }
+        .faq-video { width: 100%; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); outline: none; background: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        .btn-buy {
-            width: 100%; padding: 15px; border: none; border-radius: 8px;
-            font-family: 'Press Start 2P', cursive; font-size: 0.75rem;
-            color: #000; cursor: pointer; transform: translateZ(60px);
-            transition: transform 0.3s, filter 0.3s; 
-            text-transform: uppercase; line-height: 1.4; font-weight: bold; will-change: transform;
-        }
-        .rank-urban .btn-buy { background: var(--c-urban); box-shadow: 0 10px 20px rgba(0,229,255,0.2); }
-        .rank-archt .btn-buy { background: var(--c-archt); box-shadow: 0 10px 20px rgba(255,170,0,0.2); }
-        .rank-upgrade .btn-buy { background: #fff; box-shadow: 0 10px 20px rgba(255,255,255,0.1);}
-        .btn-buy:hover { filter: brightness(1.2); transform: translateZ(80px) scale(1.05); }
-        .btn-buy:active { transform: translateZ(40px) scale(0.95); }
+        .ip-box { display: inline-block; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); padding: 8px 15px; border-radius: 8px; color: #fff; font-family: monospace; font-size: 1.1rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);}
 
-        /* === 4. ACTUALIZACIONES === */
-        .updates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; perspective: 1000px; z-index: 5;}
-        .update-card { 
-            background: #0d0d12; border-left: 4px solid var(--c-urban); 
-            padding: 30px; border-radius: 0 15px 15px 0; 
-            transition: all 0.4s ease; transform-style: preserve-3d; will-change: transform;
-        }
-        .update-card:hover { transform: translate3d(15px, -5px, 40px) rotateY(-5deg); background: #12121a; box-shadow: -15px 15px 30px rgba(0,0,0,0.8); }
-        .update-date { font-size: 0.8rem; color: var(--c-urban); font-weight: 700; margin-bottom: 15px; display: block; letter-spacing: 1px; text-transform: uppercase; transform: translateZ(20px);}
-        .update-card h4 { font-size: 1.2rem; margin-bottom: 10px; transform: translateZ(25px);}
-        .update-card p { font-size: 0.95rem; color: #888; line-height: 1.6; font-weight: 300; transform: translateZ(10px);}
+        /* FOOTER PRINCIPAL */
+        .main-footer { text-align: center; padding: 30px; color: #666; border-top: 1px solid var(--glass-border); background: rgba(5,5,8,0.95); font-size: 0.9rem; position: relative; z-index: 10; }
+        .main-footer strong { color: var(--c-urban); }
 
-        /* === FOOTER 🌟 REDES SOCIALES === */
-        footer { 
-            text-align: center; padding: 60px 20px 40px 20px; 
-            background: #030303; border-top: 1px solid #111; position: relative; z-index: 10;
-        }
-        .social-container {
-            display: flex; justify-content: center; gap: 25px; margin: 25px 0; perspective: 1000px;
-        }
-        .social-icon {
-            display: flex; align-items: center; justify-content: center;
-            width: 55px; height: 55px; background: #0d0d12; border: 1px solid var(--glass-border);
-            border-radius: 50%; color: #fff; font-size: 1.5rem; text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-style: preserve-3d;
-        }
-        /* Efectos 3D Hover por cada red social */
-        .social-icon:nth-child(1):hover { /* X (Twitter) */
-            transform: translateY(-10px) rotateY(15deg); border-color: #fff;
-            color: #000; background: #fff; box-shadow: 0 10px 25px rgba(255,255,255,0.3);
-        }
-        .social-icon:nth-child(2):hover { /* TikTok */
-            transform: translateY(-10px) rotateY(15deg); border-color: #ff0050;
-            color: #fff; background: #000; box-shadow: -5px 10px 20px rgba(0,255,255,0.4), 5px 10px 20px rgba(255,0,80,0.4);
-        }
-        .social-icon:nth-child(3):hover { /* YouTube */
-            transform: translateY(-10px) rotateY(15deg); border-color: #ff0000;
-            color: #fff; background: #ff0000; box-shadow: 0 10px 25px rgba(255,0,0,0.4);
-        }
-        footer p { color: #555; font-size: 0.9rem; margin-top: 15px;}
-
-        /* 🟢 === ESTILOS DEL MODAL DE PAGO === 🟢 */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-            z-index: 9999; /* Sobre todo el diseño */
+        /* 🟢 === MODAL FLUIDO (VIDEOS DE YOUTUBE) === 🟢 */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(5, 5, 8, 0.98); 
+            display: flex; justify-content: center; align-items: center; 
+            opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 9999; 
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-content {
-            background: #111; padding: 40px 30px; border-radius: 15px;
-            width: 90%; max-width: 420px; text-align: center; position: relative;
-            border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            max-height: 85vh; /* EVITA QUE CORTE LA PANTALLA */
-            overflow-y: auto; /* AGREGA BARRA DE SCROLL */
-            overflow-x: hidden;
-        }
-        .modal-content::-webkit-scrollbar { width: 8px; }
-        .modal-content::-webkit-scrollbar-track { background: #0f0f13; border-radius: 10px; }
-        .modal-content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        .modal-content::-webkit-scrollbar-thumb:hover { background: var(--c-urban); }
-
-        .modal-close {
-            position: absolute; top: 15px; right: 20px; font-size: 1.5rem; 
-            color: #666; cursor: pointer; transition: color 0.2s;
-        }
-        .modal-close:hover { color: #fff; }
-
-        .modal-state { display: none; animation: fadeIn 0.4s ease; }
-        .modal-state.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .mc-input {
-            width: 100%; padding: 15px; background: #1a1a1a;
-            border: 2px solid #333; border-radius: 8px; color: #fff;
-            font-size: 1.1rem; text-align: center; margin: 15px 0 20px 0; outline: none;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .mc-input:focus { border-color: var(--c-urban); }
-
-        .player-preview-container {
-            width: 80px; height: 80px; margin: 0 auto 15px auto;
-            border-radius: 10px; overflow: hidden; border: 2px solid #333;
-        }
-        .player-preview-container img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Botón exclusivo para la ventana */
-        .btn-modal {
-            width: 100%; padding: 15px; border: none; border-radius: 8px;
-            font-family: 'Press Start 2P', cursive; font-size: 0.75rem;
-            color: #000; cursor: pointer; text-transform: uppercase; font-weight: bold;
-            transition: transform 0.3s, filter 0.3s; line-height: 1.4;
+        .modal-content { 
+            background: #111; border: 2px solid var(--c-urban); padding: 40px 30px; 
+            border-radius: 12px; width: 95%; max-width: 900px; position: relative; 
+            transform: scale(0.98) translateY(10px); transition: transform 0.2s ease;
+            max-height: 90vh; overflow-y: auto; overflow-x: hidden;
         }
-        .btn-modal:hover { filter: brightness(1.2); transform: scale(1.05); }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: #020202; border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--c-urban); border-radius: 10px; }
+        
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: #666; cursor: pointer; transition: color 0.2s; z-index: 10;}
+        .modal-close:hover { color: #ff5555; }
+        
+        .modal-header { margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;}
+        .modal-header h3 { font-size: 1.6rem; margin-bottom: 5px; color: #fff; }
+        .modal-header p { color: var(--c-urban); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; }
+        
+        .glow-box { position: relative; margin: 15px 0 15px 0; border-radius: 10px; }
+        .glow-box::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--c-urban), var(--c-author), var(--c-axiom), var(--c-urban));
+            background-size: 200% 200%; z-index: -1; border-radius: 12px;
+            animation: bg-glow 3s linear infinite; opacity: 0.8;
+        }
+        @keyframes bg-glow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
-        /* 📱 === RESPONSIVO PARA CELULARES Y TABLETS === 📱 */
+        .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden; cursor: pointer; }
+        .video-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .video-wrapper:hover img { transform: scale(1.03); filter: brightness(0.8); }
+        .yt-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 65px; height: 45px; background: rgba(255,0,0,0.9); border-radius: 10px; display: flex; justify-content: center; align-items: center; pointer-events: none; transition: background 0.2s; }
+        .yt-play-btn i { color: #fff; font-size: 20px; }
+        .video-wrapper:hover .yt-play-btn { background: #ff0000; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        .guide-block { margin-bottom: 40px; text-align: left; }
+        .guide-title { font-size: 1rem; color: #fff; margin-bottom: 12px; line-height: 1.5; }
+        .guide-author { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; font-weight: bold; font-family: 'Montserrat', sans-serif;}
+        .guide-author span { color: var(--c-author); }
+        .guide-desc { color: #bbb; line-height: 1.6; font-size: 0.95rem; margin-top: 15px; font-family: 'Montserrat', sans-serif;}
+        
+        .btn-exit-modal { display: block; width: 100%; padding: 15px; background: rgba(255, 85, 85, 0.1); border: 1px solid #ff5555; color: #ff5555; font-family: 'Press Start 2P', cursive; font-size: 0.8rem; text-align: center; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-top: 30px; text-transform: uppercase; }
+        .btn-exit-modal:hover { background: #ff5555; color: #000; }
+
         @media (max-width: 950px) {
-            /* Navbar */
-            nav ul { display: none; }
-            .nav-logo h1 { display: none; }
-            header { padding: 15px 5%; }
-
-            /* Hero - Quitar la altura estricta para evitar que se monte encima */
-            .hero { 
-                flex-direction: column; text-align: center; justify-content: center; 
-                padding-top: 130px; height: auto; min-height: 100vh; gap: 40px; padding-bottom: 50px;
-            }
-            .hero-content { display: flex; flex-direction: column; align-items: center; margin-top: 0; }
-            .hero h2 { font-size: 2rem; } /* Fuente más pequeña para que quepa */
-            .hero-image img { max-width: 250px; animation: floatHero 5s ease-in-out infinite; }
+            .hero-academia { flex-direction: column; text-align: center; }
+            .hero-content-left { text-align: center; }
+            .hero-content-left p { margin: 0 auto 30px auto; }
+            .hero-content-left h2 { font-size: 2rem; }
+            .form-postulacion { width: 100%; max-width: 400px; transform: none; }
+            .form-postulacion:hover { transform: translateY(-5px); }
             
-            /* Grillas (Forzar a 1 columna para que no se aprieten a los lados) */
-            .about-grid { grid-template-columns: 1fr; gap: 40px; }
-            .ranks-grid, .updates-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
-            
-            .rank-archt { transform: scale(1); } /* Quitar el efecto saltado del rango máximo */
-            .floating-shape { display: none; } /* Ocultar formas flotantes en cel para evitar lag */
-            section:not(.hero) { padding: 80px 5% 40px 5%; }
+            .info-bar { grid-template-columns: 1fr; gap: 30px; }
+            .info-item:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; }
         }
 
-        /* 📱 Ajustes exclusivos para celulares muy pequeños (iPhone, Androids) */
-        @media (max-width: 600px) {
-            .hero h2 { font-size: 1.5rem; }
-            .hero p { font-size: 0.95rem; margin-bottom: 30px; }
-            
-            /* Botones del Hero centrados */
-            .hero-buttons { justify-content: center !important; gap: 15px !important; }
-            .btn-play-hero, .btn-academy-hero { font-size: 0.9rem !important; padding: 12px 20px !important; }
+        /* =========================================
+           🟠 ESTILOS AISLADOS: GUÍA DE COMANDOS 🟠
+           ========================================= */
+        #comandos-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #080c18; z-index: 10000; overflow-y: auto; overflow-x: hidden;
+            display: none; opacity: 0; transition: opacity 0.3s ease;
+            --bg:#080c18; --sidebar-bg:#0a1020; --border:#1b2a44; --card-bg:rgba(13,21,37,0.9);
+            --accent:#2980b9; --title:#5dade2; --code-color:#7ecb8e; --text:#c8d4e8; --muted:#8a9bb8;
+            color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6;
+        }
+        #comandos-overlay.active { display: block; opacity: 1; }
+        #comandos-overlay * { margin: 0; padding: 0; box-sizing: border-box; }
+        #comandos-overlay #urban-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        
+        #comandos-overlay .topbar { position: relative; z-index: 10; background: linear-gradient(135deg,#0a1020,#0d1830); border-bottom: 1px solid var(--border); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        #comandos-overlay .topbar h1 { color: var(--title); font-size: 1.4rem; font-weight: 700; font-family: 'Segoe UI', system-ui, sans-serif;}
+        #comandos-overlay .topbar .subtitle { color: var(--muted); font-size: 0.85rem; letter-spacing: 1px; }
+        
+        #comandos-overlay .btn-cerrar-cmd { background: rgba(255,85,85,0.1); color: #ff5555; border: 1px solid #ff5555; padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; text-transform: uppercase; font-size: 0.7rem; }
+        #comandos-overlay .btn-cerrar-cmd:hover { background: #ff5555; color: #000; }
 
-            /* Achicar un poco el botón superior y el logo */
-            .nav-logo img { height: 35px; }
-            .btn-ip { padding: 10px 15px; font-size: 0.8rem; }
-            
-            /* Estadísticas a una columna */
-            .server-stats { grid-template-columns: 1fr; gap: 15px;}
-            .stat-card[style] { grid-column: auto !important; } /* Arregla el botón de discord */
-            
-            /* Ajustar paddings de tarjetas para ganar espacio a los lados */
-            .rank-card { padding: 30px 20px; }
-            .modal-content { padding: 30px 20px; width: 95%; }
-            .sec-title { font-size: 1.6rem; margin-bottom: 40px; }
+        #comandos-overlay .layout { position: relative; z-index: 5; display: flex; min-height: calc(100vh - 70px); align-items: flex-start;}
+        #comandos-overlay .sidebar { width: 240px; flex-shrink: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 20px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+        #comandos-overlay .sidebar::-webkit-scrollbar { width: 6px; }
+        #comandos-overlay .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        #comandos-overlay .sidebar a { display: block; color: var(--muted); text-decoration: none; padding: 10px 24px; font-size: 0.88rem; border-left: 3px solid transparent; transition: all 0.2s; }
+        #comandos-overlay .sidebar a:hover, #comandos-overlay .sidebar a.active { color: var(--title); border-left-color: var(--accent); background: rgba(41,128,185,0.08); }
+        #comandos-overlay .sidebar .side-title { color: var(--title); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 8px 24px; margin-top: 10px; opacity: 0.6; }
+        
+        #comandos-overlay .content { flex: 1; padding: 30px 40px; max-width: 1100px; }
+        #comandos-overlay .section { margin-bottom: 50px; scroll-margin-top: 20px; }
+        #comandos-overlay .section h2 { color: var(--title); font-size: 1.5rem; padding-bottom: 10px; margin-bottom: 24px; border-bottom: 2px solid var(--border); font-family: 'Segoe UI', system-ui, sans-serif;}
+        
+        #comandos-overlay .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 18px; transition: box-shadow 0.3s, border-color 0.3s; }
+        #comandos-overlay .card:hover { border-color: var(--accent); box-shadow: 0 0 18px rgba(41,128,185,0.25); }
+        #comandos-overlay .card h3 { color: var(--title); font-size: 1.1rem; margin-bottom: 12px; font-family: 'Segoe UI', system-ui, sans-serif;}
+        #comandos-overlay .card p { margin-bottom: 10px; color: var(--text); }
+        #comandos-overlay .card ul { margin: 8px 0 12px 20px; }
+        #comandos-overlay .card li { margin-bottom: 5px; }
+        
+        #comandos-overlay .cmd-block { background: #0a0f1a; border-left: 3px solid var(--accent); color: var(--code-color); padding: 12px 16px; border-radius: 6px; font-family: 'Consolas', monospace; white-space: pre-wrap; word-break: break-word; margin: 10px 0; font-size: 0.88rem; }
+        #comandos-overlay .cmd-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; font-style: italic; }
+        #comandos-overlay .link-list a { color: var(--accent); text-decoration: none; display: block; padding: 6px 0; border-bottom: 1px solid rgba(27,42,68,0.5); transition: color 0.2s; }
+        #comandos-overlay .link-list a:hover { color: var(--title); }
+        
+        #comandos-overlay .footer { position: relative; z-index: 5; text-align: center; padding: 30px; color: var(--muted); border-top: 1px solid var(--border); background: var(--sidebar-bg); font-size: 0.95rem; }
+        #comandos-overlay .footer strong { color: var(--title); }
+        #comandos-overlay .note { background: rgba(41,128,185,0.08); border: 1px solid rgba(41,128,185,0.2); border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.88rem; color: var(--muted); }
+        #comandos-overlay .note strong { color: var(--title); }
+
+        @media(max-width: 768px){
+            #comandos-overlay .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+            #comandos-overlay .layout { flex-direction: column; }
+            #comandos-overlay .content { padding: 20px; }
+            #comandos-overlay .topbar { padding: 14px 18px; }
+            #comandos-overlay .topbar h1 { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 🌟 VIDEO SOLO ARRIBA 🌟 -->
-    <div class="video-container">
-        <video autoplay loop muted playsinline id="bg-video">
-            <source src="background.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="video-overlay"></div>
+    <!-- FONDO ACADEMIA PRINCIPAL -->
+    <div class="bg-image"></div>
+    <div class="bg-overlay"></div>
     <div id="particles-js"></div>
 
-    <!-- NAVEGACIÓN -->
-    <header id="navbar">
-        <a href="#inicio" class="nav-logo">
-            <img src="logo.png" alt="Logo Urban Builders" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
+    <header>
+        <a href="/" class="nav-logo">
+            <img src="logo.png" alt="Logo" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
             <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
         </a>
-        <nav>
-            <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#nosotros">Nosotros</a></li>
-                <li><a href="#tienda" style="color: var(--c-archt);">Tienda</a></li>
-                <li><a href="#actualizaciones">Noticias</a></li>
-            </ul>
-        </nav>
-        <!-- BOTÓN COPIAR IP -->
-        <button id="ip-btn" class="btn-ip" onclick="copyServerIP()">
-            <span id="ip-text">Jugar Ahora</span>
-            <div class="ip-tooltip">mc.urbanbuilder.net</div>
-        </button>
+        <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
     </header>
 
-    <!-- 1. HERO -->
-    <section id="inicio" class="hero reveal active">
-        <div class="hero-content">
-            <h2 class="mc-font">FORJA TU<br><span>LEGADO AQUÍ</span></h2>
-            <p>La plataforma ideal para constructores de Minecraft. Perfecciona tus habilidades, participa en eventos exclusivos y forma parte de una comunidad enfocada en la excelencia arquitectónica.</p>
+    <section class="hero-academia reveal">
+        <!-- TEXTO ORIGINAL A LA IZQUIERDA -->
+        <div class="hero-content-left">
+            <h2 class="mc-font">APRENDE<br><span>CON NOSOTROS</span></h2>
+            <p>Descubre cómo crear <span class="terrenos">terrenos</span>, construir <span class="estructuras">estructuras</span> y aprende valiosos <span class="tips">tips</span> para llevar tus proyectos al siguiente nivel.</p>
+            <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="btn-discord">Obtén más ayuda en nuestro Discord <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+
+        <!-- ⬇️ NUEVO FORMULARIO CONECTADO A DISCORD ⬇️ -->
+        <div class="form-postulacion">
+            <h3 class="mc-font"><i class="fa-solid fa-gem"></i> RANGO MEMBER</h3>
+            <p class="form-subtitle">¡Postúlate Ahora!</p>
             
-            <!-- EL BOTÓN AGREGADO JUNTO AL DE VER RANGOS -->
-            <!-- CLASE "hero-buttons" AÑADIDA AQUI PARA CONTROLARLOS EN CELULAR -->
-            <div class="hero-buttons" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <a href="#tienda" class="btn-play-hero" style="font-size: 1.1rem; padding: 15px 35px;"><i class="fa-solid fa-cart-shopping"></i> Ver Rangos</a>
-                <a href="academia.html" class="btn-academy-hero" style="font-size: 1.1rem; padding: 15px 35px;"><i class="fa-solid fa-graduation-cap"></i> Academia</a>
-            </div>
-
-        </div>
-        
-        <div class="hero-image" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000">
-            <img src="logo.png" alt="Logo de Urban Builders" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
-        </div>
-    </section>
-
-    <!-- 2. SOBRE NOSOTROS -->
-    <section id="nosotros">
-        <div class="about-grid reveal">
-            <div class="about-text">
-                <h3 class="mc-font">SOBRE <span>NOSOTROS</span></h3>
-                <p>Urban Builders nació con la visión de crear un espacio donde la creatividad, el diseño y la construcción sean los protagonistas. Nuestro objetivo es reunir a constructores de todos los niveles en una comunidad inspiradora, colaborativa y enfocada en el crecimiento constante.</p>
-                <p>Contamos con una plataforma optimizada, eventos de construcción, recursos exclusivos y un equipo comprometido con brindar la mejor experiencia posible, para que tu única preocupación sea diseñar, construir y convertir tus ideas en auténticas obras maestras.</p>
-            </div>
-            <div class="server-stats">
-                <div class="stat-card" data-tilt data-tilt-max="15">
-                    <i class="fa-solid fa-users"></i>
-                    <h4 id="server-players">...</h4>
-                    <p>Jugadores Online</p>
-                </div>
-                <div class="stat-card" data-tilt data-tilt-max="15">
-                    <i class="fa-solid fa-server"></i>
-                    <h4>99%</h4>
-                    <p>Uptime sin Lag</p>
-                </div>
-                <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="stat-card" style="grid-column: span 2; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; text-decoration: none; cursor: pointer;" data-tilt data-tilt-max="10">
-                    <i class="fa-brands fa-discord" style="color:#5865F2; font-size:2.5rem; margin:0; transform: translateZ(30px);"></i>
-                    <h4 id="discord-members" style="font-size:1.5rem; margin:0; transform: translateZ(20px);">Cargando...</h4>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. TIENDA -->
-    <section id="tienda" class="interactive-bg">
-        <div class="floating-shape shape-urban"></div>
-        <div class="floating-shape shape-urban-2"></div>
-        
-        <h3 class="sec-title mc-font reveal">NUESTRA <span>TIENDA</span></h3>
-        
-        <div class="ranks-grid">
-            <div class="rank-card rank-urban reveal" data-tilt data-tilt-max="15" data-tilt-speed="400">
-                <h4 class="rank-title mc-font" style="color: var(--c-urban);">URBAN</h4>
-                <img src="URBAN.png" alt="Logo Rango URBAN" class="rank-image" onerror="this.src='https://mc-heads.net/body/Steve/right';">
-                <ul class="features-list">
-                    <li><i class="fa-solid fa-check"></i> Rol exclusivo [URBAN]</li>
-                    <li><i class="fa-solid fa-check"></i> Acceso a Kit Base poderoso</li>
-                    <li><i class="fa-solid fa-check"></i> Hasta 3 Homes simultáneas</li>
-                    <li><i class="fa-solid fa-check"></i> Prioridad en la cola</li>
-                </ul>
-                <div class="price">$9.99</div>
-                <button class="btn-buy" onclick="abrirCarrito('RANGO URBAN', 9.99)">Adquirir Rango</button>
-            </div>
-
-            <div class="rank-card rank-upgrade reveal" style="transition-delay: 0.1s;" data-tilt data-tilt-max="15" data-tilt-speed="400">
-                <h4 class="rank-title mc-font" style="font-size: 0.85rem; letter-spacing: -1px;">MEJORAR RANGO</h4>
-                <img src="upgrade.png" alt="Logo Mejorar Rango" class="rank-image" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
-                <ul class="features-list">
-                    <li><i class="fa-solid fa-arrow-up"></i> De URBAN a ARCHT+</li>
-                    <li><i class="fa-solid fa-coins"></i> Paga solo la diferencia</li>
-                    <li><i class="fa-solid fa-bolt"></i> Beneficios instantáneos</li>
-                    <li><i class="fa-solid fa-shield"></i> Conserva tu progreso</li>
-                </ul>
-                <div class="price">$15.00</div>
-                <button class="btn-buy" onclick="alert('¡El sistema de Upgrade estará disponible muy pronto!')">Hacer Upgrade</button>
-            </div>
-
-            <div class="rank-card rank-archt reveal" style="transition-delay: 0.2s;" data-tilt data-tilt-max="20" data-tilt-speed="400">
-                <div style="position:absolute; top:-12px; background:var(--c-archt); color:#000; padding:4px 15px; font-family:'Press Start 2P', cursive; font-size:0.5rem; text-transform:uppercase; transform: translateZ(50px);">Rango Máximo</div>
-                <h4 class="rank-title mc-font" style="color: var(--c-archt);">ARCHT+</h4>
-                <img src="architect.png" alt="Logo Rango ARCHT+" class="rank-image" onerror="this.src='https://mc-heads.net/body/Alex/right';">
-                <ul class="features-list">
-                    <li><i class="fa-solid fa-crown"></i> Todo lo de URBAN incluido</li>
-                    <li><i class="fa-solid fa-crown"></i> Vuelo ilimitado (/fly)</li>
-                    <li><i class="fa-solid fa-crown"></i> Kit Constructor Definitivo</li>
-                    <li><i class="fa-solid fa-crown"></i> Extraer Spawners</li>
-                </ul>
-                <div class="price" style="color: var(--c-archt);">$20.00</div>
-                <button class="btn-buy" onclick="abrirCarrito('RANGO ARCHT+', 20.00)">Comprar Máximo</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. ACTUALIZACIONES -->
-    <section id="actualizaciones" class="interactive-bg">
-        <div class="floating-shape shape-archt"></div>
-        <div class="floating-shape shape-archt-2"></div>
-        
-        <h3 class="sec-title mc-font reveal">ÚLTIMAS <span>NOTICIAS</span></h3>
-        <div class="updates-grid">
-            <div class="update-card reveal">
-                <span class="update-date"><i class="fa-solid fa-clock"></i> Reciente</span>
-                <h4>App Web</h4>
-                <p>¡Ya está disponible nuestra nueva AppWeb para constructores! Disfruta de una experiencia optimizada para móviles, accede rápidamente a comandos, herramientas y contenido exclusivo diseñado para ayudarte a construir mejor y más rápido.</p>
-            </div>
-            <div class="update-card reveal" style="border-color: var(--c-archt); transition-delay: 0.1s;">
-                <span class="update-date" style="color: var(--c-archt);"><i class="fa-solid fa-clock"></i> Ayer</span>
-                <h4>Actualización de Tienda</h4>
-                <p>Implementamos el nuevo sistema de "Upgrade". Ahora puedes mejorar tu rango actual pagando únicamente la diferencia.</p>
-            </div>
-            <div class="update-card reveal" style="transition-delay: 0.2s;">
-                <span class="update-date"><i class="fa-solid fa-clock"></i> Hace 1 semana</span>
-                <h4>Postulacion MEMBER</h4>
-                <p>Ahora puedes postularte a Member de forma más rápida, sencilla y segura desde el apartado /academia. Completa el formulario en pocos minutos y envía tu solicitud directamente a nuestro equipo para su revisión.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <h2 class="mc-font" style="font-size: 1.2rem;">URBAN BUILDERS</h2>
-        
-        <!-- REDES SOCIALES -->
-        <div class="social-container">
-            <a href="https://x.com/UrbanBuildersMC" target="_blank" class="social-icon" title="Síguenos en X">
-                <i class="fa-brands fa-x-twitter"></i>
-            </a>
-            <a href="https://www.tiktok.com/@urbanbuildersmc" target="_blank" class="social-icon" title="Síguenos en TikTok">
-                <i class="fa-brands fa-tiktok"></i>
-            </a>
-            <a href="https://www.youtube.com/@UrbanBuildersMC" target="_blank" class="social-icon" title="Suscríbete en YouTube">
-                <i class="fa-brands fa-youtube"></i>
-            </a>
-        </div>
-
-        <p>© 2026. Todos los derechos reservados. No estamos afiliados con Mojang AB.</p>
-    </footer>
-
-    <!-- 🟢 === HTML DEL MODAL DE PAGO === 🟢 -->
-    <div id="tebex-modal" class="modal-overlay">
-        <div class="modal-content">
-            <i class="fa-solid fa-xmark modal-close" onclick="cerrarCarrito()"></i>
-
-            <!-- PASO 1: Ingresar Usuario de Minecraft -->
-            <div id="estado-nick" class="modal-state active">
-                <h3 class="mc-font" style="font-size: 1.2rem; margin-bottom: 20px;">TU USUARIO</h3>
-                <div class="player-preview-container" id="skin-preview-box">
-                    <img id="live-skin-preview" src="https://mc-heads.net/avatar/Steve/100" alt="Skin">
-                </div>
-                <p style="color: #bbb; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">Ingresa tu nick exacto de Minecraft</p>
-                <input type="text" id="mc-username" class="mc-input" placeholder="Ej: Notch" autocomplete="off">
-                <button class="btn-modal" style="background: var(--c-urban);" onclick="procesarCarrito()">Continuar <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-
-            <!-- PASO 2: Elegir método (PayPal o Tarjeta) -->
-            <div id="estado-pago" class="modal-state">
-                <h3 class="mc-font" style="font-size: 1.2rem; color: #fff; margin-bottom: 10px;">PAGO SEGURO</h3>
-                
-                <div style="margin-bottom: 15px; text-align: left; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; font-family: 'Montserrat', sans-serif;">
-                    <div style="font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 10px; display: flex; justify-content: space-between;">
-                        <span id="cart-paquete" class="mc-font" style="color:var(--c-urban); font-size: 0.9rem;">...</span>
-                        <span id="cart-precio" style="color: #55ff55; font-weight: bold;">...</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: #888;">
-                        Para el jugador: <strong id="cart-name" style="color: #fff;">...</strong>
-                    </div>
+            <form id="formulario-member">
+                <div class="input-group">
+                    <label>Nombre en el juego (IGN)</label>
+                    <input type="text" name="IGN" required placeholder="Ej: Notch_Builder">
                 </div>
 
-                <!-- CONTENEDOR DE PAYPAL: Aquí aparecen los botones y la tarjeta -->
-                <div id="paypal-button-container" style="margin-top: 15px; min-height: 150px;"></div>
-            </div>
+                <div class="input-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" name="Correo" required placeholder="ejemplo@correo.com">
+                </div>
 
-            <!-- PASO 3: Mensaje de Éxito -->
-            <div id="estado-exito" class="modal-state">
-                <i class="fa-solid fa-circle-check" style="color: #55ff55; font-size: 4rem; margin-bottom: 15px;"></i>
-                <h3 class="mc-font" style="font-size: 1.2rem; color: #55ff55;">¡PAGO RECIBIDO!</h3>
-                <p style="color: #bbb; font-size: 0.95rem; margin-top: 15px; line-height: 1.5; font-family: 'Montserrat', sans-serif;">
-                    Pago procesado con éxito y de forma segura.<br>Tu rango será entregado en breve.
-                </p>
-                <button class="btn-modal" style="background: #fff; margin-top: 25px;" onclick="cerrarCarrito()">Finalizar</button>
-            </div>
+                <div class="input-group">
+                    <label>¿Por qué quieres el rango?</label>
+                    <textarea name="Motivo" required placeholder="Cuéntanos tus razones..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Link de tu Portafolio 
+                        <i class="fa-solid fa-circle-info tooltip-icon">
+                            <span class="tooltip-text">Un portafolio es un álbum web (Imgur, Drive, Behance) donde muestras fotos de tus mejores construcciones para evaluar tu nivel y talento.</span>
+                        </i>
+                    </label>
+                    <input type="url" name="Portafolio" required placeholder="https://imgur.com/tu-album">
+                </div>
+
+                <div class="rules-box">
+                    <h4>Reglas obligatorias:</h4>
+                    <ul>
+                        <li>No abusar de comandos como WorldEdit o VoxelSniper.</li>
+                        <li>Respetar estrictamente las parcelas y construcciones ajenas.</li>
+                        <li>Mantener actividad y ayudar a la comunidad.</li>
+                    </ul>
+                    <label class="checkbox-container">
+                        <input type="checkbox" required name="Acepta_Reglas" value="Sí">
+                        Acepto las reglas del rango
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit mc-font">Enviar Postulación <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <!-- ⬆️ FIN DEL NUEVO FORMULARIO ⬆️ -->
+    </section>
+
+    <div class="info-bar-container reveal">
+        <div class="info-bar">
+            <div class="info-item"><i class="fa-solid fa-cube"></i><div><h4>Creación de terrenos</h4><p>Técnicas para diseñar y modelar terrenos realistas o creativos.</p></div></div>
+            <div class="info-item"><i class="fa-solid fa-building-columns"></i><div><h4>Construcción de estructuras</h4><p>Desde bases simples hasta edificaciones complejas.</p></div></div>
+            <div class="info-item"><i class="fa-solid fa-screwdriver-wrench"></i><div><h4>Herramientas y recursos</h4><p>Optimización de materiales, texturas y detalles.</p></div></div>
         </div>
     </div>
 
-    <!-- SCRIPT DE LIBRERÍAS Y ANIMACIONES JS -->
+    <section class="cursos-section">
+        <div class="cursos-header reveal">
+            <h3 class="mc-font"><i class="fa-solid fa-graduation-cap"></i> CURSOS</h3>
+            <p>Selecciona un módulo para visualizar su contenido</p>
+        </div>
+
+        <div class="cursos-grid">
+            <div class="curso-card reveal" data-tilt data-tilt-max="10" onclick="abrirVideo('terrenos')"><img src="terrenos.png" alt="Terrenos"><div class="curso-title"><h4>TERRENOS</h4></div></div>
+            <div class="curso-card reveal" data-tilt data-tilt-max="10" onclick="abrirVideo('estructuras')"><img src="estructuras.png" alt="Estructuras"><div class="curso-title"><h4>ESTRUCTURAS</h4></div></div>
+            <div class="curso-card reveal" data-tilt data-tilt-max="10" onclick="abrirVideo('texturas')"><img src="texturizacion.png" alt="Texturas"><div class="curso-title"><h4>TEXTURIZACIÓN</h4></div></div>
+        </div>
+
+        <div class="extra-buttons reveal">
+            <button class="btn-extra axiom" onclick="abrirVideo('axiom')"><i class="fa-solid fa-cube"></i> ¡Guía de Axiom!</button>
+            <button class="btn-extra tips" onclick="abrirComandos()"><i class="fa-solid fa-terminal"></i> ¡Conoce comandos y mucho mas!</button>
+        </div>
+    </section>
+
+    <!-- 🟢 === SECCIÓN PREGUNTAS FRECUENTES === 🟢 -->
+    <section class="faq-section reveal">
+        <div class="faq-header">
+            <h3 class="mc-font"><i class="fa-regular fa-circle-question"></i> MÁS PREGUNTAS</h3>
+        </div>
+
+        <div class="faq-grid">
+            <!-- P1: Rango Member -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Como me postulo para el rango Member?</summary>
+                <div class="faq-answer">
+                    Para postularte para el rango member necesitas tener un nivel medio/alto de construccion, ademas de contar con un portafolio donde muestres tus mejores construcciones.<br><br>
+                    Si cuentas con todo esto, entra al link de abajo que te llevara al canal de tickets en discord, dentro tendras que crear un ticket y especificar que te quieres postular para el rango member y seguido subir el link de tu portafolio.<br>
+                    <a href="https://discord.gg/UhtWrZN8eP" target="_blank"><i class="fa-brands fa-discord"></i> https://discord.gg/UhtWrZN8eP</a>
+                </div>
+            </details>
+
+            <!-- P2: Descargar Construcción -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Puedo descargar mi Construccion?</summary>
+                <div class="faq-answer">
+                    ¡Claro! Puedes descargar tu construccion en formato .schem. Mira el siguiente video donde te explicamos como hacerlo.<br>
+                    <video controls class="faq-video">
+                        <source src="schematicayuda.mp4" type="video/mp4">
+                        Tu navegador no soporta el formato de video.
+                    </video>
+                </div>
+            </details>
+
+            <!-- P3: Premium / No premium -->
+            <details class="faq-card">
+                <summary class="faq-question">¿El servidor es premium o no premium?</summary>
+                <div class="faq-answer">
+                    En el servidor puedes entrar siendo premium o no premium, cualquiera de los dos puede entrar. Asi que ven y entra, la ip es:<br>
+                    <div class="ip-box">mc.urbanbuilder.net</div>
+                </div>
+            </details>
+
+            <!-- P4: Unirse a la comunidad -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Como puedo Unirme a la Comunidad?</summary>
+                <div class="faq-answer">
+                    Nuestra comunidad esta principalmente situada en Discord, asi que si te quieres unir a nuestra comunidad entra al siguiente enlace y unete a nuestro servidor de discord.<br>
+                    <a href="https://discord.gg/YTTAsk9Xb3" target="_blank"><i class="fa-brands fa-discord"></i> https://discord.gg/YTTAsk9Xb3</a>
+                </div>
+            </details>
+
+            <!-- P5: Dónde entrar al servidor -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Dónde puedo entrar al servidor?</summary>
+                <div class="faq-answer">
+                    En el siguiente video podras ver como agregar el servidor de Minecraft:<br>
+                    <video controls class="faq-video">
+                        <source src="entrarservidor.mp4" type="video/mp4">
+                        Tu navegador no soporta el formato de video.
+                    </video>
+                </div>
+            </details>
+
+            <!-- P6: Requisitos -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Hay algún requisito para entrar?</summary>
+                <div class="faq-answer">
+                    ¡No! no pedimos ningun requisito para que seas parte de nuestra comunidad, solo esperamos que tengas ganas de construir 😉
+                </div>
+            </details>
+
+            <!-- P7: Versiones -->
+            <details class="faq-card">
+                <summary class="faq-question">¿Qué versiones de Minecraft son compatibles?</summary>
+                <div class="faq-answer">
+                    En Urban Builders puedes entrar apartir de la 1.16 hasta la 1.21.5.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- 🟢 === FOOTER ACTUALIZADO A 2026 === 🟢 -->
+    <footer class="main-footer">
+        <p><strong>Urban Builders</strong> © 2026. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- MODAL VIDEOS YOUTUBE -->
+    <div id="video-modal" class="modal-overlay" onclick="verificarCierre(event)">
+        <div class="modal-content" id="modal-box">
+            <i class="fa-solid fa-xmark modal-close" onclick="cerrarVideo()"></i>
+            <div class="modal-header">
+                <h3 id="modal-titulo" class="mc-font">TÍTULO DEL CURSO</h3>
+                <p id="modal-subtitulo">Subtítulo</p>
+            </div>
+            <div id="modal-desc"></div>
+            <button class="btn-exit-modal" onclick="cerrarVideo()">Cerrar Módulo</button>
+        </div>
+    </div>
+
+    <!-- 🟢 === PANTALLA COMPLETA: GUÍA DE COMANDOS === 🟢 -->
+    <div id="comandos-overlay">
+        <canvas id="urban-particles"></canvas>
+        <div class="topbar">
+            <div>
+                <h1>UrbanBuilders — Academia de construccion con comandos</h1>
+                <div class="subtitle">WorldEdit · VoxelSniper · Arceon</div>
+            </div>
+            <button class="btn-cerrar-cmd mc-font" onclick="cerrarComandos()">
+                <i class="fa-solid fa-xmark"></i> Volver a la Academia
+            </button>
+        </div>
+
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="side-title">Contenido</div>
+                <a href="#sec1" class="active">1. Pintado de Terreno</a>
+                <a href="#sec2">2. Geometria y Formas</a>
+                <a href="#sec3">3. Brushes</a>
+                <a href="#sec4">4. Efectos Especiales</a>
+                <a href="#sec5">5. Terraformacion</a>
+                <a href="#sec6">6. Manipulacion de Bloques</a>
+                <a href="#sec7">7. Expresiones Avanzadas</a>
+                <a href="#sec8">8. World Edit with a Twist</a>
+                <a href="#sec9">9. Transformacion de Estructuras</a>
+                <a href="#sec10">10. Referencias</a>
+            </nav>
+
+            <main class="content">
+                <!-- SECCION 1 -->
+                <section class="section" id="sec1">
+                <h2>Seccion 1 — Pintado de Terreno</h2>
+                <div class="card">
+                    <h3>Reemplazos por profundidad</h3>
+                    <p>El comando <strong>//replace</strong> permite reemplazar bloques segun su profundidad relativa a la superficie.</p>
+                    <div class="cmd-label">Reemplazar bloques a 0 y 60 bloques de profundidad por piedra (42):</div>
+                    <div class="cmd-block">//replace /[0d][60d] 42</div>
+                    <div class="cmd-label">Reemplazar los primeros 5 bloques de profundidad por tierra:</div>
+                    <div class="cmd-block">//replace /[0d][5d] 3</div>
+                </div>
+                <div class="card">
+                    <h3>Reemplazos con angulos</h3>
+                    <div class="cmd-block">//replace /[0d][2d] 2<br>//gmask [0d][90d]<br>//replace 1 2</div>
+                </div>
+                <div class="card">
+                    <h3>Paletas de colores</h3>
+                    <div class="cmd-block">159:5,35:7,159:9,1,82</div>
+                    <p>Esto mezcla terracota blanca al 5%, concreto al 7%, etc.</p>
+                    <div class="cmd-block">//replace 1 159:5,35:7,159:9,1,82</div>
+                </div>
+                <div class="card">
+                    <h3>Simplex y electrico</h3>
+                    <div class="cmd-block">//replace 1 =simplex[scale=10,seed=42]2,3,1<br>//replace 1 =electric[pattern=1:0,scale=0.2]0</div>
+                </div>
+                <div class="card">
+                    <h3>Bosques y rocas con simplex</h3>
+                    <div class="cmd-block">//br sphere =simplex[scale=8]17,17:1,162 5<br>//gmask >1<br>//gmask [0d][3d]</div>
+                </div>
+                <div class="card">
+                    <h3>Capas: cesped, orillas y piedra</h3>
+                    <div class="cmd-block">//replace /[0d][1d] 2<br>//replace /[1d][3d] 12<br>//replace /[3d][60d] 1<br>//replace /[0d][0d][90a] 13</div>
+                </div>
+                <div class="card">
+                    <h3>Mesa Biome con comandos #mask</h3>
+                    <div class="cmd-block">//gmask #mask[0d][3d]<br>//replace 1 159:1,159:14,159:4,159:11,159:8<br>//replace /[3d][6d] 159:1,159:14<br>//replace /[6d][60d] 159:4,159:11</div>
+                </div>
+                <div class="card">
+                    <h3>Mascaras y secretos (gmask)</h3>
+                    <div class="cmd-block">//gmask >1<br>//gmask [0d][5d]<br>//gmask #existing<br>//gmask (clear)</div>
+                </div>
+                <div class="card">
+                    <h3>Picos y spikes</h3>
+                    <div class="cmd-block">/cs build spike s4 b87 l10</div>
+                </div>
+                <div class="card">
+                    <h3>Gradiente de colores</h3>
+                    <div class="cmd-block">//replace 1 =imgur[NeOUGcV][0,255]</div>
+                </div>
+                </section>
+
+                <!-- SECCION 2 -->
+                <section class="section" id="sec2">
+                <h2>Seccion 2 — Geometria y Formas</h2>
+                <div class="card">
+                    <h3>Esferas</h3>
+                    <div class="cmd-block">//sphere 1 10<br>//hsphere 1 10<br>//sphere 159:14,159:1,159:4 15</div>
+                </div>
+                <div class="card">
+                    <h3>Toroides y deformaciones</h3>
+                    <div class="cmd-block">//generate 1 (x^2+y^2+z^2+R^2-r^2)^2-4*R^2*(x^2+y^2) <= 0<br>//generate 159:11 (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0</div>
+                </div>
+                <div class="card">
+                    <h3>Anillos anidados</h3>
+                    <div class="cmd-block">//generate 95:0 (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0<br>//generate 95:14 (x^2+y^2+z^2+8^2-2.5^2)^2-4*8^2*(x^2+y^2) <= 0</div>
+                </div>
+                <div class="card">
+                    <h3>Variables: data=15, data=y+7</h3>
+                    <div class="cmd-block">//generate 95:data (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0<br>data=15<br>data=y+7</div>
+                </div>
+                <div class="card">
+                    <h3>Anillo torre</h3>
+                    <div class="cmd-block">//generate 95:data (x^2+y^2+z^2+8^2-3^2)^2-4*8^2*(x^2+y^2) <= 0<br>data=(y+7)%16<br>//stack 20</div>
+                </div>
+                <div class="card">
+                    <h3>Globo y huevo</h3>
+                    <div class="cmd-block">//generate 95:data (x^2+(y*1.3)^2+z^2-10^2) <= 0<br>data=(y+7)%16</div>
+                </div>
+                <div class="card">
+                    <h3>Conos y poligonos</h3>
+                    <div class="cmd-block">//generate 1 (sqrt(x^2+z^2)+y-10) <= 0<br>//generate 1 =polygon[n=6,r=10]0</div>
+                </div>
+                <div class="card">
+                    <h3>Cubo redondeado</h3>
+                    <div class="cmd-block">//generate 1 (max(abs(x),abs(y),abs(z))-8+0.3*min(abs(x),abs(y),abs(z))) <= 0</div>
+                </div>
+                <div class="card">
+                    <h3>Cebollas y hongos</h3>
+                    <div class="cmd-block">//generate 95:data (floor(sqrt(x^2+y^2+z^2))%2==0) && (sqrt(x^2+y^2+z^2) <= 10)<br>data=(y+7)%16</div>
+                </div>
+                </section>
+
+                <!-- SECCION 3 -->
+                <section class="section" id="sec3">
+                <h2>Seccion 3 — Brushes</h2>
+                <div class="card">
+                    <h3>Brocha de esfera</h3>
+                    <div class="cmd-block">//brush sphere 1 5<br>//brush sphere 159:14,159:1 3</div>
+                </div>
+                <div class="card">
+                    <h3>Brocha cilindrica y suavizado</h3>
+                    <div class="cmd-block">//brush cylinder 1 5 10<br>//brush smooth 5 3</div>
+                </div>
+                <div class="card">
+                    <h3>Brochas VoxelSniper</h3>
+                    <div class="cmd-block">/b bb 5<br>/b eb 159:14<br>/b blendball 5<br>/b splatter 159:1 5 3</div>
+                </div>
+                </section>
+
+                <!-- SECCION 4 -->
+                <section class="section" id="sec4">
+                <h2>Seccion 4 — Efectos Especiales</h2>
+                <div class="card">
+                    <h3>Arcoiris en X e Y</h3>
+                    <div class="cmd-block">//generate 95:data (sqrt(y^2+z^2) <= 5) && (abs(x) <= 50)<br>data=(x+8)%16</div>
+                </div>
+                <div class="card">
+                    <h3>Deformacion</h3>
+                    <div class="cmd-block">//deform =simplex[scale=0.05,seed=1]0,2<br>//deform x=x+simplex(x,z)*2</div>
+                </div>
+                <div class="card">
+                    <h3>Nieve y Trigo</h3>
+                    <div class="cmd-block">//gmask [0d][45d]<br>//replace 1,2,3 78<br>//brush scatter 59:7 50 3</div>
+                </div>
+                </section>
+
+                <!-- SECCION 5 -->
+                <section class="section" id="sec5">
+                <h2>Seccion 5 — Terraformacion</h2>
+                <div class="card">
+                    <h3>Elevar, hundir y suavizar</h3>
+                    <div class="cmd-block">//raise 5<br>//lower 3<br>//smooth 5 1,2,3</div>
+                </div>
+                <div class="card">
+                    <h3>Crear montañas</h3>
+                    <div class="cmd-block">//brush raise =simplex[scale=0.03,seed=42]0,8 15<br>//smooth 2<br>//replace /[0d][3d] 2</div>
+                </div>
+                <div class="card">
+                    <h3>Crear cuevas</h3>
+                    <div class="cmd-block">//gmask 1<br>//replace 1 =simplex[scale=0.08,seed=99]0,1<br>//replace 0 0</div>
+                </div>
+                </section>
+
+                <!-- SECCION 6 -->
+                <section class="section" id="sec6">
+                <h2>Seccion 6 — Manipulacion de Bloques</h2>
+                <div class="card">
+                    <h3>Operaciones Basicas</h3>
+                    <div class="cmd-block">//replace 1 2<br>//replace !air 0<br>//set 1<br>//copy<br>//paste -a</div>
+                </div>
+                <div class="card">
+                    <h3>Rotar, voltear y expandir</h3>
+                    <div class="cmd-block">//rotate 90<br>//flip up<br>//expand 10 up<br>//shift 10 up</div>
+                </div>
+                </section>
+
+                <!-- SECCION 7 -->
+                <section class="section" id="sec7">
+                <h2>Seccion 7 — Expresiones Avanzadas</h2>
+                <div class="card">
+                    <h3>Vidrio en aire (Estructuras huecas)</h3>
+                    <div class="cmd-block">//generate 20 query(x,y,z) == 0 && (query(x+1,y,z) != 0 || query(x-1,y,z) != 0 || query(x,y+1,z) != 0 || query(x,y-1,z) != 0 || query(x,y,z+1) != 0 || query(x,y,z-1) != 0)</div>
+                </div>
+                <div class="card">
+                    <h3>Pacas de heno y Pilares</h3>
+                    <div class="cmd-block">//generate 170:data (sqrt(x^2+y^2+z^2) <= 8)<br>data=type==0?0:(type==1?8:4)</div>
+                </div>
+                <div class="card">
+                    <h3>Variables utiles</h3>
+                    <div class="cmd-block">x, y, z        - coordenadas del bloque<br>data           - subtipo del bloque<br>query(x,y,z)   - consulta bloque relativo<br>rand(min,max)  - aleatorio</div>
+                </div>
+                </section>
+
+                <!-- SECCION 8 -->
+                <section class="section" id="sec8">
+                <h2>Seccion 8 — World Edit with a Twist</h2>
+                <div class="card">
+                    <h3>Toroide retorcido e inclinado</h3>
+                    <div class="cmd-block">//generate 95:data
+let(
+  twist, y*0.15,
+  nx, x*cos(twist)-z*sin(twist),
+  nz, x*sin(twist)+z*cos(twist),
+  tilt, 0.5,
+  ry, nx*sin(tilt)+y*cos(tilt)
+)
+(nx^2+ry^2+nz^2+8^2-3^2)^2-4*8^2*(nx^2+ry^2) <= 0
+data=(floor(y)+8)%16</div>
+                </div>
+                </section>
+
+                <!-- SECCION 9 -->
+                <section class="section" id="sec9">
+                <h2>Seccion 9 — Transformacion de Estructuras</h2>
+                <div class="card">
+                    <h3>Paisaje Nether</h3>
+                    <div class="cmd-block">//replace 2 88<br>//replace 3 87<br>//replace 12 13<br>//replace 8 10<br>//replace 87 =simplex[scale=0.1]87,0</div>
+                </div>
+                <div class="card">
+                    <h3>Castillo Version End</h3>
+                    <div class="cmd-block">//replace 98 121<br>//replace 4 49<br>//replace 5 49<br>//replace 89 120<br>//replace 121 =simplex[scale=0.08]121,0</div>
+                </div>
+                </section>
+
+                <!-- SECCION 10 -->
+                <section class="section" id="sec10">
+                <h2>Seccion 10 — Referencias</h2>
+                <div class="card">
+                    <h3>Enlaces útiles</h3>
+                    <div class="link-list">
+                        <a href="https://worldedit.enginehub.org/en/latest/" target="_blank">WorldEdit — Documentación</a>
+                        <a href="https://www.desmos.com/" target="_blank">Desmos — Gráficas 3D</a>
+                        <a href="https://blockpalette.net/" target="_blank">BlockPalette — Mezclador de colores</a>
+                    </div>
+                </div>
+                </section>
+            </main>
+        </div>
+        <footer class="footer">
+            <strong>UrbanBuilders</strong> — Construye sin limites
+        </footer>
+    </div>
+
+    <!-- LIBRERÍAS Y SCRIPTS DE LA ACADEMIA -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script>
-        function copyServerIP() {
-            const ip = "mc.urbanbuilder.net";
-            navigator.clipboard.writeText(ip).then(() => {
-                const btn = document.getElementById("ip-btn");
-                const txt = document.getElementById("ip-text");
-                btn.classList.add("copied");
-                txt.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiada!';
-                btn.style.background = "#55ff55";
-                btn.style.color = "#000";
-                setTimeout(() => {
-                    btn.classList.remove("copied");
-                    txt.innerText = "Jugar Ahora";
-                    btn.style.background = "var(--c-urban)";
-                }, 2500);
-            }).catch(err => {
-                alert("No se pudo copiar la IP. Manulamente es: mc.urbanbuilder.net");
-            });
-        }
+        // ANIMACIONES GENERALES
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
 
-        const interactiveSections = document.querySelectorAll('.interactive-bg');
-        interactiveSections.forEach(section => {
-            section.addEventListener('mousemove', (e) => {
-                const rect = section.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                section.style.setProperty('--mouse-x', `${x}px`);
-                section.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-
+        // PARTICULAS DEL FONDO PRINCIPAL
         const particleContainer = document.getElementById('particles-js');
-        const colors = ['#00e5ff', '#ffaa00', '#ffffff']; 
+        const colors = ['#00e5ff', '#ffaa00', '#ffffff', '#b829ff']; 
         for (let i = 0; i < 20; i++) { 
-            let p = document.createElement('div');
-            p.className = 'particle';
-            let size = Math.random() * 4 + 1;
-            p.style.width = size + 'px'; p.style.height = size + 'px';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = (Math.random() * 4 + 3) + 's';
-            p.style.animationDelay = Math.random() * 5 + 's';
+            let p = document.createElement('div'); p.className = 'particle';
+            let size = Math.random() * 4 + 2; p.style.width = size + 'px'; p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw'; p.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            p.style.animationDelay = Math.random() * 3 + 's';
             p.style.background = colors[Math.floor(Math.random() * colors.length)];
             particleContainer.appendChild(p);
         }
 
-        fetch('https://discord.com/api/v9/invites/kWhUjZK3an?with_counts=true')
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.approximate_member_count) {
-                    document.getElementById('discord-members').innerText = `+${data.approximate_member_count.toLocaleString()} Miembros`;
-                } else { document.getElementById('discord-members').innerText = "Únete al Discord"; }
-            }).catch(() => document.getElementById('discord-members').innerText = "Únete al Discord");
+        function crearVideoGlow(videoID) {
+            return `
+                <div class="glow-box">
+                    <div class="video-wrapper" onclick="reproducirYoutube(this, '${videoID}')">
+                        <img src="https://i.ytimg.com/vi/${videoID}/maxresdefault.jpg" alt="Miniatura YouTube">
+                        <div class="yt-play-btn"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                </div>
+            `;
+        }
 
-        fetch('https://api.mcsrvstat.us/2/mc.urbanbuilder.net')
-            .then(response => response.json())
-            .then(data => {
-                const playerCard = document.getElementById('server-players');
-                if (data.online) {
-                    playerCard.innerText = data.players.online;
-                    playerCard.style.color = "#55ff55"; 
-                } else {
-                    playerCard.innerText = "0"; 
-                    playerCard.style.color = "#ff5555"; 
-                }
-            })
-            .catch(() => document.getElementById('server-players').innerText = "Offline");
+        // 🌟 CURSOS DE YOUTUBE 🌟
+        const cursos = {
+            'terrenos': {
+                titulo: "GUÍAS DE TERRENOS", sub: "Aprende con nuestros constructores", color: "var(--c-urban)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Primer Guia: Arceon</h3>
+                        <p class="guide-author">Por: <span>zKMilo_A</span></p>
+                        ${crearVideoGlow('KsJdJ9UaqQw')}
+                        <p class="guide-desc">En este video podras aprender a crear formas con el pincel boulder del plugin arceon, con las que podras crear terrenos increibles</p>
+                    </div>
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Segunda Guia: estructura del terreno</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('btkHhv9DP6I')}
+                        <p class="guide-desc">¿Quieres aprender a crear terrenos realistas y bien detallados en Minecraft? Esta guía te muestra paso a paso cómo planear, formar, pintar y detallar tu terreno para que se vea natural y único. Ideal para mejorar tus construcciones desde la base. ¡Empecemos desde el suelo!</p>
+                    </div>
+                `
+            },
+            'estructuras': {
+                titulo: "ESTRUCTURAS", sub: "Diseño, Volumetría y Profundidad", color: "var(--c-urban)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Primer Guia: Casas</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('v4R2D1VEpFs')}
+                        <p class="guide-desc">En este video podras ver cada uno de los pasos mas importantes a la hora de elaborar una casa, desde el planeo, forma, entornos y el pintado</p>
+                    </div>
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Segunda Guia: Arboles</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('9UcVM80CoX4')}
+                        <p class="guide-desc">¿Quieres llevar tus construcciones en Minecraft al siguiente nivel? En esta guía aprenderás paso a paso cómo crear árboles personalizados que harán que tu mundo se vea increíble. Desde elegir la referencia, hasta dar forma a las ramas, colocar hojas y añadir pequeños detalles decorativos. ¡Vamos a construir juntos!</p>
+                    </div>
+                `
+            },
+            'texturas': {
+                titulo: "TEXTURIZACIÓN", sub: "Block Blending y Teoría del Color", color: "var(--c-urban)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Primer Guia: Pintado</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('5mQx-P3WyTk')}
+                        <p class="guide-desc">¿Tu construcción se ve bien pero sientes que le falta vida? Este video te enseña cómo pintar y texturizar en Minecraft para que tus creaciones se vean mucho más detailed y realistas. Desde las bases del color hasta técnicas avanzadas y un ejemplo práctico. ¡Vamos a darle color a tus ideas!</p>
+                    </div>
+                `
+            },
+            'axiom': {
+                titulo: "GUÍA DE AXIOM", sub: "Herramientas de Construcción Avanzada", color: "var(--c-axiom)",
+                html: `
+                    <div class="guide-block">
+                        <h3 class="guide-title mc-font">Guia Basica: Axiom</h3>
+                        <p class="guide-author">Por: <span>Pepi</span></p>
+                        ${crearVideoGlow('0ylkLvh4bsI')}
+                        <p class="guide-desc">Aprende a dominar el mod Axiom paso a paso. Descubre cómo utilizar sus increíbles herramientas de construcción, pinceles y menús para crear estructuras y terrenos a una velocidad inimaginable en Minecraft.</p>
+                    </div>
+                `
+            }
+        };
 
-        VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
+        // LÓGICA DE MODALES DE VIDEO
+        const modal = document.getElementById('video-modal');
+        const modalContent = document.getElementById('modal-box');
         
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-        revealElements.forEach(el => revealObserver.observe(el));
+        function abrirVideo(cursoId) {
+            const data = cursos[cursoId];
+            if(!data) return;
+            modalContent.scrollTop = 0;
+            document.getElementById('modal-titulo').innerText = data.titulo;
+            document.getElementById('modal-subtitulo').innerText = data.sub;
+            document.getElementById('modal-desc').innerHTML = data.html;
+            document.getElementById('modal-subtitulo').style.color = data.color;
+            modalContent.style.borderColor = data.color;
+            modal.classList.add('active');
+        }
 
-        const header = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(5,5,5,0.95)'; header.style.padding = '10px 5%';
-            } else {
-                header.style.background = 'transparent'; header.style.padding = '20px 5%';
-            }
-        }, { passive: true });
+        function reproducirYoutube(elemento, videoID) {
+            elemento.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoID}?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+            elemento.onclick = null;
+        }
 
-        let paqueteActual = null;
-        let paypalRendered = false; 
-        let timerSkin;
+        function cerrarVideo() {
+            modal.classList.remove('active');
+            setTimeout(() => { document.getElementById('modal-desc').innerHTML = ""; }, 200); 
+        }
+        function verificarCierre(e) { if(e.target === modal) cerrarVideo(); }
 
-        document.getElementById('mc-username').addEventListener('input', (e) => {
-            clearTimeout(timerSkin);
-            const user = e.target.value.trim();
-            if (user.length >= 3) {
-                timerSkin = setTimeout(() => {
-                    document.getElementById('live-skin-preview').src = `https://mc-heads.net/avatar/${user}/100`;
-                }, 600); 
-            }
+
+        // 🟢 === LÓGICA DEL MODAL DE COMANDOS === 🟢
+        const comandosOverlay = document.getElementById('comandos-overlay');
+        
+        function abrirComandos() {
+            comandosOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function cerrarComandos() {
+            comandosOverlay.classList.remove('active');
+            document.body.style.overflow = ''; 
+        }
+
+        var links = document.querySelectorAll('#comandos-overlay .sidebar a');
+        links.forEach(function(link){
+            link.addEventListener('click', function(e){
+                links.forEach(function(l){ l.classList.remove('active'); });
+                link.classList.add('active');
+            });
         });
 
-        function abrirCarrito(nombre, precio) {
-            paqueteActual = { nombre: nombre, precio: precio };
-            document.getElementById('tebex-modal').classList.add('active');
-            document.querySelectorAll('.modal-state').forEach(el => el.classList.remove('active'));
-            document.getElementById('estado-nick').classList.add('active');
-            document.getElementById('mc-username').value = ""; 
-            document.getElementById('live-skin-preview').src = `https://mc-heads.net/avatar/Steve/100`; 
-        }
+        // 🟢 === EFECTO PARTICULAS DEL MODAL COMANDOS === 🟢
+        (function(){
+            var canvas = document.getElementById('urban-particles');
+            var ctx = canvas.getContext('2d');
+            var particles = [];
+            var particleCount = 60;
 
-        function cerrarCarrito() { 
-            document.getElementById('tebex-modal').classList.remove('active'); 
-            setTimeout(() => {
-                document.getElementById('paypal-button-container').innerHTML = '';
-                paypalRendered = false;
-            }, 300);
-        }
-
-        function procesarCarrito() {
-            const username = document.getElementById('mc-username').value.trim();
-            if (!username) return alert("Por favor, ingresa tu nombre de Minecraft.");
-            const tituloPaquete = document.getElementById('cart-paquete');
-            tituloPaquete.innerText = paqueteActual.nombre;
-            if(paqueteActual.nombre.includes('URBAN')) tituloPaquete.style.color = "var(--c-urban)";
-            if(paqueteActual.nombre.includes('ARCHT+')) tituloPaquete.style.color = "var(--c-archt)";
-            document.getElementById('cart-precio').innerText = "$" + paqueteActual.precio;
-            document.getElementById('cart-name').innerText = username;
-            document.querySelectorAll('.modal-state').forEach(el => el.classList.remove('active'));
-            document.getElementById('estado-pago').classList.add('active');
-
-            if (!paypalRendered) {
-                paypal.Buttons({
-                    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
-                    createOrder: function(data, actions) {
-                        return actions.order.create({
-                            purchase_units: [{
-                                description: `Rango: ${paqueteActual.nombre} | Usuario MC: ${username}`,
-                                amount: { currency_code: "USD", value: parseFloat(paqueteActual.precio).toFixed(2) }
-                            }],
-                            application_context: {
-                                shipping_preference: 'NO_SHIPPING'
-                            }
-                        });
-                    },
-                    onApprove: function(data, actions) {
-                        return actions.order.capture().then(function(details) {
-                            document.querySelectorAll('.modal-state').forEach(el => el.classList.remove('active'));
-                            document.getElementById('estado-exito').classList.add('active');
-                        });
-                    },
-                    onError: function(err) { console.error("Error en pago:", err); }
-                }).render('#paypal-button-container');
-                paypalRendered = true;
+            function resize(){
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
-        }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function createParticle(){
+                return {
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+                    size: Math.random() * 2 + 0.5, opacity: Math.random() * 0.4 + 0.1
+                };
+            }
+
+            for(var i = 0; i < particleCount; i++){ particles.push(createParticle()); }
+
+            function animate(){
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if(comandosOverlay.classList.contains('active')) {
+                    for(var i = 0; i < particles.length; i++){
+                        var p = particles[i];
+                        p.x += p.vx; p.y += p.vy;
+                        if(p.x < 0) p.x = canvas.width; if(p.x > canvas.width) p.x = 0;
+                        if(p.y < 0) p.y = canvas.height; if(p.y > canvas.height) p.y = 0;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(41, 128, 185, ' + p.opacity + ')';
+                        ctx.fill();
+
+                        for(var j = i + 1; j < particles.length; j++){
+                            var p2 = particles[j];
+                            var dx = p.x - p2.x; var dy = p.y - p2.y;
+                            var dist = Math.sqrt(dx * dx + dy * dy);
+                            if(dist < 120){
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.strokeStyle = 'rgba(41, 128, 185, ' + (0.08 * (1 - dist / 120)) + ')';
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // 🟢 === NUEVO: ENVÍO AL WEBHOOK DE DISCORD === 🟢
+        document.getElementById('formulario-member').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const webhookUrl = 'https://discord.com/api/webhooks/1529543317635727503/ks9iL--8BgbHEl-o4qv2hoyzAnnVY_IK8xYqz6rLRN8mExj9VC41gTNtydfqqRvhA8zl';
+
+            const ign = document.querySelector('input[name="IGN"]').value;
+            const correo = document.querySelector('input[name="Correo"]').value;
+            const motivo = document.querySelector('textarea[name="Motivo"]').value;
+            const portafolio = document.querySelector('input[name="Portafolio"]').value;
+
+            const mensaje = {
+                username: "Sistema de Postulaciones", 
+                avatar_url: "https://i.ibb.co/Dfg78xpb/logo.png", 
+                embeds: [
+                    {
+                        title: "📝 ¡Nueva Postulación para Member!",
+                        color: 58879,
+                        fields: [
+                            { name: "🎮 IGN", value: ign, inline: true },
+                            { name: "📧 Correo", value: correo, inline: true },
+                            { name: "💡 Motivo", value: motivo },
+                            { name: "📁 Portafolio", value: portafolio }
+                        ],
+                        footer: { text: "Urban Builders Academy" },
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            };
+
+            const btnSubmit = document.querySelector('.btn-submit');
+            const textoOriginal = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = "Enviando... <i class='fa-solid fa-spinner fa-spin'></i>";
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(mensaje)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('¡Postulación enviada con éxito a nuestro Discord!');
+                    document.getElementById('formulario-member').reset();
+                } else {
+                    alert('Hubo un error al enviar. Inténtalo más tarde.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error de conexión.');
+            })
+            .finally(() => {
+                btnSubmit.innerHTML = textoOriginal;
+            });
+        });
     </script>
 </body>
 </html>
