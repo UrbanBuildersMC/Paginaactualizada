@@ -77,13 +77,13 @@
         .btn-discord { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); color: #fff; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
         .btn-discord:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); transform: translateY(-3px); }
 
-        /* 💎 FORMULARIO DE POSTULACIÓN AÚN MÁS COMPACTO 💎 */
+        /* 💎 FORMULARIO DE POSTULACIÓN 💎 */
         .form-postulacion {
-            flex: 0 1 310px; /* Reducido de 380px a 310px */
+            flex: 0 1 310px;
             background: rgba(10, 10, 15, 0.7);
             border: 2px solid var(--c-urban);
             border-radius: 12px;
-            padding: 15px 20px; /* Padding interno reducido */
+            padding: 15px 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.05);
             backdrop-filter: blur(10px);
             transform: perspective(1000px) rotateY(-5deg);
@@ -94,20 +94,23 @@
             box-shadow: 0 15px 50px rgba(0, 229, 255, 0.2);
             border-color: var(--c-author);
         }
-        .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); } /* Título más pequeño */
+        .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
         .form-postulacion h3 i { color: var(--c-archt); }
         .form-subtitle { text-align: center; color: var(--c-urban); font-size: 0.7rem; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
         
-        .input-group { margin-bottom: 10px; position: relative;} /* Menos espacio entre inputs */
-        .input-group label { display: block; font-size: 0.7rem; color: #ddd; margin-bottom: 4px; font-weight: 600; } /* Textos descriptivos más pequeños */
+        .input-group { margin-bottom: 10px; position: relative;}
+        .input-group label { display: block; font-size: 0.7rem; color: #ddd; margin-bottom: 4px; font-weight: 600; }
         .input-group input, .input-group textarea {
             width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.2);
             padding: 6px 8px; border-radius: 6px; color: #fff; font-family: 'Montserrat', sans-serif;
-            transition: all 0.3s; font-size: 0.75rem; /* Cajas de texto más compactas */
+            transition: all 0.3s; font-size: 0.75rem;
         }
-        .input-group textarea { height: 50px; resize: none; } /* Altura fija reducida */
+        .input-group textarea { height: 50px; resize: none; }
         .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--c-urban); box-shadow: 0 0 15px rgba(0,229,255,0.3); background: rgba(0, 0, 0, 0.8); }
         
+        /* 🪤 CAMPO TRAMPA BOT (Invisible) */
+        .hp-field { display: none !important; opacity: 0; position: absolute; left: -9999px; }
+
         /* Tooltip del portafolio */
         .tooltip-icon { color: var(--c-archt); margin-left: 5px; cursor: help; position: relative; font-size: 0.85rem;}
         .tooltip-text {
@@ -122,7 +125,7 @@
         /* Caja de reglas */
         .rules-box { background: rgba(255, 170, 0, 0.05); border-left: 3px solid var(--c-archt); padding: 10px; margin-bottom: 12px; border-radius: 4px; }
         .rules-box h4 { color: var(--c-archt); font-size: 0.7rem; margin-bottom: 4px; text-transform: uppercase; font-weight: 800;}
-        .rules-box ul { padding-left: 15px; color: #bbb; margin-bottom: 6px; font-size: 0.65rem; line-height: 1.4; } /* Letra más pequeña */
+        .rules-box ul { padding-left: 15px; color: #bbb; margin-bottom: 6px; font-size: 0.65rem; line-height: 1.4; }
         .checkbox-container { display: flex; align-items: center; cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 600; user-select: none; }
         .checkbox-container input { margin-right: 6px; accent-color: var(--c-author); width: 12px; height: 12px; cursor: pointer; }
 
@@ -338,12 +341,15 @@
             <a href="https://discord.com/invite/kWhUjZK3an" target="_blank" class="btn-discord">Obtén más ayuda en nuestro Discord <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         </div>
 
-        <!-- ⬇️ NUEVO FORMULARIO CONECTADO A DISCORD ⬇️ -->
+        <!-- ⬇️ FORMULARIO BLINDADO CON CLOUDFLARE WORKER + HONEYPOT ⬇️ -->
         <div class="form-postulacion">
             <h3 class="mc-font"><i class="fa-solid fa-gem"></i> RANGO MEMBER</h3>
             <p class="form-subtitle">¡Postúlate Ahora!</p>
             
             <form id="formulario-member">
+                <!-- 🪤 CAMPO TRAMPA HONEYPOT (Invisible para humanos, engaña a los bots) -->
+                <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
+
                 <div class="input-group">
                     <label>Nombre en el juego (IGN)</label>
                     <input type="text" name="IGN" required placeholder="Ej: Notch_Builder">
@@ -384,7 +390,7 @@
                 <button type="submit" class="btn-submit mc-font">Enviar Postulación <i class="fa-solid fa-paper-plane"></i></button>
             </form>
         </div>
-        <!-- ⬆️ FIN DEL NUEVO FORMULARIO ⬆️ -->
+        <!-- ⬆️ FIN DEL FORMULARIO ⬆️ -->
     </section>
 
     <div class="info-bar-container reveal">
@@ -490,7 +496,7 @@
         </div>
     </section>
 
-    <!-- 🟢 === FOOTER ACTUALIZADO A 2026 === 🟢 -->
+    <!-- 🟢 === FOOTER PRINCIPAL === 🟢 -->
     <footer class="main-footer">
         <p><strong>Urban Builders</strong> © 2026. Todos los derechos reservados.</p>
     </footer>
@@ -961,60 +967,51 @@ data=(floor(y)+8)%16</div>
             animate();
         })();
 
-        // 🟢 === NUEVO: ENVÍO AL WEBHOOK DE DISCORD === 🟢
+        // 🟢 === ENVÍO SEGURO A TU CLOUDFLARE WORKER === 🟢
         document.getElementById('formulario-member').addEventListener('submit', function(e) {
-            e.preventDefault(); // Evita que la página se recargue
+            e.preventDefault();
 
-            const webhookUrl = 'https://discord.com/api/webhooks/1529543317635727503/ks9iL--8BgbHEl-o4qv2hoyzAnnVY_IK8xYqz6rLRN8mExj9VC41gTNtydfqqRvhA8zl';
+            // Tu Cloudflare Worker que oculta el webhook y atrapa la IP
+            const workerUrl = 'https://ubform.sebastianmurcia28.workers.dev/';
 
-            // Capturar datos del formulario
             const ign = document.querySelector('input[name="IGN"]').value;
             const correo = document.querySelector('input[name="Correo"]').value;
             const motivo = document.querySelector('textarea[name="Motivo"]').value;
             const portafolio = document.querySelector('input[name="Portafolio"]').value;
+            const honeypot = document.querySelector('input[name="website"]').value;
 
-            // Formato de "Embed" para que se vea bonito en Discord
-            const mensaje = {    
-                embeds: [
-                    {
-                        title: "📝 ¡Nueva Postulación para Member!",
-                        color: 58879, // Color Cyan
-                        fields: [
-                            { name: "🎮 IGN", value: ign, inline: true },
-                            { name: "📧 Correo", value: correo, inline: true },
-                            { name: "💡 Motivo", value: motivo },
-                            { name: "📁 Portafolio", value: portafolio }
-                        ],
-                        footer: { text: "Urban Builders Academy" },
-                        timestamp: new Date().toISOString()
-                    }
-                ]
+            const payload = {
+                ign: ign,
+                correo: correo,
+                motivo: motivo,
+                portafolio: portafolio,
+                website: honeypot
             };
 
             const btnSubmit = document.querySelector('.btn-submit');
             const textoOriginal = btnSubmit.innerHTML;
             btnSubmit.innerHTML = "Enviando... <i class='fa-solid fa-spinner fa-spin'></i>";
 
-            // Petición de envío a Discord
-            fetch(webhookUrl, {
+            fetch(workerUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(mensaje)
+                body: JSON.stringify(payload)
             })
-            .then(response => {
-                if (response.ok) {
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
                     alert('¡Postulación enviada con éxito a nuestro Discord!');
-                    document.getElementById('formulario-member').reset(); // Limpia el formulario
+                    document.getElementById('formulario-member').reset();
                 } else {
-                    alert('Hubo un error al enviar. Inténtalo más tarde.');
+                    alert('Hubo un error al enviar la postulación. Inténtalo más tarde.');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error de conexión.');
+                alert('Error de conexión con el servidor.');
             })
             .finally(() => {
-                btnSubmit.innerHTML = textoOriginal; // Regresa el botón a la normalidad
+                btnSubmit.innerHTML = textoOriginal;
             });
         });
     </script>
