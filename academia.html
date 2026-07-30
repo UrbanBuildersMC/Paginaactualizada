@@ -1,6 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+    // Cambia la URL visualmente a /academia sin recargar la página
+    if (window.location.pathname.endsWith('academia.html')) {
+        window.history.replaceState({}, document.title, "/academia");
+    }
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia | Urban Builders</title>
