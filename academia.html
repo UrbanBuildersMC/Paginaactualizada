@@ -2,10 +2,13 @@
 <html lang="es">
 <head>
     <script>
-    // Cambia la URL visualmente a /academia sin recargar la página
-    if (window.location.pathname.endsWith('academia.html')) {
-        window.history.replaceState({}, document.title, "/academia");
-    }
+    (function() {
+        // Detecta si la dirección contiene "academia.html"
+        if (window.location.href.includes('academia.html')) {
+            // Reemplaza visualmente la barra por /academia de forma limpia
+            window.history.replaceState(null, null, "/academia");
+        }
+    })();
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
