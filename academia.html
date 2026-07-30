@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+        // Limpia la barra de direcciones para quitar .html sin causar error 404
+        if (window.location.pathname.endsWith('.html')) {
+            const cleanPath = window.location.pathname.replace(/\.html$/, '');
+            window.history.replaceState(null, '', cleanPath);
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia | Urban Builders</title>
@@ -323,11 +330,11 @@
     <div id="particles-js"></div>
 
     <header>
-        <a href="/" class="nav-logo">
+        <a href="index.html" class="nav-logo">
             <img src="logo.png" alt="Logo" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
             <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
         </a>
-        <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a>
     </header>
 
     <section class="hero-academia reveal">
@@ -837,7 +844,7 @@ data=(floor(y)+8)%16</div>
                         <h3 class="guide-title mc-font">Primer Guia: Pintado</h3>
                         <p class="guide-author">Por: <span>Pepi</span></p>
                         ${crearVideoGlow('5mQx-P3WyTk')}
-                        <p class="guide-desc">¿Tu construcción se ve bien pero sientes que le falta vida? Este video te enseña cómo pintar y texturizar en Minecraft para que tus creaciones se vean mucho más detailed y realistas. Desde las bases del color hasta técnicas avanzadas y un ejemplo práctico. ¡Vamos a darle color a tus ideas!</p>
+                        <p class="guide-desc">¿Tu construcción se ve bien pero sientes que le falta vida? Este video te enseña cómo pintar y texturizar en Minecraft para que tus creaciones se vean mucho más detalladas y realistas. Desde las bases del color hasta técnicas avanzadas y un ejemplo práctico. ¡Vamos a darle color a tus ideas!</p>
                     </div>
                 `
             },
