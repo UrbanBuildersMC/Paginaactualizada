@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Academia | Urban Builders</title>
     
-    <!-- 🌟 FAVICON (Icono de la pestaña) 🌟 -->
-    <link rel="icon" type="image/png" href="logo.png">
+    <!-- 🌟 FAVICON (Actualizado con imagen llamada favicon) 🌟 -->
+    <link rel="icon" type="image/png" href="favicon.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        /* === 🎨 NUEVA PALETA DE COLORES (Basada en el logo naranja/amarillo) === */
         :root {
-            --c-urban: #00e5ff; 
-            --c-archt: #ffaa00; 
-            --c-axiom: #b829ff; 
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --c-author: #00ffa6; 
+            --c-urban: #ffaa00;     /* Amarillo / Naranja brillante del hacha */
+            --c-archt: #ff5500;     /* Naranja intenso / Fuego */
+            --c-axiom: #ff8800;     /* Naranja secundario para Axiom */
+            --glass-border: rgba(255, 170, 0, 0.15);
+            --c-author: #ffaa00;    /* Tono destacado */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,7 +47,7 @@
         header { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5,5,5,0.98); border-bottom: 1px solid var(--glass-border); z-index: 1000; }
         .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.2s; }
         .nav-logo:hover { transform: scale(1.05); }
-        .nav-logo img { height: 45px; filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4)); }
+        .nav-logo img { height: 45px; filter: drop-shadow(0 0 10px rgba(255, 170, 0, 0.4)); }
         .nav-logo h1 { font-size: 1.1rem; color: #fff; text-shadow: 2px 2px 0 #000; letter-spacing: -1px; }
         .nav-logo h1 span { color: var(--c-urban); }
         .btn-back { background: transparent; color: #fff; padding: 10px 20px; border-radius: 8px; font-weight: 700; text-decoration: none; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; font-size: 0.85rem; }
@@ -69,13 +70,13 @@
             flex: 1;
         }
         .hero-content-left h2 { font-size: 3rem; margin-bottom: 25px; text-shadow: 5px 5px 20px rgba(0,0,0,0.9); line-height: 1.3;}
-        .hero-content-left h2 span { color: var(--c-urban); text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+        .hero-content-left h2 span { color: var(--c-urban); text-shadow: 0 0 20px rgba(255,170,0,0.4); }
         .hero-content-left p { font-size: 1.2rem; color: #ddd; max-width: 650px; line-height: 1.6; margin-bottom: 40px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
         .hero-content-left p span.terrenos { color: var(--c-archt); font-weight: bold;}
         .hero-content-left p span.estructuras { color: var(--c-urban); font-weight: bold;}
-        .hero-content-left p span.tips { color: #55ff55; font-weight: bold;}
-        .btn-discord { background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); color: #fff; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
-        .btn-discord:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); transform: translateY(-3px); }
+        .hero-content-left p span.tips { color: #ffaa00; font-weight: bold;}
+        .btn-discord { background: rgba(255, 170, 0, 0.1); border: 1px solid var(--c-urban); color: #fff; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
+        .btn-discord:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(255,170,0,0.6); transform: translateY(-3px); }
 
         /* 💎 FORMULARIO DE POSTULACIÓN 💎 */
         .form-postulacion {
@@ -84,14 +85,14 @@
             border: 2px solid var(--c-urban);
             border-radius: 12px;
             padding: 15px 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 170, 0, 0.05);
             backdrop-filter: blur(10px);
             transform: perspective(1000px) rotateY(-5deg);
             transition: all 0.4s ease;
         }
         .form-postulacion:hover {
             transform: perspective(1000px) rotateY(0deg) translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0, 229, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(255, 170, 0, 0.2);
             border-color: var(--c-author);
         }
         .form-postulacion h3 { color: #fff; font-size: 0.9rem; text-align: center; margin-bottom: 3px; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); }
@@ -106,7 +107,7 @@
             transition: all 0.3s; font-size: 0.75rem;
         }
         .input-group textarea { height: 50px; resize: none; }
-        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--c-urban); box-shadow: 0 0 15px rgba(0,229,255,0.3); background: rgba(0, 0, 0, 0.8); }
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--c-urban); box-shadow: 0 0 15px rgba(255,170,0,0.3); background: rgba(0, 0, 0, 0.8); }
         
         /* 🪤 CAMPO TRAMPA BOT (Invisible) */
         .hp-field { display: none !important; opacity: 0; position: absolute; left: -9999px; }
@@ -129,8 +130,8 @@
         .checkbox-container { display: flex; align-items: center; cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 600; user-select: none; }
         .checkbox-container input { margin-right: 6px; accent-color: var(--c-author); width: 12px; height: 12px; cursor: pointer; }
 
-        .btn-submit { width: 100%; background: rgba(0, 229, 255, 0.15); border: 1px solid var(--c-urban); padding: 10px; color: #fff; font-size: 0.65rem; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; font-family: 'Press Start 2P', cursive; }
-        .btn-submit:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.6); }
+        .btn-submit { width: 100%; background: rgba(255, 170, 0, 0.15); border: 1px solid var(--c-urban); padding: 10px; color: #fff; font-size: 0.65rem; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; font-family: 'Press Start 2P', cursive; }
+        .btn-submit:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(255,170,0,0.6); }
 
         /* BARRA FLOTANTE */
         .info-bar-container { padding: 0 5%; position: relative; z-index: 15; margin-top: -30px; }
@@ -159,19 +160,19 @@
 
         .extra-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;}
         .btn-extra { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: #fff; padding: 15px 35px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
-        .btn-extra.axiom:hover { background: rgba(184, 41, 255, 0.15); border-color: var(--c-axiom); transform: translateY(-3px); }
-        .btn-extra.tips:hover { background: rgba(41, 128, 185, 0.15); border-color: #2980b9; transform: translateY(-3px); }
+        .btn-extra.axiom:hover { background: rgba(255, 136, 0, 0.15); border-color: var(--c-axiom); transform: translateY(-3px); }
+        .btn-extra.tips:hover { background: rgba(255, 85, 0, 0.15); border-color: #ff5500; transform: translateY(-3px); }
 
         /* 🟢 === SECCIÓN PREGUNTAS FRECUENTES === 🟢 */
         .faq-section { padding: 80px 5% 100px 5%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
         .faq-header { text-align: center; margin-bottom: 50px; }
-        .faq-header h3 { font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; color: #fff; text-shadow: 2px 2px 10px rgba(0, 255, 166, 0.3); }
+        .faq-header h3 { font-size: 1.8rem; display: flex; justify-content: center; align-items: center; gap: 15px; color: #fff; text-shadow: 2px 2px 10px rgba(255, 170, 0, 0.3); }
         .faq-header h3 i { color: var(--c-author); }
         
         .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; align-items: start; }
         
         details.faq-card { background: rgba(10, 10, 14, 0.7); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; transition: all 0.3s ease; backdrop-filter: blur(5px); }
-        details.faq-card:hover { border-color: rgba(0, 255, 166, 0.4); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        details.faq-card:hover { border-color: rgba(255, 170, 0, 0.4); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         details.faq-card[open] { border-color: var(--c-author); background: rgba(15, 15, 20, 0.95); }
         
         summary.faq-question { font-size: 1.05rem; font-weight: 700; color: #fff; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; }
@@ -187,7 +188,7 @@
         
         .faq-video { width: 100%; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); outline: none; background: #000; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        .ip-box { display: inline-block; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--c-urban); padding: 8px 15px; border-radius: 8px; color: #fff; font-family: monospace; font-size: 1.1rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);}
+        .ip-box { display: inline-block; background: rgba(255, 170, 0, 0.1); border: 1px solid var(--c-urban); padding: 8px 15px; border-radius: 8px; color: #fff; font-family: monospace; font-size: 1.1rem; margin-top: 15px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);}
 
         /* FOOTER PRINCIPAL */
         .main-footer { text-align: center; padding: 30px; color: #666; border-top: 1px solid var(--glass-border); background: rgba(5,5,8,0.95); font-size: 0.9rem; position: relative; z-index: 10; }
@@ -265,15 +266,15 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #080c18; z-index: 10000; overflow-y: auto; overflow-x: hidden;
             display: none; opacity: 0; transition: opacity 0.3s ease;
-            --bg:#080c18; --sidebar-bg:#0a1020; --border:#1b2a44; --card-bg:rgba(13,21,37,0.9);
-            --accent:#2980b9; --title:#5dade2; --code-color:#7ecb8e; --text:#c8d4e8; --muted:#8a9bb8;
+            --bg:#080c18; --sidebar-bg:#0a1020; --border:#2a1808; --card-bg:rgba(18,12,8,0.9);
+            --accent:#ff7700; --title:#ffaa00; --code-color:#ffcc66; --text:#e8dcc8; --muted:#b89a80;
             color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6;
         }
         #comandos-overlay.active { display: block; opacity: 1; }
         #comandos-overlay * { margin: 0; padding: 0; box-sizing: border-box; }
         #comandos-overlay #urban-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         
-        #comandos-overlay .topbar { position: relative; z-index: 10; background: linear-gradient(135deg,#0a1020,#0d1830); border-bottom: 1px solid var(--border); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        #comandos-overlay .topbar { position: relative; z-index: 10; background: linear-gradient(135deg,#150a04,#251206); border-bottom: 1px solid var(--border); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
         #comandos-overlay .topbar h1 { color: var(--title); font-size: 1.4rem; font-weight: 700; font-family: 'Segoe UI', system-ui, sans-serif;}
         #comandos-overlay .topbar .subtitle { color: var(--muted); font-size: 0.85rem; letter-spacing: 1px; }
         
@@ -285,7 +286,7 @@
         #comandos-overlay .sidebar::-webkit-scrollbar { width: 6px; }
         #comandos-overlay .sidebar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
         #comandos-overlay .sidebar a { display: block; color: var(--muted); text-decoration: none; padding: 10px 24px; font-size: 0.88rem; border-left: 3px solid transparent; transition: all 0.2s; }
-        #comandos-overlay .sidebar a:hover, #comandos-overlay .sidebar a.active { color: var(--title); border-left-color: var(--accent); background: rgba(41,128,185,0.08); }
+        #comandos-overlay .sidebar a:hover, #comandos-overlay .sidebar a.active { color: var(--title); border-left-color: var(--accent); background: rgba(255,119,0,0.08); }
         #comandos-overlay .sidebar .side-title { color: var(--title); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 8px 24px; margin-top: 10px; opacity: 0.6; }
         
         #comandos-overlay .content { flex: 1; padding: 30px 40px; max-width: 1100px; }
@@ -293,20 +294,20 @@
         #comandos-overlay .section h2 { color: var(--title); font-size: 1.5rem; padding-bottom: 10px; margin-bottom: 24px; border-bottom: 2px solid var(--border); font-family: 'Segoe UI', system-ui, sans-serif;}
         
         #comandos-overlay .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 18px; transition: box-shadow 0.3s, border-color 0.3s; }
-        #comandos-overlay .card:hover { border-color: var(--accent); box-shadow: 0 0 18px rgba(41,128,185,0.25); }
+        #comandos-overlay .card:hover { border-color: var(--accent); box-shadow: 0 0 18px rgba(255,119,0,0.25); }
         #comandos-overlay .card h3 { color: var(--title); font-size: 1.1rem; margin-bottom: 12px; font-family: 'Segoe UI', system-ui, sans-serif;}
         #comandos-overlay .card p { margin-bottom: 10px; color: var(--text); }
         #comandos-overlay .card ul { margin: 8px 0 12px 20px; }
         #comandos-overlay .card li { margin-bottom: 5px; }
         
-        #comandos-overlay .cmd-block { background: #0a0f1a; border-left: 3px solid var(--accent); color: var(--code-color); padding: 12px 16px; border-radius: 6px; font-family: 'Consolas', monospace; white-space: pre-wrap; word-break: break-word; margin: 10px 0; font-size: 0.88rem; }
+        #comandos-overlay .cmd-block { background: #0a0604; border-left: 3px solid var(--accent); color: var(--code-color); padding: 12px 16px; border-radius: 6px; font-family: 'Consolas', monospace; white-space: pre-wrap; word-break: break-word; margin: 10px 0; font-size: 0.88rem; }
         #comandos-overlay .cmd-label { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; font-style: italic; }
-        #comandos-overlay .link-list a { color: var(--accent); text-decoration: none; display: block; padding: 6px 0; border-bottom: 1px solid rgba(27,42,68,0.5); transition: color 0.2s; }
+        #comandos-overlay .link-list a { color: var(--accent); text-decoration: none; display: block; padding: 6px 0; border-bottom: 1px solid rgba(42,24,8,0.5); transition: color 0.2s; }
         #comandos-overlay .link-list a:hover { color: var(--title); }
         
         #comandos-overlay .footer { position: relative; z-index: 5; text-align: center; padding: 30px; color: var(--muted); border-top: 1px solid var(--border); background: var(--sidebar-bg); font-size: 0.95rem; }
         #comandos-overlay .footer strong { color: var(--title); }
-        #comandos-overlay .note { background: rgba(41,128,185,0.08); border: 1px solid rgba(41,128,185,0.2); border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.88rem; color: var(--muted); }
+        #comandos-overlay .note { background: rgba(255,119,0,0.08); border: 1px solid rgba(255,119,0,0.2); border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-size: 0.88rem; color: var(--muted); }
         #comandos-overlay .note strong { color: var(--title); }
 
         @media(max-width: 768px){
@@ -779,7 +780,7 @@ data=(floor(y)+8)%16</div>
 
         // PARTICULAS DEL FONDO PRINCIPAL
         const particleContainer = document.getElementById('particles-js');
-        const colors = ['#00e5ff', '#ffaa00', '#ffffff', '#b829ff']; 
+        const colors = ['#ffaa00', '#ff5500', '#ffffff', '#ff8800']; 
         for (let i = 0; i < 20; i++) { 
             let p = document.createElement('div'); p.className = 'particle';
             let size = Math.random() * 4 + 2; p.style.width = size + 'px'; p.style.height = size + 'px';
@@ -944,7 +945,7 @@ data=(floor(y)+8)%16</div>
 
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(41, 128, 185, ' + p.opacity + ')';
+                        ctx.fillStyle = 'rgba(255, 119, 0, ' + p.opacity + ')';
                         ctx.fill();
 
                         for(var j = i + 1; j < particles.length; j++){
@@ -955,7 +956,7 @@ data=(floor(y)+8)%16</div>
                                 ctx.beginPath();
                                 ctx.moveTo(p.x, p.y);
                                 ctx.lineTo(p2.x, p2.y);
-                                ctx.strokeStyle = 'rgba(41, 128, 185, ' + (0.08 * (1 - dist / 120)) + ')';
+                                ctx.strokeStyle = 'rgba(255, 119, 0, ' + (0.08 * (1 - dist / 120)) + ')';
                                 ctx.lineWidth = 0.5;
                                 ctx.stroke();
                             }
