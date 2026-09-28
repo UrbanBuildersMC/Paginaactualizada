@@ -1,0 +1,575 @@
+﻿mc.urban<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Construcciones | Urban Builders</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Fuentes Web -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --c-urban: #ffaa00;
+            --c-archt: #ff5500;
+            --glass-border: rgba(255, 170, 0, 0.15);
+            --bg-card: rgba(13, 13, 18, 0.85);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            color: #fff; 
+            background: linear-gradient(to bottom, rgba(5, 5, 5, 0.88), rgba(5, 5, 5, 0.95)), 
+                        url('tienda.png') no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .mc-font { font-family: 'Press Start 2P', cursive; line-height: 1.4; }
+
+        /* Partículas ligeras */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; border-radius: 50%; animation: floatUp infinite ease-in; opacity: 0; will-change: transform, opacity; }
+        @keyframes floatUp {
+            0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
+            20% { opacity: 0.6; transform: translate3d(0, 80vh, 0) scale(1.2); }
+            80% { opacity: 0.3; }
+            100% { transform: translate3d(0, -10vh, 0) scale(0); opacity: 0; }
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; background: rgba(5,5,5,0.92);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .nav-logo img { height: 40px; filter: drop-shadow(0 0 10px rgba(255, 170, 0, 0.4)); }
+        .nav-logo h1 { font-size: 1rem; color: #fff; letter-spacing: -1px; }
+        .nav-logo h1 span { color: var(--c-urban); }
+
+        .btn-back {
+            background: transparent; border: 2px solid var(--c-urban);
+            color: var(--c-urban); padding: 10px 20px; border-radius: 6px;
+            font-size: 0.75rem; text-decoration: none; font-weight: 700;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover { background: var(--c-urban); color: #000; box-shadow: 0 0 20px rgba(255, 170, 0, 0.4); }
+
+        /* CONTENEDOR */
+        .container {
+            max-width: 1300px;
+            margin: 120px auto 60px auto;
+            padding: 0 5%;
+        }
+
+        .store-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .store-header h2 { font-size: 2.2rem; margin-bottom: 15px; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+        .store-header h2 span { color: var(--c-archt); }
+        .store-header p { color: #bbb; font-size: 1rem; max-width: 650px; margin: 0 auto; line-height: 1.6; }
+
+        /* GRID */
+        .builds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            perspective: 1200px;
+        }
+
+        /* TARJETAS */
+        .build-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.4s ease, border-color 0.3s, box-shadow 0.4s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        .build-card:hover {
+            border-color: var(--c-urban);
+            box-shadow: 0 15px 35px rgba(255, 170, 0, 0.2);
+        }
+
+        .build-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #111;
+        }
+        .build-img-wrapper img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .build-card:hover .build-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .build-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            background: rgba(0,0,0,0.75);
+            border: 1px solid var(--c-urban);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .build-info {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .build-name {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        
+        .build-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .build-price {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #55ff55;
+            text-shadow: 0 0 10px rgba(85, 255, 85, 0.2);
+        }
+        .btn-inspect {
+            background: rgba(255, 170, 0, 0.1);
+            color: var(--c-urban);
+            border: 1px solid var(--c-urban);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            transition: all 0.3s;
+        }
+        .build-card:hover .btn-inspect {
+            background: var(--c-urban);
+            color: #000;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.88); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            z-index: 2000; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-body-detail {
+            background: #0d0d12;
+            border: 1px solid var(--c-urban);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 30px rgba(255, 170, 0, 0.2);
+            border-radius: 16px;
+            width: 100%; max-width: 750px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+            animation: modalPop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.92) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 1.6rem; color: #888; cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: #fff; }
+
+        .modal-gallery {
+            position: relative;
+            width: 100%; height: 350px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 20px;
+            border: 1px solid #222;
+        }
+        .modal-gallery img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-nav {
+            position: absolute; top: 50%; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 0 15px; transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .gallery-btn {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #444; color: #fff;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; pointer-events: auto;
+            transition: all 0.2s;
+        }
+        .gallery-btn:hover { background: var(--c-urban); color: #000; border-color: var(--c-urban); }
+
+        .modal-title-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            gap: 15px; margin-bottom: 15px;
+        }
+        .modal-title-row h3 { font-size: 1.4rem; color: #fff; }
+        .modal-price-tag { font-size: 1.6rem; color: #55ff55; font-weight: 900; white-space: nowrap; }
+
+        .modal-desc {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .tags-container {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px;
+        }
+        .tag-pill {
+            background: #14141e;
+            color: var(--c-urban);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+
+        /* AVISO DEL BOTÓN DE COMPRA */
+        .ticket-hint {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .btn-modal-buy {
+            width: 100%;
+            padding: 16px;
+            border: none; border-radius: 8px;
+            background: linear-gradient(90deg, var(--c-urban), var(--c-archt));
+            color: #000;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(255, 170, 0, 0.3);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-modal-buy:hover {
+            filter: brightness(1.2);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(255, 85, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .modal-gallery { height: 220px; }
+            .modal-title-row { flex-direction: column; }
+            .store-header h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <!-- NAVBAR -->
+    <header>
+        <a href="index.html" class="nav-logo">
+            <img src="logo.png" alt="Logo Urban Builders" onerror="this.src='https://i.imgur.com/8QG3X6x.png'">
+            <h1 class="mc-font">URBAN <span>BUILDERS</span></h1>
+        </a>
+        <a href="index.html" class="btn-back mc-font">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+        </a>
+    </header>
+
+    <!-- TIENDA -->
+    <main class="container">
+        <div class="store-header">
+            <h2 class="mc-font">CATÁLOGO DE <span>CONSTRUCCIONES</span></h2>
+            <p>Spawns, Lobbies, Arenas y estructuras exclusivas listas para descargar o integrar en tu servidor de Minecraft.</p>
+        </div>
+
+        <div class="builds-grid" id="builds-container"></div>
+    </main>
+
+    <!-- MODAL DETALLE -->
+    <div id="detail-modal" class="modal-overlay">
+        <div class="modal-body-detail">
+            <i class="fa-solid fa-xmark modal-close" onclick="cerrarDetalle()"></i>
+            
+            <div class="modal-gallery">
+                <img id="modal-img-active" src="" alt="Captura">
+                <div class="gallery-nav" id="gallery-controls">
+                    <button class="gallery-btn" onclick="prevImg(event)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="gallery-btn" onclick="nextImg(event)"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="modal-title-row">
+                <h3 class="mc-font" id="modal-title">...</h3>
+                <div class="modal-price-tag" id="modal-price">...</div>
+            </div>
+
+            <p class="modal-desc" id="modal-desc">...</p>
+
+            <div class="tags-container" id="modal-tags"></div>
+
+            <div class="ticket-hint">
+                <i class="fa-solid fa-circle-info" style="color: var(--c-urban);"></i> Se copiará tu solicitud automáticamente para pegarla en el ticket.
+            </div>
+
+            <button class="btn-modal-buy" id="btn-comprar-build" onclick="abrirTicketDiscord()">
+                <i class="fa-brands fa-discord"></i> Solicitar en Ticket de Discord
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script>
+        const DISCORD_TICKET_URL = "https://discord.com/channels/1142747712597528646/1539473882518392882/1552517868715905136";
+
+        // LISTA DE CONSTRUCCIONES
+        const construcciones = [
+            {
+                id: 1,
+                nombre: "Spawn Medieval Fantasy",
+                precio: 18.50,
+                categoria: "Spawn",
+                fotos: [
+                    "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=800&auto=format&fit=crop&q=80"
+                ],
+                descripcion: "Un punto de aparición completo con arquitectura gótica-medieval. Cuenta con plaza central de bienvenida, 4 salidas despejadas hacia los puntos cardinales y zona adaptada para NPCs de misiones o portales.",
+                tags: ["#Medieval", "#Spawn", "#Fantasy", "#Schematic", "#1.20+"]
+            },
+            {
+                id: 2,
+                nombre: "Lobby Cyberpunk Futurista",
+                precio: 24.99,
+                categoria: "Lobby",
+                fotos: [
+                    "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80"
+                ],
+                descripcion: "Construcción a gran escala con temática distópica neón. Perfecta para network con minijuegos. Incluye pods holográficos, parkour integrado y áreas para tablas de clasificación.",
+                tags: ["#Cyberpunk", "#Futuristic", "#Lobby", "#WorldEdit", "#HighDetail"]
+            },
+            {
+                id: 3,
+                nombre: "Arena PvP Coliseo Imperial",
+                precio: 12.00,
+                categoria: "Arena",
+                fotos: [
+                    "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&auto=format&fit=crop&q=80"
+                ],
+                descripcion: "Coliseo romano optimizado para combate fluido sin obstáculos molestos. Graderías simétricas, túneles de salida rápida para gladiadores y terreno nivelado para combates 1v1 o todos contra todos.",
+                tags: ["#PvP", "#Coliseo", "#Optimized", "#NoLag", "#Arena"]
+            },
+            {
+                id: 4,
+                nombre: "Aldea Nórdica RPG",
+                precio: 15.00,
+                categoria: "RPG / Survival",
+                fotos: [
+                    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80"
+                ],
+                descripcion: "Asentamiento vikingo ubicado entre montañas de pinos. Consta de 7 casas con interiores totalmente amueblados, muelles de barcos largos y una fortaleza de jefe.",
+                tags: ["#Nordic", "#Survival", "#RPG", "#Viking", "#Interiors"]
+            }
+        ];
+
+        // RENDERIZAR
+        const container = document.getElementById('builds-container');
+
+        construcciones.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'build-card';
+            card.setAttribute('data-tilt', '');
+            card.setAttribute('data-tilt-max', '8');
+            card.setAttribute('data-tilt-speed', '300');
+            card.onclick = () => abrirDetalle(item.id);
+
+            card.innerHTML = `
+                <div class="build-img-wrapper">
+                    <img src="${item.fotos[0]}" alt="${item.nombre}" loading="lazy">
+                    <span class="build-badge mc-font">${item.categoria}</span>
+                </div>
+                <div class="build-info">
+                    <h3 class="build-name mc-font">${item.nombre}</h3>
+                    <div class="build-footer">
+                        <span class="build-price">$${item.precio.toFixed(2)}</span>
+                        <span class="btn-inspect mc-font"><i class="fa-solid fa-eye"></i> Ver</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        let buildActual = null;
+        let fotoIndex = 0;
+
+        function abrirDetalle(id) {
+            buildActual = construcciones.find(b => b.id === id);
+            if (!buildActual) return;
+            fotoIndex = 0;
+
+            // Actualiza la URL con el hash para que sea un link directo compartible
+            window.location.hash = `build-${id}`;
+
+            document.getElementById('modal-title').innerText = buildActual.nombre;
+            document.getElementById('modal-price').innerText = `$${buildActual.precio.toFixed(2)}`;
+            document.getElementById('modal-desc').innerText = buildActual.descripcion;
+
+            actualizarFoto();
+
+            const controls = document.getElementById('gallery-controls');
+            controls.style.display = buildActual.fotos.length > 1 ? 'flex' : 'none';
+
+            const tagsCont = document.getElementById('modal-tags');
+            tagsCont.innerHTML = '';
+            buildActual.tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'tag-pill';
+                span.innerHTML = `<i class="fa-solid fa-tag"></i> ${tag.replace('#','')}`;
+                tagsCont.appendChild(span);
+            });
+
+            // Resetear el botón por si se usó antes
+            const btnBuy = document.getElementById('btn-comprar-build');
+            btnBuy.innerHTML = `<i class="fa-brands fa-discord"></i> Solicitar en Ticket de Discord`;
+            btnBuy.style.background = 'linear-gradient(90deg, var(--c-urban), var(--c-archt))';
+            btnBuy.style.color = '#000';
+
+            document.getElementById('detail-modal').classList.add('active');
+        }
+
+        function cerrarDetalle() {
+            document.getElementById('detail-modal').classList.remove('active');
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+
+        document.getElementById('detail-modal').addEventListener('click', function(e) {
+            if(e.target === this) cerrarDetalle();
+        });
+
+        function actualizarFoto() {
+            const img = document.getElementById('modal-img-active');
+            img.style.opacity = '0.3';
+            setTimeout(() => {
+                img.src = buildActual.fotos[fotoIndex];
+                img.style.opacity = '1';
+            }, 150);
+        }
+
+        function nextImg(e) {
+            e.stopPropagation();
+            fotoIndex = (fotoIndex + 1) % buildActual.fotos.length;
+            actualizarFoto();
+        }
+
+        function prevImg(e) {
+            e.stopPropagation();
+            fotoIndex = (fotoIndex - 1 + buildActual.fotos.length) % buildActual.fotos.length;
+            actualizarFoto();
+        }
+
+        // ACCIÓN DE COMPRA: COPIA MENSAJE + LINK DIRECTO Y REDIRIGE A DISCORD
+        function abrirTicketDiscord() {
+            if (!buildActual) return;
+
+            const urlDirecta = `${window.location.origin}${window.location.pathname}#build-${buildActual.id}`;
+            const mensajeParaTicket = `¡Hola Urban Builders! 👋 Me interesa mucho comprar la siguiente construcción:\n\n` +
+                                     `📦 **Construcción:** ${buildActual.nombre}\n` +
+                                     `💰 **Precio:** $${buildActual.precio.toFixed(2)} USD\n` +
+                                     `🔗 **Enlace directo:** ${urlDirecta}\n\n` +
+                                     `Quedo atento para coordinar el pago y la entrega. ¡Gracias!`;
+
+            const btnBuy = document.getElementById('btn-comprar-build');
+
+            navigator.clipboard.writeText(mensajeParaTicket).then(() => {
+                btnBuy.innerHTML = `<i class="fa-solid fa-check"></i> ¡Mensaje copiado! Abriendo Ticket...`;
+                btnBuy.style.background = '#55ff55';
+                btnBuy.style.color = '#000';
+
+                setTimeout(() => {
+                    window.open(DISCORD_TICKET_URL, '_blank');
+                }, 700);
+            }).catch(() => {
+                window.open(DISCORD_TICKET_URL, '_blank');
+            });
+        }
+
+        // SI ALGUIEN ENTRA CON UN LINK DIRECTO (ej: construcciones.html#build-2)
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash.startsWith('#build-')) {
+                const id = parseInt(hash.replace('#build-', ''));
+                if (!isNaN(id)) {
+                    abrirDetalle(id);
+                }
+            }
+        });
+
+        // PARTÍCULAS
+        const particleContainer = document.getElementById('particles-js');
+        const colors = ['#ffaa00', '#ff5500', '#ffffff']; 
+        for (let i = 0; i < 15; i++) { 
+            let p = document.createElement('div');
+            p.className = 'particle';
+            let size = Math.random() * 4 + 1;
+            p.style.width = size + 'px'; p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particleContainer.appendChild(p);
+        }
+
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
+    </script>
+</body>
+</html>
