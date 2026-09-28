@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urban Builders | Servidor Premium</title>
     
-    <!-- 🌟 FAVICON (Actualizado con imagen llamada favicon) 🌟 -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="favicon.png">
     
     <!-- Fuentes Web -->
@@ -13,18 +13,16 @@
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- 🟢 SCRIPT OFICIAL DE PAYPAL -->
+    <!-- SCRIPT DE PAYPAL -->
     <script src="https://www.paypal.com/sdk/js?client-id=AWK9HsRWpouytjAJ0naA9uj61FNrw5rb4yxaJPNdG1XlVz-OrhHE2KAU9ZVE3T6qXUDxlpz61-a2TcHh&currency=USD"></script>
 
     <style>
-        /* === 🎨 NUEVA PALETA DE COLORES (Basada en la imagen del hacha naranja/amarillo) === */
         :root {
-            --c-urban: #ffaa00;     /* Amarillo / Naranja brillante del hacha */
-            --c-archt: #ff5500;     /* Naranja intenso / Fuego */
-            --glass-border: rgba(255, 170, 0, 0.15); /* Borde sutil en tono naranja */
+            --c-urban: #ffaa00;
+            --c-archt: #ff5500;
+            --glass-border: rgba(255, 170, 0, 0.15);
         }
 
-        /* === CONFIGURACIÓN GENERAL === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { 
@@ -35,7 +33,6 @@
         }
         .mc-font { font-family: 'Press Start 2P', cursive; line-height: 1.4; }
 
-        /* === VIDEO SOLO EN EL INICIO === */
         .video-container {
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100vh;
@@ -55,7 +52,6 @@
             z-index: -4; 
         }
 
-        /* Partículas ligeras */
         #particles-js { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
         .particle { position: absolute; border-radius: 50%; animation: floatUp infinite ease-in; opacity: 0; will-change: transform, opacity; }
         @keyframes floatUp {
@@ -65,7 +61,6 @@
             100% { transform: translate3d(0, -10vh, 0) scale(0); opacity: 0; }
         }
 
-        /* === BARRA DE NAVEGACIÓN === */
         header {
             position: fixed; top: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
@@ -86,7 +81,6 @@
         nav a { color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; transition: 0.3s; font-size: 0.9rem;}
         nav a:hover { color: var(--c-urban); text-shadow: 0 0 15px var(--c-urban); transform: translateY(-3px); display: inline-block;}
         
-        /* 🌟 BOTÓN 3D MECÁNICO PARA COPIAR IP 🌟 */
         .btn-ip {
             background: var(--c-urban); color: #000; padding: 12px 25px; border-radius: 8px;
             font-weight: 900; text-decoration: none; text-transform: uppercase;
@@ -103,7 +97,6 @@
             box-shadow: 0 0 0 #b37700, 0 5px 10px rgba(255, 170, 0, 0.4) !important; 
         }
         
-        /* Globo de texto flotante */
         .ip-tooltip {
             position: absolute; top: 130%; left: 50%; transform: translateX(-50%) translateY(15px) scale(0);
             background: #fff; color: #000; padding: 10px 15px; border-radius: 8px; 
@@ -125,7 +118,6 @@
         }
         .btn-play-hero:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 30px var(--c-urban); }
 
-        /* NUEVO BOTÓN ACADEMIA */
         .btn-academy-hero {
             background: transparent; color: #fff; padding: 12px 25px; border-radius: 5px;
             font-weight: 900; text-decoration: none; text-transform: uppercase; border: 2px solid var(--c-archt);
@@ -135,7 +127,6 @@
         .btn-academy-hero i { color: var(--c-archt); transition: color 0.3s; margin-right: 5px;}
         .btn-academy-hero:hover i { color: #fff; }
 
-        /* === SISTEMA DE ANIMACIÓN AL SCROLL === */
         .reveal { 
             opacity: 0; transform: translate3d(0, 60px, 0); 
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
@@ -143,7 +134,6 @@
         }
         .reveal.active { opacity: 1; transform: translate3d(0, 0, 0); }
 
-        /* === 1. HERO SECTION === */
         .hero { 
             height: 100vh; display: flex; align-items: center; justify-content: space-between;
             padding: 80px 8% 0 8%; gap: 50px; position: relative;
@@ -171,12 +161,10 @@
             50% { transform: translate3d(0, -20px, 80px); }
         }
 
-        /* === ESTRUCTURA DE SECCIONES INTERNAS === */
         section:not(.hero) { padding: 100px 8% 50px 8%; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 10;}
         .sec-title { font-size: 2.2rem; text-align: center; margin-bottom: 60px; }
         .sec-title span { color: var(--c-archt); }
 
-        /* === EFECTOS DE FONDO REACTIVO (TIENDA Y NOTICIAS) === */
         .interactive-bg {
             position: relative; overflow: hidden; background-color: #050505;
         }
@@ -210,7 +198,6 @@
             100% { transform: rotate3d(1, 1, 1, 360deg) translateY(0); }
         }
 
-        /* === 2. SOBRE NOSOTROS === */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; }
         .about-text h3 { font-size: 2rem; margin-bottom: 25px; color: var(--c-urban); }
         .about-text p { font-size: 1.05rem; line-height: 1.8; color: #bbb; margin-bottom: 15px; font-weight: 300;}
@@ -227,7 +214,6 @@
         .stat-card h4 { font-size: 2.2rem; font-weight: 900; transform: translateZ(15px);}
         .stat-card p { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 1px; transform: translateZ(10px);}
 
-        /* === 3. TIENDA === */
         .ranks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 35px; max-width: 1200px; margin: 0 auto; perspective: 1500px; }
         
         .rank-card {
@@ -273,7 +259,6 @@
         .btn-buy:hover { filter: brightness(1.2); transform: translateZ(80px) scale(1.05); }
         .btn-buy:active { transform: translateZ(40px) scale(0.95); }
 
-        /* === 4. ACTUALIZACIONES === */
         .updates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; perspective: 1000px; z-index: 5;}
         .update-card { 
             background: #0d0d12; border-left: 4px solid var(--c-urban); 
@@ -285,7 +270,6 @@
         .update-card h4 { font-size: 1.2rem; margin-bottom: 10px; transform: translateZ(25px);}
         .update-card p { font-size: 0.95rem; color: #888; line-height: 1.6; font-weight: 300; transform: translateZ(10px);}
 
-        /* === FOOTER 🌟 REDES SOCIALES === */
         footer { 
             text-align: center; padding: 60px 20px 40px 20px; 
             background: #030303; border-top: 1px solid #111; position: relative; z-index: 10;
@@ -300,22 +284,21 @@
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform-style: preserve-3d;
         }
-        /* Efectos 3D Hover por cada red social */
-        .social-icon:nth-child(1):hover { /* X (Twitter) */
+        .social-icon:nth-child(1):hover {
             transform: translateY(-10px) rotateY(15deg); border-color: #fff;
             color: #000; background: #fff; box-shadow: 0 10px 25px rgba(255,255,255,0.3);
         }
-        .social-icon:nth-child(2):hover { /* TikTok */
+        .social-icon:nth-child(2):hover {
             transform: translateY(-10px) rotateY(15deg); border-color: #ff0050;
             color: #fff; background: #000; box-shadow: -5px 10px 20px rgba(255,170,0,0.4), 5px 10px 20px rgba(255,0,80,0.4);
         }
-        .social-icon:nth-child(3):hover { /* YouTube */
+        .social-icon:nth-child(3):hover {
             transform: translateY(-10px) rotateY(15deg); border-color: #ff0000;
             color: #fff; background: #ff0000; box-shadow: 0 10px 25px rgba(255,0,0,0.4);
         }
         footer p { color: #555; font-size: 0.9rem; margin-top: 15px;}
 
-        /* 🟢 === ESTILOS DEL MODAL DE PAGO === 🟢 */
+        /* MODALES */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
@@ -368,7 +351,76 @@
         }
         .btn-modal:hover { filter: brightness(1.2); transform: scale(1.05); }
 
-        /* 📱 === RESPONSIVO === 📱 */
+        /* === MODAL DE ANUNCIO === */
+        .promo-content {
+            background: linear-gradient(145deg, #121218 0%, #08080a 100%);
+            border: 1px solid var(--c-urban);
+            box-shadow: 0 0 35px rgba(255, 170, 0, 0.25), 0 25px 50px rgba(0,0,0,0.9);
+            max-width: 480px;
+            padding: 40px 30px;
+        }
+        .promo-tag {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--c-urban), var(--c-archt));
+            color: #000;
+            font-weight: 900;
+            font-size: 0.65rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .promo-icon-box {
+            width: 80px; height: 80px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem;
+            color: var(--c-urban);
+            box-shadow: 0 0 25px rgba(255, 170, 0, 0.2);
+            animation: pulseIcon 2.5s infinite alternate;
+        }
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); box-shadow: 0 0 35px rgba(255, 85, 0, 0.4); color: var(--c-archt); }
+        }
+        .promo-title {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .promo-text {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+        .btn-promo-action {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, var(--c-urban), var(--c-archt));
+            color: #000;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(255, 170, 0, 0.35);
+            transition: all 0.3s ease;
+        }
+        .btn-promo-action:hover {
+            transform: translateY(-3px) scale(1.02);
+            filter: brightness(1.15);
+            box-shadow: 0 12px 25px rgba(255, 85, 0, 0.5);
+            color: #000;
+        }
+
+        /* RESPONSIVO */
         @media (max-width: 950px) {
             nav ul { display: none; }
             .nav-logo h1 { display: none; }
@@ -434,7 +486,6 @@
                 <li><a href="#actualizaciones">Noticias</a></li>
             </ul>
         </nav>
-        <!-- BOTÓN COPIAR IP -->
         <button id="ip-btn" class="btn-ip" onclick="copyServerIP()">
             <span id="ip-text">Jugar Ahora</span>
             <div class="ip-tooltip">mc.urbanbuilder.net</div>
@@ -451,7 +502,6 @@
                 <a href="#tienda" class="btn-play-hero" style="font-size: 1.1rem; padding: 15px 35px;"><i class="fa-solid fa-cart-shopping"></i> Ver Rangos</a>
                 <a href="academia.html" class="btn-academy-hero" style="font-size: 1.1rem; padding: 15px 35px;"><i class="fa-solid fa-graduation-cap"></i> Academia</a>
             </div>
-
         </div>
         
         <div class="hero-image" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000">
@@ -517,7 +567,7 @@
                     <li><i class="fa-solid fa-shield"></i> Conserva tu progreso</li>
                 </ul>
                 <div class="price">$14.99</div>
-                <button class="btn-buy" onclick ="abrirCarrito('URBAN A ARCHT+', 14.99)">Adquirir Rango</button>
+                <button class="btn-buy" onclick="abrirCarrito('URBAN A ARCHT+', 14.99)">Adquirir Rango</button>
             </div>
 
             <div class="rank-card rank-archt reveal" style="transition-delay: 0.2s;" data-tilt data-tilt-max="20" data-tilt-speed="400">
@@ -565,7 +615,6 @@
     <footer>
         <h2 class="mc-font" style="font-size: 1.2rem;">URBAN BUILDERS</h2>
         
-        <!-- REDES SOCIALES -->
         <div class="social-container">
             <a href="https://x.com/UrbanBuildersMC" target="_blank" class="social-icon" title="Síguenos en X">
                 <i class="fa-brands fa-x-twitter"></i>
@@ -580,6 +629,28 @@
 
         <p>© 2026. Todos los derechos reservados. No estamos afiliados con Mojang AB.</p>
     </footer>
+
+    <!-- ANUNCIO DE NUEVA TIENDA / ACTUALIZACIÓN -->
+    <div id="promo-modal" class="modal-overlay">
+        <div class="modal-content promo-content">
+            <i class="fa-solid fa-xmark modal-close" onclick="cerrarPromo()"></i>
+            
+            <div class="promo-icon-box">
+                <i class="fa-solid fa-hammer"></i>
+            </div>
+            
+            <span class="promo-tag"><i class="fa-solid fa-fire"></i> Nueva Actualización</span>
+            <h3 class="mc-font promo-title">TIENDA DE<br><span style="color: var(--c-urban);">CONSTRUCCIONES</span></h3>
+            
+            <p class="promo-text">
+                ¡Abrimos un nuevo apartado en la tienda! Ahora puedes adquirir mapas exclusivos, estructuras personalizadas y esquemas listos para tu servidor. Ven y descubre el catálogo.
+            </p>
+            
+            <a href="construcciones.html" class="btn-promo-action">
+                Explorar Tienda <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+            </a>
+        </div>
+    </div>
 
     <!-- MODAL DE PAGO -->
     <div id="tebex-modal" class="modal-overlay">
@@ -629,6 +700,24 @@
     <!-- SCRIPT DE LIBRERÍAS Y ANIMACIONES JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script>
+        // Control de anuncio al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const promo = document.getElementById('promo-modal');
+                if (promo) promo.classList.add('active');
+            }, 600);
+        });
+
+        function cerrarPromo() {
+            const promo = document.getElementById('promo-modal');
+            if (promo) promo.classList.remove('active');
+        }
+
+        // Cerrar si hace clic fuera del modal
+        document.getElementById('promo-modal').addEventListener('click', function(e) {
+            if (e.target === this) cerrarPromo();
+        });
+
         function copyServerIP() {
             const ip = "mc.urbanbuilder.net";
             navigator.clipboard.writeText(ip).then(() => {
